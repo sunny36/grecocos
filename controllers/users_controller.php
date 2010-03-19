@@ -75,7 +75,7 @@ class UsersController extends AppController {
 	    $this->User->create();
 	    
 	    if($this->User->save($this->data)){
-	      $this->Session->setFlash('You have signed up!!');
+	      $this->Session->setFlash('Please wait for an confirmation email from the co-ordinator.');
 	      $this->redirect(array('controller' => 'home', 'action' => 'index'));
 	    } else {
 	      $this->Session->setFlash(
