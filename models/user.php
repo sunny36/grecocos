@@ -36,7 +36,34 @@ class User extends AppModel {
   	    'require' => true,
   	    'allowEmpty' => false,
 	      'message' => 'Please enter a valid email'
-	      )
+	      ),
+
+	    'firstname' => array(
+	      'rule' => array('minLength', 1),
+  	    'require' => true,
+  	    'allowEmpty' => false,
+	      'message' => 'Please enter first name'
+	      ),
+
+	    'lastname' => array(
+	      'rule' => array('minLength', 1),
+  	    'require' => true,
+  	    'allowEmpty' => false,
+	      'message' => 'Please enter lastname name'
+	      ),	      
+
+	    'city' => array(
+	      'rule' => array('minLength', 1),
+  	    'require' => true,
+  	    'allowEmpty' => false,
+	      'message' => 'City cannot be blank'
+	      ),
+
+	    'postalcode' => array(
+	      'rule' => '/[0-9]{5}/',
+	      'message' => 'Postal code must be 5 characters'
+	      ),	      
+	      
 	  );
 	  
 	  function checkUnique($data, $fieldName){

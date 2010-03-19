@@ -10,6 +10,23 @@
         e($form->error ('User.email', null, array('class' => 'message'))); 
 ?>
 
+<?php if($form->isFieldError('User.firstname')) 
+        e($form->error ('User.firstname', null, array('class' => 'message'))); 
+?>
+
+<?php if($form->isFieldError('User.lastname')) 
+        e($form->error ('User.lastname', null, array('class' => 'message'))); 
+?>
+
+<?php if($form->isFieldError('User.city')) 
+        e($form->error ('User.city', null, array('class' => 'message'))); 
+?>
+
+<?php if($form->isFieldError('User.postalcode')) 
+        e($form->error ('User.postalcode', null, array('class' => 'message'))); 
+?>
+
+
 <?php e($form->create('User', array('action' => 'signup')));?>
 <fieldset>
   <label for="UserUsername" class="usernamelabel">
