@@ -1,6 +1,6 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* Grecocos schema generated on: 2010-03-19 15:03:25 : 1268986945*/
+/* Grecocos schema generated on: 2010-03-19 16:03:01 : 1268992081*/
 class GrecocosSchema extends CakeSchema {
 	var $name = 'Grecocos';
 
@@ -25,7 +25,7 @@ class GrecocosSchema extends CakeSchema {
 		'city' => array('type' => 'string', 'null' => false, 'default' => NULL),
 		'postalcode' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 6),
 		'phone' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 12),
-		'status' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 3),
+		'status' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 3),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),

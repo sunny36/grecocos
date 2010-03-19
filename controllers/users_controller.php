@@ -66,11 +66,14 @@ class UsersController extends AppController {
 	
 	function signup(){
 	  if(!empty($this->data)) {
+	    //status: 000 means self registered but not accepted
+	    $this->data['User']['status'] = '000';
 	    if(isset($this->data['User']['password2'])){
 	      $this->data['User']['password2hashed'] =
 	        $this->Auth->password($this->data['User']['password2']);
 	    }
 	    $this->User->create();
+	    
 	    if($this->User->save($this->data)){
 	      $this->Session->setFlash('You have signed up!!');
 	      $this->redirect(array('controller' => 'home', 'action' => 'index'));
