@@ -6,10 +6,10 @@
 
 <?php e($form->create('User', array('action' => 'login')));?> 
 <fieldset>
-  <label for="UserUsername" class="usernamelabel">
-    <span>Username </span>
+  <label for="UserEmail" class="emaillabel">
+    <span>Email </span>
   </label>
-  <?php e($form->text('username', array('class' => 'fullwidth'))); ?>
+  <?php e($form->text('email', array('class' => 'fullwidth'))); ?>
   
   <label for="UserPassword" class="passwordlabel">
     <span>Password </span>

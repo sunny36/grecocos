@@ -3,7 +3,6 @@
 	<fieldset>
  		<legend><?php printf(__('Admin Add %s', true), __('User', true)); ?></legend>
 	<?php
-		echo $this->Form->input('username');
 		echo $this->Form->input('password');
 		echo $this->Form->input('email');
 		echo $this->Form->input('firstname');

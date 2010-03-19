@@ -34,6 +34,7 @@ class AppController extends Controller {
   var $components = array('Auth', 'Session');
 
   function beforeFilter(){
+    $this->Auth->fields = array('username' => 'email', 'password' => 'password');
     $this->Auth->loginRedirect = array('controller' => 'home', 
                                        'action' => 'index');
     $this->Auth->logoutRedirect = array('controller' => 'users', 

@@ -3,7 +3,6 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('username');?></th>
 			<th><?php echo $this->Paginator->sort('password');?></th>
 			<th><?php echo $this->Paginator->sort('email');?></th>
 			<th><?php echo $this->Paginator->sort('firstname');?></th>
@@ -30,7 +29,6 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php echo $user['User']['id']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['username']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['password']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['email']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['firstname']; ?>&nbsp;</td>
