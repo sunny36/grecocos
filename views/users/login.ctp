@@ -1,4 +1,4 @@
-<h2>Log In To Quickwall</h2>
+<h2>Log In </h2>
 
 <?php if ($session->check('Message.auth')):
           $session->flash('auth'); endif;

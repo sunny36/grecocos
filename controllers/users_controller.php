@@ -2,16 +2,11 @@
 class UsersController extends AppController {
 
 	var $name = 'Users';
-	var $components = array('Auth');
-
+ 
 	function index() {
 		$this->User->recursive = 0;
 		$this->set('users', $this->paginate());
 	}
-
-  function beforeFilter(){
-    $this->Auth->allow('signup');
-  }
   
 	function view($id = null) {
 		if (!$id) {
@@ -88,5 +83,11 @@ class UsersController extends AppController {
 	function login(){
 	  
 	}
+	
+	function logout() { 
+
+ 	  $this->Session->setFlash('You have logged out!!');
+	  $this->redirect($this->Auth->logout());
+  }
 }
 ?>
