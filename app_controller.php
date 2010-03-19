@@ -34,13 +34,14 @@ class AppController extends Controller {
   var $components = array('Auth', 'Session');
 
   function beforeFilter(){
+    $this->Auth->userScope = array('User.status' => '010');
     $this->Auth->fields = array('username' => 'email', 'password' => 'password');
     $this->Auth->loginRedirect = array('controller' => 'home', 
                                        'action' => 'index');
     $this->Auth->logoutRedirect = array('controller' => 'users', 
                                        'action' => 'login');                          
     $this->Auth->allow('signup');
-    $this->Auth->userscope = array('User.status' => '010');
+    
     $this->set('loggedIn', $this->Auth->user('id'));   
     $this->Auth->authorize = 'controller';                                      
   }

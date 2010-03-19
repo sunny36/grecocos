@@ -53,6 +53,11 @@
 
 			<?php echo $this->Session->flash(); ?>
 
+      <?php
+      	$session->flash();
+      	echo $session->Session->flash('auth');
+      ?>
+
 			<?php echo $content_for_layout; ?>
 
 		</div>
