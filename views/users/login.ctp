@@ -1,7 +1,8 @@
 <h2>Log In </h2>
 
-<?php if ($session->check('Message.auth')):
-          $session->flash('auth'); endif;
+<?php 
+         echo$this->Session->flash('auth'); 
+      
 ?>
 
 <?php e($form->create('User', array('action' => 'login')));?> 

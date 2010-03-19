@@ -8,6 +8,11 @@ class ProductsController extends AppController {
 		$this->set('products', $this->paginate());
 	}
 
+	function admin_index() {
+		$this->Product->recursive = 0;
+		$this->set('products', $this->paginate());
+	}
+
 	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
