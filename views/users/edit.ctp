@@ -7,6 +7,16 @@
 		echo $this->Form->input('username');
 		echo $this->Form->input('password');
 		echo $this->Form->input('email');
+		echo $this->Form->input('firstname');
+		echo $this->Form->input('lastname');
+		echo $this->Form->input('middlename');
+		echo $this->Form->input('address1');
+		echo $this->Form->input('address2');
+		echo $this->Form->input('address3');
+		echo $this->Form->input('city');
+		echo $this->Form->input('postalcode');
+		echo $this->Form->input('phone');
+		echo $this->Form->input('status');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>

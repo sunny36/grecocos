@@ -1,7 +1,7 @@
 <div class="users form">
 <?php echo $this->Form->create('User');?>
 	<fieldset>
- 		<legend><?php printf(__('Add %s', true), __('User', true)); ?></legend>
+ 		<legend><?php printf(__('Admin Add %s', true), __('User', true)); ?></legend>
 	<?php
 		echo $this->Form->input('username');
 		echo $this->Form->input('password');
