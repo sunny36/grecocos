@@ -3,17 +3,11 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('password');?></th>
+
 			<th><?php echo $this->Paginator->sort('email');?></th>
 			<th><?php echo $this->Paginator->sort('firstname');?></th>
 			<th><?php echo $this->Paginator->sort('lastname');?></th>
 			<th><?php echo $this->Paginator->sort('middlename');?></th>
-			<th><?php echo $this->Paginator->sort('address1');?></th>
-			<th><?php echo $this->Paginator->sort('address2');?></th>
-			<th><?php echo $this->Paginator->sort('address3');?></th>
-			<th><?php echo $this->Paginator->sort('city');?></th>
-			<th><?php echo $this->Paginator->sort('postalcode');?></th>
-			<th><?php echo $this->Paginator->sort('phone');?></th>
 			<th><?php echo $this->Paginator->sort('status');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
 			<th><?php echo $this->Paginator->sort('modified');?></th>
@@ -29,17 +23,11 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php echo $user['User']['id']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['password']; ?>&nbsp;</td>
+
 		<td><?php echo $user['User']['email']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['firstname']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['lastname']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['middlename']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['address1']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['address2']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['address3']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['city']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['postalcode']; ?>&nbsp;</td>
-		<td><?php echo $user['User']['phone']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['status']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['created']; ?>&nbsp;</td>
 		<td><?php echo $user['User']['modified']; ?>&nbsp;</td>
@@ -64,10 +52,4 @@
  |
 		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
 	</div>
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('User', true)), array('action' => 'add')); ?></li>
-	</ul>
 </div>
