@@ -10,6 +10,8 @@
 
 <div id="wrap">
 	<?php echo $content_for_layout; ?>
+	
+	
 </div>
 </body>
 </html>
