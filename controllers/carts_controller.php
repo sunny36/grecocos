@@ -1,6 +1,6 @@
 <?php
 class CartsController extends AppController{
-  var $uses = array('Product', 'Order');
+  var $uses = array('Product', 'Order', 'LineItem');
   
   
   function index(){
@@ -89,8 +89,22 @@ class CartsController extends AppController{
 	}
 	
 	function confirm() {
-		$order = array('Order' => array('status' => 'unpaid', 'ordered_date' => date('Y-m-d H:i:s')));
+		$order = array('Order' => array('status' => 'unpaid', 'ordered_date' => date('Y-m-d H:i:s'), 'complete' => false));
+		$this->Order->create();
 		$this->Order->save($order);
-		debug($order);
+		$order_id = $this->Order->id;
+		
+		//debug($this->Order->id);
+		$cart = $this->Session->read('cart');			
+		foreach($cart as $cartItem){
+			//debug($cartItem);
+			$lineItems['Order'][] = array('product_id' => $cartItem['id'], 
+																		'order_id' => $order_id, 
+																		'quantity' => $cartItem['quantity'],
+																		'total_price' =>  $cartItem['subtotal']);
+		}
+		$this->LineItem->saveAll($lineItems['Order']);
+		// debug($lineItems);
+		// debug($this->Session->read('cart'));
 	}
 }
