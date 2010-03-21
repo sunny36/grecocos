@@ -1,6 +1,6 @@
 <?php
 class CartsController extends AppController{
-  var $uses = array('Product');
+  var $uses = array('Product', 'Order');
   
   
   function index(){
@@ -86,5 +86,11 @@ class CartsController extends AppController{
 	  $this->Session->delete('cart');
 		$this->Session->delete('cart_total');
 		$this->redirect(array('controller' => 'carts', 'action' => 'index'));
+	}
+	
+	function confirm() {
+		$order = array('Order' => array('status' => 'unpaid', 'ordered_date' => date('Y-m-d H:i:s')));
+		$this->Order->save($order);
+		debug($order);
 	}
 }
