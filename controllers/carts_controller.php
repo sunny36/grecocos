@@ -169,20 +169,22 @@ class CartsController extends AppController{
 		
 		$pdf->MultiCell(0, 15, $message);
 
+		$fileName = $orderId . '_' . 'invoice.pdf';
+		$pdf->Output($fileName, 'F');
 		
-		$pdf->Output('invoice.pdf', 'F');
-		
-		$this->sendEmail('invoice.pdf', $orderId);
+		$this->sendEmail($fileName, $orderId);
 		
 		$this->Session->delete('cart');
 		$this->Session->delete('cart_total');
 	
-		
+		$this->Session->write('filename', $fileName); 
 		$this->redirect(array('controller' => 'carts', 'action' => 'checkout'));
 	}
 	
 	function checkout(){
 		$this->layout = 'cart';
+		$this->set('filename', $this->Session->read('filename'));
+		$this->Session->delete('filename');
 	}
 	
  
