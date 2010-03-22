@@ -4,21 +4,7 @@ class User extends AppModel {
 	var $displayField = 'username';
 	
 	var $validate = array(
-	  
-  	  // 'username' => array(
-  	  //   'notempty' => array(
-  	  //     'rule' => array('minLength', 1),
-  	  //     	    'require' => true,
-  	  //     	    'allowEmpty' => false,
-  	  //     	    'message' => 'Please enter a user name'
-  	  //     ),
-  	  // 	      'unique' => array(
-  	  // 	        'rule' => array('checkUnique', 'username'),
-  	  // 	        'message' => 'User name not available'
-  	  // 	        )
-  	  //   ),
-  	    
-	    
+			  
       'password' => array(
         'notempty' => array('rule' => array('minLength', 1),
                             'require' => true, 
