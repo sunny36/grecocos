@@ -5,18 +5,18 @@ class User extends AppModel {
 	
 	var $validate = array(
 	  
-  	  'username' => array(
-  	    'notempty' => array(
-  	      'rule' => array('minLength', 1),
-    	    'require' => true,
-    	    'allowEmpty' => false,
-    	    'message' => 'Please enter a user name'
-  	      ),
-	      'unique' => array(
-	        'rule' => array('checkUnique', 'username'),
-	        'message' => 'User name not available'
-	        )
-  	    ),
+  	  // 'username' => array(
+  	  //   'notempty' => array(
+  	  //     'rule' => array('minLength', 1),
+  	  //     	    'require' => true,
+  	  //     	    'allowEmpty' => false,
+  	  //     	    'message' => 'Please enter a user name'
+  	  //     ),
+  	  // 	      'unique' => array(
+  	  // 	        'rule' => array('checkUnique', 'username'),
+  	  // 	        'message' => 'User name not available'
+  	  // 	        )
+  	  //   ),
   	    
 	    
       'password' => array(
@@ -32,10 +32,16 @@ class User extends AppModel {
         ),
       
 	    'email' => array(
-	      'rule' => 'email',
-  	    'require' => true,
-  	    'allowEmpty' => false,
-	      'message' => 'Please enter a valid email'
+				'validemail' =>array(
+	      	'rule' => 'email',
+  	    	'require' => true,
+  	    	'allowEmpty' => false,
+	      	'message' => 'Please enter a valid email'
+					),
+					'unique' => array(
+						'rule' => array('checkUnique', 'email'),
+						'message' => 'This email has already been taken, please choose a different email'
+						)
 	      ),
 
 	    'firstname' => array(

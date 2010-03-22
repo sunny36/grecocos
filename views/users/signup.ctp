@@ -1,13 +1,11 @@
 <h2>User Registration</h2>
 
-<?php if($form->isFieldError('User.username')) 
-        e($form->error ('User.username', null, array('class' => 'message'))); 
-?>
-<?php if($form->isFieldError('User.password')) 
-        e($form->error ('User.password', null, array('class' => 'message'))); 
-?>
 <?php if($form->isFieldError('User.email')) 
         e($form->error ('User.email', null, array('class' => 'message'))); 
+?>
+
+<?php if($form->isFieldError('User.password')) 
+        e($form->error ('User.password', null, array('class' => 'message'))); 
 ?>
 
 <?php if($form->isFieldError('User.firstname')) 
@@ -29,11 +27,6 @@
 
 <?php e($form->create('User', array('action' => 'signup')));?>
 <fieldset>
-  <label for="UserUsername" class="usernamelabel">
-    <span>Username </span>
-  </label>
-  <?php e($form->text('username', array('class' => 'fullwidth'))); ?>
-  
   <label for="UserEmail" class="emaillabel">
     <span>Email </span>
   </label>
