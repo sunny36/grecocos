@@ -23,6 +23,29 @@ class UsersController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
+			if($this->data['User']['status'] == 'accepted'){
+
+					$this->Email->to = $this->data['User']['email']; 
+					$this->Email->subject = 'GRECOCOS: Accepted'; 
+					$this->Email->replyTo = 'admin@grecocos.co.cc'; 
+					$this->Email->from = 'Somchok Sakjiraphong <somchok.sakjiraphong@ait.ac.th>'; 
+					$this->Email->sendAs = 'html';
+					$this->Email->template = 'accepted';
+					$this->set('firstname', $this->data['User']['firstname']); 
+						   /* SMTP Options */
+						   $this->Email->smtpOptions = array(
+						        'port'=>'25', 
+						        'timeout'=>'30',
+						        'host' => 'smtp.ait.ac.th',
+						        'username'=>'st108660',
+						        'password'=>'m2037compaq'
+						   );
+						    /* Set delivery method */
+						    $this->Email->delivery = 'smtp';
+								$this->Email->send();					
+				
+			}
+			
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
 				$this->redirect(array('action' => 'index'));
@@ -59,11 +82,13 @@ class UsersController extends AppController {
 
 
 	function edit($id = null) {
+		debug($this->data);
+		die();
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
 			$this->redirect(array('action' => 'index'));
 		}
-		if (!empty($this->data)) {
+		if (!empty($this->data)) {			
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
 				$this->redirect(array('action' => 'index'));
@@ -92,7 +117,7 @@ class UsersController extends AppController {
 	function signup(){
 	  if(!empty($this->data)) {
 	    //status: 000 means self registered but not accepted
-	    $this->data['User']['status'] = '000';
+	    $this->data['User']['status'] = 'registered';
 	    if(isset($this->data['User']['password2'])){
 	      $this->data['User']['password2hashed'] =
 	        $this->Auth->password($this->data['User']['password2']);
@@ -138,9 +163,9 @@ class UsersController extends AppController {
 	}
 	
 	function logout() { 
-
  	  $this->Session->setFlash('You have logged out!!');
 	  $this->redirect($this->Auth->logout());
   }
+
 }
 ?>

@@ -39,7 +39,7 @@ class AppController extends Controller {
     $this->Auth->fields = array('username' => 'email', 'password' => 'password');
 
 		if($this->action == 'login' && !empty($this->data['User']['email'])) {
-			$conditions = array('email' => $this->data['User']['email'], 'status' => '000');
+			$conditions = array('email' => $this->data['User']['email'], 'status' => 'registered');
 			if ($this->User->find('count', array('conditions' => $conditions))) {
 				$this->Session->setFlash("You cannot login yet. Your account needs to be confirmed by the co-ordinator", 
 																 'default', 

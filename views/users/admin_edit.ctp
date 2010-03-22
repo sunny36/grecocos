@@ -14,7 +14,30 @@
 		echo $this->Form->input('city');
 		echo $this->Form->input('postalcode');
 		echo $this->Form->input('phone');
-		echo $this->Form->input('status');
+		//echo $this->Form->input('status');
+
+
+		// $options=array('accepted' => 'Accepted', 'registered' => 'Registered', 'deleted' => 'Deleted');
+    // $current = array($this->Form->value('User.status') => ucwords($this->Form->value('User.status')));
+		
+    // foreach($options as $option){
+    //   if ($option != $current[$this->Form->value('User.status')]) {
+    //     $
+    //   }
+    // }
+    $options=array($this->Form->value('User.status') => ucwords($this->Form->value('User.status')));
+    if ($options[$this->Form->value('User.status')] != 'Accepted') {
+      $options['accepted'] = 'Accepted';
+    }
+    
+    if ($options[$this->Form->value('User.status')] != 'Deleted') {
+      $options['deleted'] = 'Deleted';
+    }
+    if ($options[$this->Form->value('User.status')] != 'Registered') {
+      $options['registered'] = 'Registered';
+    }
+    echo $form->label('status');
+		echo $this->Form->select('status', $options); 
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
