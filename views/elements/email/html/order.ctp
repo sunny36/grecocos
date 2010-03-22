@@ -1,0 +1,1 @@
+<p>A new order has been made. Please find the invoice of the order attached.</p>

@@ -1,7 +1,8 @@
 <?php
 class CartsController extends AppController{
   var $uses = array('Product', 'Order', 'LineItem');
-  
+ 	var $components = array('Email');
+
 	function beforeFilter(){
 		parent::beforeFilter();
 	}
@@ -92,6 +93,10 @@ class CartsController extends AppController{
 	}
 	
 	function confirm() {
+		if(!$this->Session->check('cart')){
+			$this->Session->setFlash('Your cart is currently empty.!!');
+			$this->redirect(array('controller' => 'carts', 'action' => 'index'));
+		}
 		$cart = $this->Session->read('cart');
 		foreach ($cart as $cartItem) {
 			$conditions['id'][] = $cartItem['id'];
@@ -110,7 +115,6 @@ class CartsController extends AppController{
 		$this->Order->save($order);
 		$orderId = $this->Order->id;
 		
-		//debug($this->Order->id);
 		$cart = $this->Session->read('cart');			
 		foreach($cart as $cartItem){
 			$lineItems['Order'][] = array('product_id' => $cartItem['id'], 
@@ -129,6 +133,7 @@ class CartsController extends AppController{
 		$pdf->Cell(100, 13, "Order ID");
 		$pdf->SetFont('Arial', '');
 		
+		$orderId = str_pad($orderId, 6, '0', STR_PAD_LEFT);
 		$pdf->Cell(200, 13, $orderId);
 		
 		$pdf->Ln(100);
@@ -160,23 +165,46 @@ class CartsController extends AppController{
 		
 		$pdf->Ln(50);
 		
-		$message = "Thank you for ordering. We will notify you by email when your product has arrived";
+		$message = "Please pay cash to the co-ordinator.";
 		
 		$pdf->MultiCell(0, 15, $message);
 
-		$pdf->SetFont('Arial', 'U', 12);
-		$pdf->SetTextColor(1, 162, 232);
 		
-		$pdf->Write(13, "store@example.com", "mailto:example@example.com");
+		$pdf->Output('invoice.pdf', 'F');
 		
-		$pdf->Output('reciept.pdf', 'F');
-
+		$this->sendEmail('invoice.pdf', $orderId);
 		
-		// debug($lineItems);
-		// debug($this->Session->read('cart'));
+		$this->Session->delete('cart');
+		$this->Session->delete('cart_total');
+	
+		
+		$this->redirect(array('controller' => 'carts', 'action' => 'checkout'));
 	}
 	
-	function pdf(){
-		$this->layout = 'pdf';
+	function checkout(){
+		$this->layout = 'cart';
 	}
+	
+ 
+	function sendEmail($filename, $orderID){
+			$this->Email->to = 'coordinator@grecocos.co.cc'; 
+			$this->Email->subject = 'Order ID:' . ' ' . $orderID; 
+			$this->Email->replyTo = 'admin@grecocos.co.cc'; 
+			$this->Email->from = 'Somchok Sakjiraphong <somchok.sakjiraphong@ait.ac.th>'; 
+			$this->Email->sendAs = 'html';
+			$this->Email->template = 'order';
+			$this->Email->attachments = array($filename);
+	   /* SMTP Options */
+	   $this->Email->smtpOptions = array(
+	        'port'=>'25', 
+	        'timeout'=>'30',
+	        'host' => 'smtp.ait.ac.th',
+	        'username'=>'st108660',
+	        'password'=>'m2037compaq'
+	   );
+	    /* Set delivery method */
+	    $this->Email->delivery = 'smtp';
+			$this->Email->send();		
+	}
+	
 }

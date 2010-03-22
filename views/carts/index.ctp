@@ -27,7 +27,7 @@
 		echo 'You don\'t have any items yet.';
 	else:
 	?>
-		<?php e($form->create(null, array('controller' => 'cart', 'action' => 'update'))); ?>
+		<?php e($form->create(null, array('controller' => 'carts', 'action' => 'update'))); ?>
 		<table width="100%" cellpadding="0" cellspacing="0">
 			<thead>
 				<tr>
@@ -46,8 +46,8 @@
             <?php e($form->text('.'. $j .'.quantity', array('value' => $item['quantity'], 'maxlength' => '3', 'size' => '5')))?>
           </td>
           <td><?php echo $item['name']; ?></td>
-          <td><?php echo $item['price']; ?></td>
-          <td><?php echo $item['subtotal'] ?></td>
+          <td>&#3647 <?php echo $item['price']; ?></td>
+          <td>&#3647 <?php echo $item['subtotal'] ?></td>
         </tr>
         <?php $i++; $j++?>
         <?php endforeach; ?>
@@ -55,7 +55,7 @@
     			<td</td>
      		 	<td></td>
      		 	<td><strong>Total</strong></td>
-     		 	<td>&euro;<?php echo $this->Session->read('cart_total') ; ?></td>
+     		 	<td>&#3647; <?php echo $this->Session->read('cart_total') ; ?></td>
     		</tr>
     		
 			</tbody>
@@ -65,13 +65,14 @@
 		  <?php e($html->link('Empty Cart', array('controller' => 'carts', 'action' => 'empty_cart'), 
 		                                    array('class' => 'empty')))?>
 		</p>
-    <p><small>If the quantity is set to zero, the item will be removed from the cart.</small></p>
-    
-
+    <p><small>If the quantity is set to zero, the item will be removed from the cart.</small></p>    
 		<?php 
 		e($form->end());
 		endif;
 		?>
+    <?php e($form->create(null, array('controller' => 'carts', 'action' => 'confirm'))); ?>
+      <?php e($form->submit('Checkout', array('div' => false))); ?>
+    <?php e($form->end())?>
 	</div>
 </div>
 </div>

@@ -3,6 +3,7 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Email');
+	
 	function admin_index() {
 		$this->User->recursive = 0;
 		$this->set('users', $this->paginate());
