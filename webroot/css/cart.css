@@ -4,12 +4,13 @@ body{
 }
 
 #wrap{
-	width: 1024px;
+	width: 1024;
 }
+
 
 ul.products{
 	list-style-type: none;
-	width: 525px;
+	width: 800px;
 	margin: 0;
 	padding: 0;
 }
@@ -22,6 +23,7 @@ ul.products{
 		text-align: center;
 		float: left;
 		margin-right: 10px;
+		margin-bottom: 10px;
 	}
 
 	ul.products h3{
@@ -53,7 +55,7 @@ div.cart_list{
 	border: 1px solid #d3d3d3;
 	padding: 5px;
 	float: left;	
-	width: 490px;
+	width: 800px;
 }
 
 	div.cart_list h3{

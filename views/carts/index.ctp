@@ -1,3 +1,4 @@
+<div id="wrap">
 <ul class="products">
 	<?php foreach($products as $p): ?>
 	  <li>
@@ -16,6 +17,7 @@
     </li>
 	  <?php endforeach;?>
 </ul>
+
 
 <div class="cart_list">
 	<h3>Your shopping cart</h3>
@@ -72,4 +74,4 @@
 		?>
 	</div>
 </div>
-
+</div>
