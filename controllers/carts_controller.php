@@ -110,7 +110,10 @@ class CartsController extends AppController{
 			}
 		}
 		$total = $this->Session->read('cart_total');
-		$order = array('Order' => array('status' => 'unpaid', 'ordered_date' => date('Y-m-d H:i:s'), 'complete' => false));
+		$order = array('Order' => array('status' => 'unpaid', 
+																		'ordered_date' => date('Y-m-d H:i:s'), 
+																		'complete' => false,
+																		'user_id' => $this->currentUser['User']['id']));
 		$this->Order->create();
 		$this->Order->save($order);
 		$orderId = $this->Order->id;
