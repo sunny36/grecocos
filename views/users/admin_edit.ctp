@@ -17,6 +17,7 @@
 	?>
 	<?php 
     $options=array($this->Form->value('User.status') => ucwords($this->Form->value('User.status')));
+    print_r($options);
     if ($options[$this->Form->value('User.status')] != 'Accepted') {
       $options['accepted'] = 'Accepted';
     }

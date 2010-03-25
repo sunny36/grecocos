@@ -45,6 +45,7 @@ class OrdersController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Order->read(null, $id);
+			$this->set('order', $this->Order->read(null, $id));
 		}
 		$users = $this->Order->User->find('list');
 		$this->set(compact('users'));

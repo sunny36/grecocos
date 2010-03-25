@@ -82,8 +82,6 @@ class UsersController extends AppController {
 
 
 	function edit($id = null) {
-		debug($this->data);
-		die();
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
 			$this->redirect(array('action' => 'index'));
