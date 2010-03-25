@@ -2,11 +2,19 @@
 <?php echo $this->Form->create('Order');?>
 	<fieldset>
  		<legend><?php printf(__('Edit %s', true), __('Order', true)); ?></legend>
+ 		<div class="input date">
+ 		  <?php 
+ 		  echo $this->Form->label('ordered_date');
+    	echo $this->Form->value('ordered_date');
+    	?>
+ 		</div>
 	<?php
+	
 		echo $this->Form->input('id');
-		echo $this->Form->input('ordered_date');
+
 		echo $this->Form->input('status');
 		echo $this->Form->input('complete');
+		echo $this->Form->input('user_id');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
@@ -17,6 +25,8 @@
 
 		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Order.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Order.id'))); ?></li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Orders', true)), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Users', true)), array('controller' => 'users', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('User', true)), array('controller' => 'users', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Line Items', true)), array('controller' => 'line_items', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Line Item', true)), array('controller' => 'line_items', 'action' => 'add')); ?> </li>
 	</ul>

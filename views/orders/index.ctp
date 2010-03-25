@@ -6,6 +6,7 @@
 			<th><?php echo $this->Paginator->sort('ordered_date');?></th>
 			<th><?php echo $this->Paginator->sort('status');?></th>
 			<th><?php echo $this->Paginator->sort('complete');?></th>
+			<th><?php echo $this->Paginator->sort('user_id');?></th>
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
 	<?php
@@ -21,6 +22,9 @@
 		<td><?php echo $order['Order']['ordered_date']; ?>&nbsp;</td>
 		<td><?php echo $order['Order']['status']; ?>&nbsp;</td>
 		<td><?php echo $order['Order']['complete']; ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($order['User']['id'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
+		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $order['Order']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $order['Order']['id'])); ?>
@@ -47,6 +51,8 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Order', true)), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Users', true)), array('controller' => 'users', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('User', true)), array('controller' => 'users', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Line Items', true)), array('controller' => 'line_items', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Line Item', true)), array('controller' => 'line_items', 'action' => 'add')); ?> </li>
 	</ul>
