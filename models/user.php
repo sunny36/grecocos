@@ -2,7 +2,11 @@
 class User extends AppModel {
 	var $name = 'User';
 	var $displayField = 'username';
+	var $hasMany = 'User';
 	
+	var $virtualFields = array(
+	    'name' => 'CONCAT(User.firstname, " ", User.lastname)'
+	);
 	
 	var $validate = array(
 			  
