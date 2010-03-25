@@ -14,6 +14,8 @@
 		echo $this->Form->input('city');
 		echo $this->Form->input('postalcode');
 		echo $this->Form->input('phone');
+	?>
+	<?php 
     $options=array($this->Form->value('User.status') => ucwords($this->Form->value('User.status')));
     if ($options[$this->Form->value('User.status')] != 'Accepted') {
       $options['accepted'] = 'Accepted';
@@ -25,9 +27,14 @@
     if ($options[$this->Form->value('User.status')] != 'Registered') {
       $options['registered'] = 'Registered';
     }
-    echo $form->label('status');
-		echo $this->Form->select('status', $options); 
-	?>
+  ?>  
+  <div class="input select">
+    <?php
+      echo $form->label('status');
+		  echo $this->Form->select('status', $options); 
+		?>
+	</div>
+
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
