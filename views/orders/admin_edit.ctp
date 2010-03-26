@@ -3,7 +3,7 @@
   <?php echo $this->Form->create('Order');?>
   <?php e($this->Form->hidden('id')); ?>
   <?php e($this->Form->hidden('ordered_date')); ?>
-  <?php e($this->Form->hidden('ordered_date')); ?>
+  <?php e($this->Form->hidden('complete')); ?>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
@@ -36,10 +36,15 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Completed'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-		  <div class="input checkbox">
-			<?php echo $this->Form->checkbox('complete') ?>
-      &nbsp;
-      </div>
+		<?php 
+		  if($order['Order']['complete'] == '0') {
+		    e("-");
+		  }
+		  else {
+		    e("No");
+		  }
+		?>
+		&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Customer'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
@@ -67,14 +72,24 @@
 			</tr>
 		</thead>
 		<?php $i = 0; $class = ' class="altrow"';?>
+		<?php $total = 0; ?>
 		<?php foreach($products as $product): ?>
 		  <tr>
 		    <td><?php e($product['LineItem']['quantity'])?></td>
-		    <td><?php e($product['Product']['name'])?></td>
-		    <td><?php e($product['Product']['price'])?></td>
-		    <td><?php e($product['LineItem']['total_price'])?></td>
+		    <td><?php e($product['Product']['short_description'])?></td>
+		    <td>&#3647; <?php e($product['Product']['selling_price'])?></td>
+		    <td>&#3647; <?php e($product['LineItem']['total_price'])?></td>
 		  </tr>
-		<?php endforeach ?>
+		  <?php $total += $product['LineItem']['total_price']; ?>
+		  <?php endforeach ?>
+		  <tr>
+  			<td></td>
+   		 	<td></td>
+   		 	<td><strong>Total</strong></td>
+   		 	<td>&#3647; <?php echo $total; ?></td>
+  		</tr>
+      
+		
   </table>
 </div>
 <div class="actions">

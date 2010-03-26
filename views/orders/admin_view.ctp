@@ -19,8 +19,8 @@
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Complete'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 		  <?php 
-		    if($order['Order']['complete'] == '1'){
-		      echo "Yes";
+		    if($order['Order']['complete'] == '0'){
+		      echo "-";
 		    }
 		    else{
 		      echo "No";
