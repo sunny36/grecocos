@@ -48,6 +48,20 @@ class User extends AppModel {
   	    'allowEmpty' => false,
 	      'message' => 'Please enter lastname name'
 	      ),	      
+	      
+	    'address1' => array(
+	      'rule' => array('minLength', 1),
+  	    'require' => true,
+  	    'allowEmpty' => false,
+	      'message' => 'Address1 cannot be empty'
+	      ),	      
+
+	    'address3' => array(
+	      'rule' => array('minLength', 1),
+  	    'require' => true,
+  	    'allowEmpty' => false,
+	      'message' => 'Address3 cannot be empty'
+	      ),	      
 
 	    'city' => array(
 	      'rule' => array('minLength', 1),
@@ -59,7 +73,15 @@ class User extends AppModel {
 	    'postalcode' => array(
 	      'rule' => '/[0-9]{5}/',
 	      'message' => 'Postal code must be 5 characters'
+	      ),	    
+	      
+	    'phone' => array(
+	      'rule' => array('minLength', 1),
+  	    'require' => true,
+  	    'allowEmpty' => false,
+	      'message' => 'Phone cannot be empty'
 	      ),	      
+	        
 	      
 	  );
 	  

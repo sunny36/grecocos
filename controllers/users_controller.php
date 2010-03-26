@@ -3,6 +3,7 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Email');
+	var $helpers = array('JsValidate.Validation');
 	
 	function admin_index() {
 		$this->User->recursive = 0;
@@ -151,7 +152,8 @@ class UsersController extends AppController {
 	    } else {
 	      $this->Session->setFlash(
 	        'There was an error signing up. Please try again.');
-	      $this->data = null; 
+	      $this->data['User']['password'] = null; 
+	      $this->data['User']['password2'] = null; 
 	    }
 	  }
 	}
