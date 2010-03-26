@@ -3,7 +3,6 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Email');
-	var $helpers = array('JsValidate.Validation');
 	
 	function admin_index() {
 		$this->User->recursive = 0;
