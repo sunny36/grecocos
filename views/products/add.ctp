@@ -1,16 +1,11 @@
 <div class="products form">
-<?php echo $this->Form->create('Product');?>
+<?php echo $this->Form->create('Product', array('type' => 'file'));?>
 	<fieldset>
  		<legend><?php printf(__('Add %s', true), __('Product', true)); ?></legend>
 	<?php
 		echo $this->Form->input('short_description');
 		echo $this->Form->input('selling_price');
-		echo $this->Form->input('image');
-		echo $this->Form->input('quantity');
-		echo $this->Form->input('stock');
-		echo $this->Form->input('display');
-		echo $this->Form->input('long_description');
-		echo $this->Form->input('buying_price');
+		echo $form->file('Attachment');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>

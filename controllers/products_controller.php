@@ -2,6 +2,7 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
+	var $components = array('Attachment');
 
 	function index() {
 		$this->Product->recursive = 0;
@@ -17,7 +18,10 @@ class ProductsController extends AppController {
 	}
 
 	function add() {
+	  
 		if (!empty($this->data)) {
+      $this->data['Product']['image'] = 
+        $this->Attachment->upload($this->data['Product']['Attachment']);
 			$this->Product->create();
 			if ($this->Product->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));

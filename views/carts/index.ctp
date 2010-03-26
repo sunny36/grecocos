@@ -3,7 +3,9 @@
 	<?php foreach($products as $p): ?>
 	  <li>
 	    <h3><?php echo $p['Product']['short_description']; ?></h3>
-	    <?php e($html->image($p['Product']['image'])); ?><br/>
+      <?php
+    e($html->image('/attachments/photos/small/'.$p['Product']['image'])); ?>
+      <br/>
 	    <medium>&#3647;<?php echo $p['Product']['selling_price']; ?></medium>
 	    
 	    <?php e($form->create(null, array('controller' => 'cart', 'action' => 'add')));?> 
