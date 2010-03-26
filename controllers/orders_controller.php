@@ -2,13 +2,14 @@
 class OrdersController extends AppController {
 
 	var $name = 'Orders';
+	var $uses = array('Order', 'Product', 'LineItem');
 
-	function index() {
+	function admin_index() {
 		$this->Order->recursive = 0;
 		$this->set('orders', $this->paginate());
 	}
 
-	function view($id = null) {
+	function admin_view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
 			$this->redirect(array('action' => 'index'));
@@ -16,7 +17,7 @@ class OrdersController extends AppController {
 		$this->set('order', $this->Order->read(null, $id));
 	}
 
-	function add() {
+	function admin_add() {
 		if (!empty($this->data)) {
 			$this->Order->create();
 			if ($this->Order->save($this->data)) {
@@ -30,7 +31,7 @@ class OrdersController extends AppController {
 		$this->set(compact('users'));
 	}
 
-	function edit($id = null) {
+	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
 			$this->redirect(array('action' => 'index'));
@@ -44,14 +45,19 @@ class OrdersController extends AppController {
 			}
 		}
 		if (empty($this->data)) {
+		  $query = "SELECT * FROM line_items LineItem, products Product " .
+		           "WHERE LineItem.order_id = ". $id . " " .
+		           "AND LineItem.product_id = Product.id;";
+		  $products = $this->Order->query($query);
 			$this->data = $this->Order->read(null, $id);
 			$this->set('order', $this->Order->read(null, $id));
+			$this->set('products', $products);
 		}
 		$users = $this->Order->User->find('list');
 		$this->set(compact('users'));
 	}
 
-	function delete($id = null) {
+	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'order'));
 			$this->redirect(array('action'=>'index'));

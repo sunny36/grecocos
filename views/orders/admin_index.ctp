@@ -6,7 +6,7 @@
 			<th><?php echo $this->Paginator->sort('ordered_date');?></th>
 			<th><?php echo $this->Paginator->sort('status');?></th>
 			<th><?php echo $this->Paginator->sort('complete');?></th>
-			<th><?php echo $this->Paginator->sort('user_id');?></th>
+			<th><?php echo $this->Paginator->sort('Customer');?></th>
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
 	<?php
@@ -20,10 +20,10 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $order['Order']['id']; ?>&nbsp;</td>
 		<td><?php echo $order['Order']['ordered_date']; ?>&nbsp;</td>
-		<td><?php echo $order['Order']['status']; ?>&nbsp;</td>
+		<td><?php echo ucwords($order['Order']['status']); ?>&nbsp;</td>
 		<td><?php echo $order['Order']['complete']; ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($order['User']['id'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
+			<?php echo $this->Html->link($order['User']['name'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
 		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $order['Order']['id'])); ?>
