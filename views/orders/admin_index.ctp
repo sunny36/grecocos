@@ -1,5 +1,19 @@
 <div class="orders index">
 	<h2><?php __('Orders');?></h2>
+	<?php 
+	  e($form->create(null, array('type' => 'get', 'action' => 'index'))); 
+	  e($form->label('order Id'));
+	  e($form->text('id'));
+	  e($form->end('Search'));
+	?>
+	<?php 
+	  e($form->create(null, array('type' => 'get', 'action' => 'index'))); 
+	  e($form->label('customer name'));
+	  e($form->text('user_name'));
+	  e($form->end('Search'));
+	?>
+	  
+
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>

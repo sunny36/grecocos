@@ -11,9 +11,13 @@ class OrdersController extends AppController {
         'conditions' => array('Order.id' => $this->params['url']['id'])
         );
 	  }
-	  if(!empty($this->params['url']['user_id'])){
+	  if(!empty($this->params['url']['user_name'])){
       $this->paginate = array(
-        'conditions' => array('Order.user_id' => $this->params['url']['user_id'])
+        'conditions' => array(
+          'OR' => array(
+          'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
+          'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
+          )
         );
 	  }	  
 		$this->Order->recursive = 0;
