@@ -112,7 +112,7 @@ class CartsController extends AppController{
 			}
 		}
 		$total = $this->Session->read('cart_total');
-		$order = array('Order' => array('status' => 'unpaid', 
+		$order = array('Order' => array('status' => 'entered', 
 																		'ordered_date' => date('Y-m-d H:i:s'), 
 																		'complete' => false,
 																		'user_id' => $this->currentUser['User']['id']));
