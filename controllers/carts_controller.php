@@ -27,9 +27,9 @@ class CartsController extends AppController{
 		$item = array('rowid' => md5($product['Product']['id']), 
 									'id' => $product['Product']['id'], 
 									'quantity' => $quantity,
-									'price' => $product['Product']['price'],
-									'name' => $product['Product']['name'],
-									'subtotal' => $quantity * $product['Product']['price']);
+									'price' => $product['Product']['selling_price'],
+									'name' => $product['Product']['short_description'],
+									'subtotal' => $quantity * $product['Product']['selling_price']);
 
 		if($this->Session->check('cart')) {
 			$cart = $this->Session->read('cart');			
@@ -101,11 +101,13 @@ class CartsController extends AppController{
 		foreach ($cart as $cartItem) {
 			$conditions['id'][] = $cartItem['id'];
 		}
-		$products = $this->Product->find('all', array('conditions' => $conditions, 'recursive' => 0));
+		$products = $this->Product->find('all',
+		                                 array('conditions' => $conditions, 
+		                                        'recursive' => 0));
 		foreach ($cart as $cartItem) {
 			foreach($products as $product){
 				if($cartItem['id'] == $product['Product']['id']){
-					$cartItem['name'] = $product['Product']['name'];
+					$cartItem['name'] = $product['Product']['short_description'];
 				}
 			}
 		}
