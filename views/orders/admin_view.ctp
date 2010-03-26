@@ -18,7 +18,14 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Complete'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $order['Order']['complete']; ?>
+		  <?php 
+		    if($order['Order']['complete'] == '1'){
+		      echo "Yes";
+		    }
+		    else{
+		      echo "No";
+		    }
+		  ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('User'); ?></dt>

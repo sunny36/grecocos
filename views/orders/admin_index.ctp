@@ -21,7 +21,18 @@
 		<td><?php echo $order['Order']['id']; ?>&nbsp;</td>
 		<td><?php echo $order['Order']['ordered_date']; ?>&nbsp;</td>
 		<td><?php echo ucwords($order['Order']['status']); ?>&nbsp;</td>
-		<td><?php echo $order['Order']['complete']; ?>&nbsp;</td>
+		<td>
+		  <?php 
+		    if($order['Order']['complete'] == '1'){
+		      echo "Yes";
+		    }
+		    else{
+		      echo "No";
+		    }
+		  ?>
+		  
+		  &nbsp;
+		</td>
 		<td>
 			<?php echo $this->Html->link($order['User']['name'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
 		</td>

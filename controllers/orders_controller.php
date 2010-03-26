@@ -5,6 +5,17 @@ class OrdersController extends AppController {
 	var $uses = array('Order', 'Product', 'LineItem');
 
 	function admin_index() {
+	  if(!empty($this->params['url']['id'])){
+	    $id = $this->params['url']['id'];
+      $this->paginate = array(
+        'conditions' => array('Order.id' => $this->params['url']['id'])
+        );
+	  }
+	  if(!empty($this->params['url']['user_id'])){
+      $this->paginate = array(
+        'conditions' => array('Order.user_id' => $this->params['url']['user_id'])
+        );
+	  }	  
 		$this->Order->recursive = 0;
 		$this->set('orders', $this->paginate());
 	}
