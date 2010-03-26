@@ -1,6 +1,6 @@
 <?php
 class CartsController extends AppController{
-  var $uses = array('Product', 'Order', 'LineItem');
+  var $uses = array('Product', 'Order', 'LineItem', 'Delivery');
  	var $components = array('Email');
 
 	function beforeFilter(){
@@ -133,6 +133,21 @@ class CartsController extends AppController{
 		$pdf = new PDF_reciept();
 		$pdf->AddPage();
 		$pdf->SetFont('Arial', 'B', 12);
+		
+		
+
+		$pdf->SetY(80);
+		
+		$pdf->Cell(80, 15, "Delivery Date");
+		$pdf->SetFont('Arial', '');
+		
+		$deliveryDate = $this->Delivery->find('first', array(
+		  'conditions' => array('Delivery.next_delivery' => 1)));
+		$pdf->Cell(200, 13, $deliveryDate['Delivery']['date']);
+		
+		$pdf->Ln(80);
+
+		
 		$pdf->SetY(100);
 		
 		$pdf->Cell(100, 13, "Order ID");
