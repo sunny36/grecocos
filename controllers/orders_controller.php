@@ -45,13 +45,11 @@ class OrdersController extends AppController {
 			}
 		}
 		if (empty($this->data)) {
-		  $query = "SELECT * FROM line_items LineItem, products Product " .
-		           "WHERE LineItem.order_id = ". $id . " " .
-		           "AND LineItem.product_id = Product.id;";
-		  $products = $this->Order->query($query);
+		  $products = $this->Order->getProducts($id);
+		  $this->set('products', $products);
 			$this->data = $this->Order->read(null, $id);
 			$this->set('order', $this->Order->read(null, $id));
-			$this->set('products', $products);
+
 		}
 		$users = $this->Order->User->find('list');
 		$this->set(compact('users'));
