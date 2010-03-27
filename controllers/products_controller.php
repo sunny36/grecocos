@@ -18,7 +18,6 @@ class ProductsController extends AppController {
 	}
 
 	function add() {
-	  
 		if (!empty($this->data)) {
       $this->data['Product']['image'] = 
         $this->Attachment->upload($this->data['Product']['Attachment']);
@@ -38,6 +37,11 @@ class ProductsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
+		  if(($this->Attachment->upload($this->data['Product']['Attachment']))) {
+		    $this->data['Product']['image'] = 
+          $this->Attachment->upload($this->data['Product']['Attachment']);
+		  }
+      
 			if ($this->Product->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
 				$this->redirect(array('action' => 'index'));
