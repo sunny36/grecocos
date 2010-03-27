@@ -12,6 +12,9 @@
 		echo $this->Form->input('display');
 		echo $this->Form->label('image');
 		echo $form->file('Attachment');
+		if($form->isFieldError('Product.image')) 
+      e($form->error ('Product.image', null, array('class' => 'message'))); 
+    
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
