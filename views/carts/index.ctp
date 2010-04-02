@@ -1,36 +1,9 @@
 <div id="wrap">
-<ul class="products">
-	<?php foreach($products as $p): ?>
-	  <li>
-	    <h3><?php echo $p['Product']['short_description']; ?></h3>
-      <?php
-    e($html->image('/attachments/photos/small/'.$p['Product']['image'])); ?>
-      <br/>
-	    <medium>&#3647;<?php echo $p['Product']['selling_price']; ?></medium>
-	    
-	    <?php e($form->create(null, array('controller' => 'cart', 'action' => 'add')));?> 
-	    <fieldset>
-				<label>Quantity</label>
-		    <?php e($form->text('quantity', array('value' => '0', 'maxlength' => '2'))); ?>
-				<?php e($form->hidden('id', array('value' => $p['Product']['id']))); ?>
-				<?php e($form->submit('Add', array('div' => false))); ?>
-			</fieldset>
-			<?php e($form->end()); ?>
-    </li>
-	  <?php endforeach;?>
-</ul>
-
-
 <div class="cart_list">
 	<h3>Your shopping cart</h3>
-	
 	<div id="cart_content">
-	<?php if(!$this->Session->check('cart')):
-		echo 'You don\'t have any items yet.';
-	else:
-	?>
 		<?php e($form->create(null, array('controller' => 'carts', 'action' => 'update'))); ?>
-		<table width="100%" cellpadding="0" cellspacing="0">
+		<table id="products" width="100%" cellpadding="0" cellspacing="0">
 			<thead>
 				<tr>
 					<td>Qty</td>
@@ -41,15 +14,17 @@
 			</thead>
 			<tbody>
         <?php $i = 1; $j = 1; ?>
-        <?php foreach($this->Session->read('cart') as $item): ?>
-        <?php e($form->hidden('.'. $j .'.rowid', array('value' => $item['rowid'])))?>
+        <?php foreach($products as $item): ?>
+        
         <tr <?php if($i&1){ echo 'class="alt"'; }?>>
           <td>
-            <?php e($form->text('.'. $j .'.quantity', array('value' => $item['quantity'], 'maxlength' => '3', 'size' => '5')))?>
+            <?php e($form->hidden('.'. $j .'.id', array('value' => $item['Product']['id'])))?>
+            
+            <?php e($form->text('.'. $j .'.quantity', array('value' => "0", 'maxlength' => '3', 'size' => '5')))?>
           </td>
-          <td><?php echo $item['name']; ?></td>
-          <td>&#3647 <?php echo $item['price']; ?></td>
-          <td>&#3647 <?php echo $item['subtotal'] ?></td>
+          <td><?php echo $item['Product']['short_description']; ?></td>
+          <td>&#3647 <?php echo $item['Product']['selling_price']; ?></td>
+          <td>&#3647 <?php echo "0" ?></td>
         </tr>
         <?php $i++; $j++?>
         <?php endforeach; ?>
@@ -57,24 +32,29 @@
     			<td</td>
      		 	<td></td>
      		 	<td><strong>Total</strong></td>
-     		 	<td>&#3647; <?php echo $this->Session->read('cart_total') ; ?></td>
+     		 	<td>&#3647; 0</td>
     		</tr>
     		
 			</tbody>
 		</table>
 		<p>
-		  <?php e($form->submit('Update your cart', array('div' => false))); ?>
-		  <?php e($html->link('Empty Cart', array('controller' => 'carts', 'action' => 'empty_cart'), 
-		                                    array('class' => 'empty')))?>
+		  <?php e($html->link('Hide zero\'s quantity items', 
+		                      array('controller' => 'carts', 
+		                            'action' => 'empty_cart'), 
+		                      array('id' => 'toggle_zero', 'class' => 'empty')))?>
 		</p>
-    <p><small>If the quantity is set to zero, the item will be removed from the cart.</small></p>    
+		<p>
+		  <?php e($form->submit('Checkout', 
+		                        array('div' => false, 'id' => "update"))); ?>
+		  <?php e($html->link('Reset', 
+		                      array('controller' => 'carts', 
+		                            'action' => 'empty_cart'), 
+		                      array('id' => 'empty_cart', 'class' => 'empty')))?>
+		                      
+		</p>
 		<?php 
 		e($form->end());
-		endif;
 		?>
-    <?php e($form->create(null, array('controller' => 'carts', 'action' => 'confirm'))); ?>
-      <?php e($form->submit('Checkout', array('div' => false))); ?>
-    <?php e($form->end())?>
 	</div>
 </div>
 </div>
