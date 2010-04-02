@@ -3,6 +3,7 @@ class OrdersController extends AppController {
 
 	var $name = 'Orders';
 	var $uses = array('Order', 'Product', 'LineItem');
+	var $helpers = array('Html', 'Form', 'Javascript');
 
 	function admin_index() {
 	  if(!empty($this->params['url']['id'])){
@@ -81,6 +82,22 @@ class OrdersController extends AppController {
 		}
 		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Order'));
 		$this->redirect(array('action' => 'index'));
+	}
+	
+	function admin_changeStatus(){
+    Configure::write('debug', 0);
+    $this->autoRender = false;
+
+    if($this->RequestHandler->isAjax()) {
+      $this->log($this->params, 'activity');
+      $order =  $this->Order->find('first', 
+                                   array('conditions' => array(
+                                     'Order.id' => $this->params['form']['id']), 
+                                  'recursive' => -1));
+      $order['Order']['status'] = $this->params['form']['status'];
+      $this->Order->save($order);
+      $this->log($order, 'activity');
+    }
 	}
 }
 ?>
