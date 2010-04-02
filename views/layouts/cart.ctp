@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>GRECOCOS Shopping Cart</title>
 <?php echo $this->Html->css('cart.css'); ?>
-
+<?php echo $javascript->link('jquery-1.4.2.min.js'); ?>
+<?php echo $javascript->link('application.js'); ?>
 </head>
 <body>
   <?php echo $this->Session->flash(); ?>
