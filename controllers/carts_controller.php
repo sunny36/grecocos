@@ -2,6 +2,7 @@
 class CartsController extends AppController{
   var $uses = array('Product', 'Order', 'LineItem', 'Delivery');
  	var $components = array('Email');
+  var $helpers = array('Html', 'Form', 'Javascript');
 
 	function beforeFilter(){
 		parent::beforeFilter();
@@ -60,30 +61,26 @@ class CartsController extends AppController{
 	}
 	
 	function update() {
-		$cart = $this->Session->read('cart');
 		for($i = 1; $i <= count($this->data); $i++){
-			$item = $this->Session->read('cart.'. $this->data[$i]['rowid']);
-			if($this->data[$i]['quantity'] == 0) {
-				$rowid = $this->data[$i]['rowid'];
-				unset($cart[$rowid]);
-			} 
-			else {
-				$item['quantity'] = $this->data[$i]['quantity'];
-				$item['subtotal'] = $this->data[$i]['quantity'] * $item['price'];
-				$cart[$this->data[$i]['rowid']] = $item;
-			}
-			$this->Session->write('cart', $cart);
+      if($this->data[$i]['quantity'] > 0) {
+        $product = $this->Product->find('first' , array(
+        	'conditions' => array('Product.id' => $this->data[$i]['id'])
+        ));
+        $item = array('rowid' => md5($product['Product']['id']),
+                      'id' => $product['Product']['id'], 
+    									'quantity' => $this->data[$i]['quantity'],
+    									'price' => $product['Product']['selling_price'],
+    									'name' => $product['Product']['short_description'],
+    									'subtotal' => $this->data[$i]['quantity'] * 
+    									              $product['Product']['selling_price']);
+    	$cart[$item['rowid']] = $item;
+      }
 		}
-		
-		if(count($this->Session->read('cart')) == 0){
-			$this->Session->delete('cart_total');
-			$this->Session->delete('cart');
-		}
-		else {
-			$this->Session->write('cart_total', $this->getCartTotalPrice());
-		}
-		
-		$this->redirect(array('controller' => 'carts', 'action' => 'index'));
+		if($cart){
+		  $this->Session->write('cart', $cart);
+		  $this->Session->write('cart_total', $this->getCartTotalPrice());
+		}		
+    $this->redirect(array('controller' => 'carts', 'action' => 'confirm'));
 	}
 	
 	function empty_cart() {
