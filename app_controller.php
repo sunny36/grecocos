@@ -1,6 +1,6 @@
 <?php
 class AppController extends Controller {
-  var $components = array('Auth', 'Session');
+  var $components = array('Auth', 'Session', 'RequestHandler');
 
   function beforeFilter(){
     $this->Auth->fields = array('username' => 'email', 
