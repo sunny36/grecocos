@@ -114,7 +114,8 @@ class CartsController extends AppController{
 		$order = array('Order' => array('status' => 'entered', 
 																		'ordered_date' => date('Y-m-d H:i:s'), 
 																		'complete' => false,
-																		'user_id' => $this->currentUser['User']['id']));
+																		'user_id' => $this->currentUser['User']['id'],
+																		'total' => $total));
 		$this->Order->create();
 		$this->Order->save($order);
 		$orderId = $this->Order->id;
