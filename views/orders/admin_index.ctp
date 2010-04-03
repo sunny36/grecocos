@@ -87,7 +87,7 @@
 		</td>
 		
 		<td class="actions">
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $order['Order']['id'])); ?>
+			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $order['Order']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
