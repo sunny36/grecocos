@@ -1,20 +1,23 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('orders.js', false); ?>
-
 <div class="orders index">
 	<h2><?php __('Orders');?></h2>
+	
+	  <?php 
+	    e($form->create(null, array('type' => 'get', 'action' => 'index'))); 
+	  ?>
+	  <?php e($form->label('orderId')); ?> &nbsp;
+	  <?php e($form->text('id', array('style' => 'width: 10%'))); ?>
+	  
+	  <?php e($form->submit('Search', array('div' => false))); ?> &nbsp;
 	<?php 
 	  e($form->create(null, array('type' => 'get', 'action' => 'index'))); 
-	  e($form->label('order Id'));
-	  e($form->text('id'));
-	  e($form->end('Search'));
 	?>
-	<?php 
-	  e($form->create(null, array('type' => 'get', 'action' => 'index'))); 
-	  e($form->label('customer name'));
-	  e($form->text('user_name'));
-	  e($form->end('Search'));
-	?>	  
+	<?php e($form->label('customer name')); ?> &nbsp; 
+	<?php e($form->text('user_name', array('style' => 'width: 30%'))); ?> &nbsp;
+	<?php e($form->submit('Search', array('div' => false))); ?> &nbsp;
+	<br/>  
+	
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
