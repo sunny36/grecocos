@@ -30,6 +30,9 @@ class OrdersController extends AppController {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
 			$this->redirect(array('action' => 'index'));
 		}
+		$products = $this->Order->getProducts($id);
+	  $this->set('products', $products);
+	  
 		$this->set('order', $this->Order->read(null, $id));
 	}
 
