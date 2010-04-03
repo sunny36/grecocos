@@ -87,17 +87,30 @@ class OrdersController extends AppController {
 	function admin_changeStatus(){
     Configure::write('debug', 0);
     $this->autoRender = false;
-
     if($this->RequestHandler->isAjax()) {
-      $this->log($this->params, 'activity');
+      // $this->log($this->params, 'activity');
       $order =  $this->Order->find('first', 
                                    array('conditions' => array(
                                      'Order.id' => $this->params['form']['id']), 
                                   'recursive' => -1));
       $order['Order']['status'] = $this->params['form']['status'];
       $this->Order->save($order);
-      $this->log($order, 'activity');
+      // $this->log($order, 'activity');
     }
+	}
+	
+	function admin_getstatus(){
+    Configure::write('debug', 0);
+    // $this->autoRender = false;
+    if($this->RequestHandler->isAjax()) {
+      $this->log($this->params, 'activity');
+      $order =  $this->Order->find('first', 
+                                   array('conditions' => array(
+                                     'Order.id' => $this->params['url']['id']), 
+                                  'recursive' => -1));
+      $this->set('status', $order['Order']['status']);
+      $this->log($order, 'activity');
+    } 
 	}
 }
 ?>
