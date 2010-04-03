@@ -1,3 +1,6 @@
+<?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
+<?php echo $javascript->link('orders.js', false); ?>
+
 <div class="orders index">
 	<h2><?php __('Orders');?></h2>
 	<?php 
@@ -11,16 +14,15 @@
 	  e($form->label('customer name'));
 	  e($form->text('user_name'));
 	  e($form->end('Search'));
-	?>
-	  
-
+	?>	  
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('ordered_date');?></th>
-			<th><?php echo $this->Paginator->sort('status');?></th>
-			<th><?php echo $this->Paginator->sort('complete');?></th>
 			<th><?php echo $this->Paginator->sort('Customer');?></th>
+			<th><?php echo $this->Paginator->sort('Total Amount');?></th>
+			<th><?php echo $this->Paginator->sort('paid');?></th>
+			<th><?php echo $this->Paginator->sort('delivered');?></th>
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
 	<?php
@@ -34,22 +36,56 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $order['Order']['id']; ?>&nbsp;</td>
 		<td><?php echo $order['Order']['ordered_date']; ?>&nbsp;</td>
-		<td><?php echo ucwords($order['Order']['status']); ?>&nbsp;</td>
 		<td>
-		  <?php 
-		    if($order['Order']['complete'] == '0'){
-		      echo "-";
+			<?php echo $this->Html->link($order['User']['name'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
+		</td>
+		<td><?php echo $order['Order']['total']?></td>
+		<td>
+		  <?php echo $form->create('UpdateStatus'); ?>
+		  <?php echo $form->hidden('id', array('value' => $order['Order']['id']))?>
+		  <?php
+		    if($order['Order']['status'] == "entered"){
+		      echo $form->checkbox('status', 
+		                           array('value' => "1", 'class' => 'paid'));
 		    }
-		    else{
-		      echo "No";
+		    if($order['Order']['status'] == "paid"){
+		      echo $form->checkbox('status', 
+		                           array('value' => "1", 
+		                                 'checked' => true,
+		                                 'class' => 'paid'));
 		    }
+		    if($order['Order']['status'] == "delivered"){
+		      echo $form->checkbox('status', 
+		                           array('value' => "1", 
+		                                 'checked' => true,
+		                                 'class' => 'paid'));
+		    }
+		    
 		  ?>
+		  <?php echo $form->end(); ?>
 		  
 		  &nbsp;
 		</td>
 		<td>
-			<?php echo $this->Html->link($order['User']['name'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
+		  <?php echo $form->create('UpdateStatus'); ?>
+		  <?php echo $form->hidden('id', array('value' => $order['Order']['id']))?>
+		  <?php
+		    if($order['Order']['status'] == "delivered"){
+		      echo $form->checkbox('status', 
+		                           array('value' => "1", 
+		                                 'checked' => true,
+		                                 'class' => 'delivered'));
+		    }
+		    else {
+		      echo $form->checkbox('status', 
+		                           array('value' => "1", 'class' => 'delivered'));
+		    }
+		  ?>
+		  <?php echo $form->end(); ?>
+		  
+		  &nbsp;
 		</td>
+		
 		<td class="actions">
 			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $order['Order']['id'])); ?>
 		</td>
