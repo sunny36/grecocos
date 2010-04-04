@@ -16,8 +16,8 @@ class AppController extends Controller {
       }
     }
     
-    $this->Auth->loginRedirect = array('controller' => 'carts',
-                                       'action' => 'index');
+    // $this->Auth->loginRedirect = array('controller' => 'carts',
+    //                                    'action' => 'index');
     $this->Auth->logoutRedirect = array('controller' => 'users',
                                        'action' => 'login');
     $this->Auth->allow('signup');
