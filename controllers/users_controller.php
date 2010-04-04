@@ -158,6 +158,13 @@ class UsersController extends AppController {
 	}
 	
 	function login(){
+	  if( $this->Auth->user( ) )
+        {
+            $this->redirect( array(
+                    'controller'    =>      'carts' ,
+                    'action'        =>      'index' ,
+            ));
+        }
 	  
 	}
 	
