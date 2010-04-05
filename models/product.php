@@ -3,7 +3,8 @@ class Product extends AppModel {
 	var $name = 'Product';
 	var $displayField = 'short_description';
 	var $hasMany = 'LineItem';
-	
+  var $belongsTo = 'Category';
+  
 	var $validate = array(
 	  'short_description' => array(
 	    'rule' => 'notEmpty',
