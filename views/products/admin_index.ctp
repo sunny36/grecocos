@@ -4,14 +4,12 @@
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('short_description');?></th>
-			<th><?php echo $this->Paginator->sort('long_description');?></th>
-			<th><?php echo $this->Paginator->sort('buying_price');?></th>
 			<th><?php echo $this->Paginator->sort('selling_price');?></th>
+			<th><?php echo $this->Paginator->sort('buying_price');?></th>
 			<th><?php echo $this->Paginator->sort('quantity');?></th>
 			<th><?php echo $this->Paginator->sort('stock');?></th>
-			<th><?php echo $this->Paginator->sort('image');?></th>
 			<th><?php echo $this->Paginator->sort('display');?></th>
-			<th><?php echo $this->Paginator->sort('active');?></th>
+			
 			<th class="actions"><?php __('Actions');?></th>
 	</tr>
 	<?php
@@ -25,14 +23,14 @@
 	<tr<?php echo $class;?>>
 		<td><?php echo $product['Product']['id']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['short_description']; ?>&nbsp;</td>
-		<td><?php echo $product['Product']['long_description']; ?>&nbsp;</td>
-		<td><?php echo $product['Product']['buying_price']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['selling_price']; ?>&nbsp;</td>
+		<td><?php echo $product['Product']['buying_price']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['quantity']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['stock']; ?>&nbsp;</td>
-		<td><?php echo $product['Product']['image']; ?>&nbsp;</td>
-		<td><?php echo $product['Product']['display']; ?>&nbsp;</td>
-		<td><?php echo $product['Product']['active']; ?>&nbsp;</td>
+		<td>
+		  <?php if($product['Product']['display'] == '1') e('Yes'); else e('No'); ?>
+		  &nbsp;
+		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $product['Product']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $product['Product']['id'])); ?>

@@ -4,12 +4,6 @@ class ProductsController extends AppController {
 	var $name = 'Products';
 	var $components = array('Attachment');
 
-	function index() {
-		$this->Product->recursive = 0;
-		$this->set('products', $this->paginate());
-		
-	}
-
 	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
@@ -18,7 +12,21 @@ class ProductsController extends AppController {
 		$this->set('product', $this->Product->read(null, $id));
 	}
 
-	function add() {
+	function admin_index() {
+		$this->Product->recursive = 0;
+		$this->set('products', $this->paginate());
+		
+	}
+
+  function admin_view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->set('product', $this->Product->read(null, $id));
+	}
+	
+	function admin_add() {
 	  $this->set('categories', $this->Product->Category->find('list'));
 		if (!empty($this->data)) {
       $this->data['Product']['image'] = 
@@ -33,7 +41,7 @@ class ProductsController extends AppController {
 		}
 	}
 
-	function edit($id = null) {
+	function admin_edit($id = null) {
 	  $this->set('categories', $this->Product->Category->find('list'));
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
@@ -57,7 +65,7 @@ class ProductsController extends AppController {
 		}
 	}
 
-	function delete($id = null) {
+	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'product'));
 			$this->redirect(array('action'=>'index'));
