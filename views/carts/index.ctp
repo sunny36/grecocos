@@ -44,7 +44,7 @@
                                              'size' => '5')))?>
         		    </td>
         		    <td>
-        		      <a class="short_description" href="#">
+        		      <a class="short_description" href="javascript:void(0);">
         		        <?php echo $product['short_description']; ?>
         		      </a>
         		    </td>
