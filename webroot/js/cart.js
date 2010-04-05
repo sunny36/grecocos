@@ -1,4 +1,38 @@
 $(document).ready(function(){
+  $("button").button({
+    icons: {
+        primary: 'ui-icon-minusthick'
+    },
+    text: false
+  });
+  
+  $(".category").toggle(
+    
+    function(){
+      $categoryButton = $(this);
+      $('.' + $categoryButton.attr("id")).slideUp();
+      $categoryButton.button({
+        icons: {
+            primary: 'ui-icon-plusthick'
+        },
+        text: false        
+      });
+      return false;
+    },
+    
+    function(){
+      $categoryButton = $(this);
+      $('.' + $categoryButton.attr("id")).slideDown();
+      $categoryButton.button({
+        icons: {
+            primary: 'ui-icon-minusthick'
+        },
+        text: false        
+      });
+      return false;
+    }
+  );
+  
   $('input[type="text"]').blur(function(){
     //console.log($(this));
     var quantity = $(this).val();
