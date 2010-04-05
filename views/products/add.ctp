@@ -9,8 +9,11 @@
 		echo $this->Form->input('buying_price');
 		echo $this->Form->input('quantity');
 		echo $this->Form->input('stock');
+		echo $this->Form->input('category_id');
 		echo $this->Form->input('display');
+		
 		echo $this->Form->label('image');
+		
 		echo $form->file('Attachment');
 		if($form->isFieldError('Product.image')) 
       e($form->error ('Product.image', null, array('class' => 'message'))); 

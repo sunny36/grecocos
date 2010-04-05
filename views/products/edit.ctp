@@ -11,6 +11,7 @@
 		echo $this->Form->input('quantity');
 		echo $this->Form->input('stock');
 		echo $this->Form->input('display');
+		echo $this->Form->input('category_id');
 		echo $this->Form->label('current image');
 		e($html->image('/attachments/photos/small/' .               
 		  $this->Form->value('image')));

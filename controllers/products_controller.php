@@ -7,6 +7,7 @@ class ProductsController extends AppController {
 	function index() {
 		$this->Product->recursive = 0;
 		$this->set('products', $this->paginate());
+		
 	}
 
 	function view($id = null) {
@@ -18,6 +19,7 @@ class ProductsController extends AppController {
 	}
 
 	function add() {
+	  $this->set('categories', $this->Product->Category->find('list'));
 		if (!empty($this->data)) {
       $this->data['Product']['image'] = 
         $this->Attachment->upload($this->data['Product']['Attachment']);
@@ -32,6 +34,7 @@ class ProductsController extends AppController {
 	}
 
 	function edit($id = null) {
+	  $this->set('categories', $this->Product->Category->find('list'));
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
 			$this->redirect(array('action' => 'index'));
