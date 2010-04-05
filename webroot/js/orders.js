@@ -1,16 +1,19 @@
 $(document).ready(function(){
-  var msg;
+  var msg = "";
+  var ajaxImage = '<img src="/grecocos/img/ajax-loader.gif" '+
+                  'alt="Loading" id="ajax_loader"/>';
   $('.paid').click(function(){
-    var paidCheckbox = $(this);
+    var $paidCheckbox = $(this);
     var orderId = $(this).parent().children()[1].value;
-    if(paidCheckbox.is(':checked')) {
+    if($paidCheckbox.is(':checked')) {
       msg = "Are you sure you want to mark Order: " + orderId + " as paid.";
       if(!confirm(msg)) {
-        $(this).attr("checked", false);
+        $paidCheckbox.attr("checked", false);
         return; 
       }
       else {
-        changeStatus(orderId, "paid");
+        changeStatus($paidCheckbox, orderId, "paid");
+        return;
       }
     }
     //paid is uncheck
@@ -20,18 +23,18 @@ $(document).ready(function(){
         if(status == "paid"){
           msg = "Are you sure you want to mark Order: " + orderId + " as unpaid.";
           if(!confirm(msg)) {
-            paidCheckbox.attr("checked", true);
+            $paidCheckbox.attr("checked", true);
             return; 
           }
           else {
-            changeStatus(orderId, "entered");
+            changeStatus($paidCheckbox, orderId, "entered");
             return;
           }
         }
         else if(status == "delivered"){
           msg = "Order is already delivered, cannot be changed to unpaid";
           alert(msg);
-          paidCheckbox.attr("checked", true);
+          $paidCheckbox.attr("checked", true);
           return;
         }
       });  
@@ -52,7 +55,7 @@ $(document).ready(function(){
             return;
           }
           else {
-            changeStatus(orderId, "delivered");
+            changeStatus(deliveredCheckbox, orderId, "delivered");
             return
           }
         }
@@ -74,15 +77,21 @@ $(document).ready(function(){
         return;
       }
       else {
-        changeStatus(orderId, "paid");
+        changeStatus(deliveredCheckbox, orderId, "paid");
         return
       }
     }
   });
   
-  function changeStatus(orderId, orderStatus) {
+  function changeStatus($checkbox, orderId, orderStatus) {
+    $checkbox.hide();
+    $checkbox.after(ajaxImage);
     $.post('/grecocos/admin/orders/changeStatus', 
-           {id: orderId, status: orderStatus});
+           {id: orderId, status: orderStatus}, function() {
+             $('#ajax_loader').remove();
+             $checkbox.fadeIn();
+           });               
     return; 
   }    
+      
 });
