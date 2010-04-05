@@ -1,3 +1,7 @@
+<div id="box" style="border: solid; width: 400px;">
+	My content is copied into the facybox!
+</div>
+	
 <div id="wrap">
 <div class="cart_list">
 	<h3>Your shopping cart</h3>
@@ -39,7 +43,11 @@
                                              'maxlength' => '3', 
                                              'size' => '5')))?>
         		    </td>
-        		    <td><?php echo $product['short_description']; ?></td>
+        		    <td>
+        		      <a class="short_description" href="#">
+        		        <?php echo $product['short_description']; ?>
+        		      </a>
+        		    </td>
         		    <td>&#3647 <?php echo $product['selling_price']; ?></td>
         		    <td>&#3647 <?php echo "0" ?></td>
         		  </tr>
@@ -48,8 +56,13 @@
           </tbody>
         <?php $categoryNum++ ?>
         <?php endforeach; ?>
-    		
-			
+        <tr>
+    			<td</td>
+     		 	<td></td>
+     		 	<td><h3>Total</h3></td>
+     		 	<td><h3>&#3647; 0<h3></td>
+    		</tr>
+        
 		</table>
 		<p>
 		  <?php e($html->link('Hide zero\'s quantity items', 

@@ -8,6 +8,10 @@
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js'); ?>
 <?php echo $this->Html->css('jquery-ui/smoothness/jquery-ui-1.8.custom.css'); ?>
 <?php echo $javascript->link('cart.js'); ?>
+<?php echo $this->Html->css('facybox.css'); ?>
+<?php echo $this->Html->css('faceplant.css'); ?>
+<?php echo $javascript->link('facybox.js'); ?>
+
 <style type="text/css">
 	body{ margin: 20px;}
 </style>	
@@ -16,9 +20,6 @@
   <?php echo $this->Session->flash(); ?>
 
 	<?php echo $content_for_layout; ?>
-	
-	
-
 </body>
 </html>
 
