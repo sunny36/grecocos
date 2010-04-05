@@ -1,4 +1,14 @@
 $(document).ready(function(){
+  $('#box').hide();
+  $('a[rel*=facybox]').facybox();
+  
+  $('.short_description').click(function(){
+    $product = $(this);
+    productId = $product.parent().parent().children().first().children().first().attr("value");
+    //console.log(productId);
+    jQuery.facybox({ajax: '/grecocos/products/view/' + productId});
+  });
+  
   $("button").button({
     icons: {
         primary: 'ui-icon-minusthick'
@@ -50,6 +60,7 @@ $(document).ready(function(){
     children[3].innerHTML = "\u0E3F" + " " + subTotal;
     calculateTotal();
     
+    
   });
   
   $('#empty_cart').click(function(){
@@ -87,33 +98,19 @@ $(document).ready(function(){
       }
     }
   );
-  // $('#update').click(function(){
-  //   console.log("submit");
-  //   var products = $('#products tr');
-  //   var numberOfProducts = products.length - 2;
-  //   console.log(numberOfProducts);
-  //   var data = new Array();
-  //   for(var i = 1; i <= numberOfProducts; i++) { 
-  //     var id = $('#' + i + 'Id');
-  //     var quantity = $('#' + i + 'Quantity');
-  //     console.log(id[0].value);
-  //     console.log(quantity[0].value);
-  //     data[parseInt(id[0].value)] = quantity[0].value;
-  //   }
-  //   console.log(data);
-  //   $.post("update", { 'data[]': data });
-  //   
-  //   
-  //   //return false;
-  // });
+
   function calculateTotal(){
     var products = $('#products tr');
     // first row is the head of the table
     // last row is the total
     var total = 0;
     for(var i = 1; i < products.length - 1; i++) {
-      total = total + 
-              parseInt($(products[i]).children()[3].innerHTML.split(" ")[1]);
+      var str = $(products[i]).children()[3].innerHTML;
+      if(str.length > 0){
+        str = str.split(" ")[1];
+        total = total + parseInt(str);
+      }
+      
     }
     
     //console.log(total);
