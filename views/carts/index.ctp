@@ -12,30 +12,44 @@
 					<td>Sub-Total</td>
 				</tr>
 			</thead>
-			<tbody>
-        <?php $i = 1; $j = 1; ?>
-        <?php foreach($products as $item): ?>
-        
-        <tr <?php if($i&1){ echo 'class="alt"'; }?>>
-          <td>
-            <?php e($form->hidden('.'. $j .'.id', array('value' => $item['Product']['id'])))?>
-            
-            <?php e($form->text('.'. $j .'.quantity', array('value' => "0", 'maxlength' => '3', 'size' => '5')))?>
-          </td>
-          <td><?php echo $item['Product']['short_description']; ?></td>
-          <td>&#3647 <?php echo $item['Product']['selling_price']; ?></td>
-          <td>&#3647 <?php echo "0" ?></td>
-        </tr>
-        <?php $i++; $j++?>
+		  <?php $i = 1; $j = 1; $categoryNum = 1;?>
+      <?php foreach($products as $productCategory): ?>
+        <tbody>
+          <tr>
+        		<td></td>
+         		 <td>
+         		 	<button id="<?php echo "category{$categoryNum}"; ?>" class="category">
+         		 	  <?php echo $productCategory['Category']['name']?>
+         		 	</button>
+         	    <strong><?php echo $productCategory['Category']['name']?></strong>
+         		 </td>
+         		 <td></td>
+         		 <td></td>
+        	</tr>
+        </tbody>
+        <tbody class="<?php echo "category{$categoryNum}"; ?>">
+      		<?php foreach($productCategory['Product'] as $product):?>
+      		  
+      		    <tr <?php if($i&1){ echo 'class="alt"'; }?> >
+        		    <td>
+        		      <?php e($form->hidden('.'. $j .'.id', 
+        		                            array('value' => $product['id'])))?>
+                   <?php e($form->text('.'. $j .'.quantity', 
+                                       array('value' => "0", 
+                                             'maxlength' => '3', 
+                                             'size' => '5')))?>
+        		    </td>
+        		    <td><?php echo $product['short_description']; ?></td>
+        		    <td>&#3647 <?php echo $product['selling_price']; ?></td>
+        		    <td>&#3647 <?php echo "0" ?></td>
+        		  </tr>
+      		  <?php $j++; $i++; ?>
+      		<?php endforeach; ?>
+          </tbody>
+        <?php $categoryNum++ ?>
         <?php endforeach; ?>
-        <tr>
-    			<td</td>
-     		 	<td></td>
-     		 	<td><strong>Total</strong></td>
-     		 	<td>&#3647; 0</td>
-    		</tr>
     		
-			</tbody>
+			
 		</table>
 		<p>
 		  <?php e($html->link('Hide zero\'s quantity items', 
