@@ -1,6 +1,6 @@
 <?php
 class CartsController extends AppController{
-  var $uses = array('Product', 'Order', 'LineItem', 'Delivery');
+  var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category');
  	var $components = array('Email');
   var $helpers = array('Html', 'Form', 'Javascript');
 
@@ -10,8 +10,11 @@ class CartsController extends AppController{
   
   function index(){
     $this->layout = 'cart'; 
-    $products = $this->Product->find('all', array(
-      'conditions' => array('Product.display' => true)));
+    $products = $this->Category->find('all');
+    // debug ($pr);
+    
+    // $products = $this->Product->find('all', array(
+    //   'conditions' => array('Product.display' => true)));
                                      
     $this->set('products', $products);
   }
@@ -102,7 +105,7 @@ class CartsController extends AppController{
 		}
 		$products = $this->Product->find('all',
 		                                 array('conditions' => $conditions, 
-		                                        'recursive' => 0));
+		                                        'recursive' => -1));
 		foreach ($cart as $cartItem) {
 			foreach($products as $product){
 				if($cartItem['id'] == $product['Product']['id']){
