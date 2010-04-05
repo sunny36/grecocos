@@ -11,11 +11,6 @@ class CartsController extends AppController{
   function index(){
     $this->layout = 'cart'; 
     $products = $this->Category->find('all');
-    // debug ($pr);
-    
-    // $products = $this->Product->find('all', array(
-    //   'conditions' => array('Product.display' => true)));
-                                     
     $this->set('products', $products);
   }
   
