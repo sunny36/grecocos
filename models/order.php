@@ -2,7 +2,7 @@
 class Order extends AppModel {
 	var $name = 'Order';
 	var $hasMany = 'LineItem';
-	var $belongsTo = 'User';
+	var $belongsTo = array('User', 'Delivery');
 	
 	function getProducts($id){
 	  $query = "SELECT * FROM line_items LineItem, products Product " .
