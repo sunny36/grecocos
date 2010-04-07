@@ -1,6 +1,6 @@
 <?php
 class CartsController extends AppController{
-  var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category');
+  var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category', 'Cart');
  	var $components = array('Email');
   var $helpers = array('Html', 'Form', 'Javascript');
 
@@ -25,21 +25,7 @@ class CartsController extends AppController{
 	}
 	
 	function update() {
-		for($i = 1; $i <= count($this->data); $i++){
-      if($this->data[$i]['quantity'] > 0) {
-        $product = $this->Product->find('first' , array(
-        	'conditions' => array('Product.id' => $this->data[$i]['id'])
-        ));
-        $item = array('rowid' => md5($product['Product']['id']),
-                      'id' => $product['Product']['id'], 
-    									'quantity' => $this->data[$i]['quantity'],
-    									'price' => $product['Product']['selling_price'],
-    									'name' => $product['Product']['short_description'],
-    									'subtotal' => $this->data[$i]['quantity'] * 
-    									              $product['Product']['selling_price']);
-    	$cart[$item['rowid']] = $item;
-      }
-		}
+	  $cart = $this->Cart->update($this->data);
 		if($cart){
 		  $this->Session->write('cart', $cart);
 		  $this->Session->write('cart_total', $this->getCartTotalPrice());
