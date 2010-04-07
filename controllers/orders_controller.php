@@ -5,6 +5,23 @@ class OrdersController extends AppController {
 	var $uses = array('Order', 'Product', 'LineItem');
 	var $helpers = array('Html', 'Form', 'Javascript');
 
+  function supplier_index() {
+		$this->Order->recursive = 0;
+		$orders = $this->paginate('Order', array('Order.status' => 'paid'));
+		$this->set('orders', $orders);    
+  }
+  
+	function supplier_view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
+			$this->redirect(array('action' => 'index'));
+		}
+		$products = $this->Order->getProducts($id);
+	  $this->set('products', $products);
+	  
+		$this->set('order', $this->Order->read(null, $id));
+	}
+	
 	function admin_index() {
 	  if(!empty($this->params['url']['id'])){
 	    $id = $this->params['url']['id'];
