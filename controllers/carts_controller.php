@@ -14,42 +14,6 @@ class CartsController extends AppController{
     $this->set('products', $products);
   }
   
-  function add() {
-    $id = $this->data['Product']['id'];
-    $quantity = $this->data['Product']['quantity'];
-    //TODO validate that the product exists 
-		if ($quantity < 1) {
-			$this->redirect(array('controller' => 'carts', 'action' => 'index'));
-		}
-
-    $product = $this->Product->find('first' , array(
-    	'conditions' => array('Product.id' => $id)
-    ));
-		$item = array('rowid' => md5($product['Product']['id']), 
-									'id' => $product['Product']['id'], 
-									'quantity' => $quantity,
-									'price' => $product['Product']['selling_price'],
-									'name' => $product['Product']['short_description'],
-									'subtotal' => $quantity * $product['Product']['selling_price']);
-
-		if($this->Session->check('cart')) {
-			$cart = $this->Session->read('cart');			
-			foreach ($cart as $cartItem) {
-				if($cartItem['id'] == $product['Product']['id']){
-					unset($cart[$cartItem['rowid']]);	
-				}
-			}
-			
-			$cart[$item['rowid']] = $item;
-		}
-		else {
-			$cart[$item['rowid']] = $item;
-		}
-			
-    $this->Session->write('cart', $cart);
-		$this->Session->write('cart_total', $this->getCartTotalPrice());
-		$this->redirect(array('controller' => 'carts', 'action' => 'index'));
-  }
 	
 	function getCartTotalPrice(){
 		$total = 0; 
@@ -83,11 +47,6 @@ class CartsController extends AppController{
     $this->redirect(array('controller' => 'carts', 'action' => 'confirm'));
 	}
 	
-	function empty_cart() {
-	  $this->Session->delete('cart');
-		$this->Session->delete('cart_total');
-		$this->redirect(array('controller' => 'carts', 'action' => 'index'));
-	}
 	
 	function confirm() {
 		if(!$this->Session->check('cart')){
@@ -109,10 +68,12 @@ class CartsController extends AppController{
 			}
 		}
 		$total = $this->Session->read('cart_total');
+		$delivery = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
 		$order = array('Order' => array('status' => 'entered', 
 																		'ordered_date' => date('Y-m-d H:i:s'), 
 																		'complete' => false,
 																		'user_id' => $this->currentUser['User']['id'],
+																		'delivery_id' => $delivery['Delivery']['id'],
 																		'total' => $total));
 		$this->Order->create();
 		$this->Order->save($order);
