@@ -6,20 +6,113 @@ class OrdersController extends AppController {
 	var $helpers = array('Html', 'Form', 'Javascript');
 
   function supplier_index() {
-		$this->Order->recursive = 0;
-		$orders = $this->paginate('Order', array('Order.status' => 'paid'));
-		$this->set('orders', $orders);    
+    $this->layout = 'supplier';
+    if($this->RequestHandler->isAjax()) {
+ 	     $page = $this->params['url']['page']; 
+       $limit = $this->params['url']['rows']; 
+       $sidx = $this->params['url']['sidx']; 
+       $sord = $this->params['url']['sord']; 
+       if(!$sidx) $sidx =1;
+       $count = $this->Order->find('count');
+
+       if( $count >0 ) {
+       	$total_pages = ceil($count/$limit);
+       } else {
+       	$total_pages = 0;
+       }
+       if ($page > $total_pages) $page=$total_pages;
+       $start = $limit*$page - $limit;
+       $orders = $this->Order->find('all', array(
+         'recursive' => 0, 
+         'offset' => $start,
+         'limit' => $limit));
+
+       $this->set('page',$page);
+       $this->set('total_pages',$total_pages);
+       $this->set('count',$count); 
+       $this->set('orders', $orders);
+       
+       $this->render('/elements/supplier_orders', 'ajax');
+
+     }    
   }
   
+  
 	function supplier_view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
-			$this->redirect(array('action' => 'index'));
-		}
-		$products = $this->Order->getProducts($id);
-	  $this->set('products', $products);
-	  
-		$this->set('order', $this->Order->read(null, $id));
+	  if($this->RequestHandler->isAjax()) {
+      $this->autoRender = false;
+      
+	    $page = $this->params['url']['page']; 
+      $limit = $this->params['url']['rows']; 
+      $sidx = $this->params['url']['sidx']; 
+      $sord = $this->params['url']['sord']; 
+      $order_id = $this->params['pass'][0];
+
+      if(!$sidx) $sidx =1;
+      $products = $this->Order->getProductsByOrderId($order_id);
+	    $count = count($products);
+	    //$this->log($products, "activity"); 
+      if( $count >0 ) {
+        $total_pages = ceil($count/$limit);
+      } else {
+       $total_pages = 0;
+      }
+      if ($page > $total_pages) $page=$total_pages;
+      $start = $limit*$page - $limit;
+
+      $products = $this->Order->getProductsByOrderId($order_id, $start, $limit); 
+
+      $this->set('page',$page);
+      $this->set('total_pages',$total_pages);
+      $this->set('count',$count); 
+      //$this->log($products, "activity"); 
+      $this->set('products', $products);
+
+      
+      $this->render('/elements/order', 'ajax');
+    } else {
+      //Non-Ajax
+      if (!$id) {
+  			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
+  			$this->redirect(array('action' => 'index'));
+  		}
+  		$products = $this->Order->getProducts($id);
+  	  $this->set('products', $products);
+  		$this->set('order', $this->Order->read(null, $id));
+    }
+	}
+	function supplier_edit($id = null) {	  
+	  if($this->RequestHandler->isAjax()) {
+	    $this->autoRender = false;
+	    $this->log($this->params['form'], 'activity');
+	    
+	    if($this->params['form']['status']) {
+	      $status = $this->params['form']['status'];
+	      $order = $this->Order->findById($this->params['form']['id']);
+	      $this->log($order, 'activity');
+	      if($status == 'Yes') {
+  	      $order['Order']['status'] = 'packed';
+  	      $this->Order->save($order);
+  	    }
+  	    if($status == 'No') {
+  	      $order['Order']['status'] = 'paid';
+  	      $this->Order->save($order);
+  	    }
+	    }
+	   if($this->params['form']['qty']) {
+	     $order_id = $this->params['pass'][0];
+	     $product_id = $this->params['form']['id'];
+	     $this->log($order_id, 'activity');
+	     $lineItems = $this->Order->getProductsByOrderId($order_id);
+	     $this->log($lineItems, 'activity');
+	     foreach($lineItems as $lineItem) {
+	       if($lineItem['LineItem']['product_id'] == $product_id) {
+	         $lineItem['LineItem']['quantity'] = $this->params['form']['qty'];
+	         $this->LineItem->save($lineItem);
+	       }
+	     }
+	   }
+    }
 	}
 	
 	function admin_index() {
