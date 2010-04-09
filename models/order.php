@@ -11,5 +11,13 @@ class Order extends AppModel {
 	  $products = $this->query($query);
 	  return $products;
 	}
+	
+	function getProductsByOrderId($id, $offset = null, $limit = null) {
+    $params = array('conditions' => array('LineItem.order_id' => $id)); 
+    if($offset) $params['offset'] = $offset;
+    if($limit) $params['limit'] = $limit;
+    $products = ClassRegistry::init('LineItem')->find('all',$params);
+	  return $products;
+	}
 }
 ?>
