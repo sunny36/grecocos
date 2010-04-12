@@ -23,7 +23,7 @@ $(document).ready(function(){
      var ids = jQuery("#list4").jqGrid('getDataIDs');
      for(var i=0;i < ids.length;i++){
        var cl = ids[i];
-       be = "<input class='ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
+       be = "<input class='list4 edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
        jQuery("#list4").jqGrid('setRowData',ids[i],{act:be});
      } 
     },       
@@ -57,7 +57,10 @@ $(document).ready(function(){
     colNames: ['No','Qty','Product', 'Action'], 
     colModel:[
        		{name:'num',index:'num', width:55},
-       		{name:'qty',index:'qty', width:80, align:"right", editable: true},
+       		{name:'qty',index:'qty', width:80, align:"right", 
+       		 editable: true, edittype:"select", 
+       		 editoptions: {value: "0:0"}
+       		 },
        		{name:'product',index:'product', width:200},
        		{name:'act',index:'act', width:140,sortable:false}
        	],
@@ -65,7 +68,7 @@ $(document).ready(function(){
      var ids = jQuery("#list4_d").jqGrid('getDataIDs');
      for(var i=0;i < ids.length;i++){
        var cl = ids[i];
-       be = "<input class='ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
+       be = "<input class='list4_d edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
        jQuery("#list4_d").jqGrid('setRowData',ids[i],{act:be});
      } 
     },       
@@ -79,35 +82,43 @@ $(document).ready(function(){
     caption:"Order Details"
   }).navGrid('#pager1_d',{add:false,edit:false,del:false});
   
-  $('.ui-button').live('click', function() {
+  $('.list4.edit.ui-button').live('click', function() {
     var $button = $(this);
-    console.log($button);
-    if($button.attr("value") == "Edit") {
-      $button.hide();
-      $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
-      s = "<input class='ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
-      c = "<input class='ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
-      $button.after(c).after(s);
-    }
-    if($button.attr("value") == "Save") {
-      $button.hide(); 
-      $button.next().hide();
-      $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'));
-      $button.prev().show();
-      $button.next().remove(); 
-      $button.remove();
-    }
-    if($button.attr("value") == "Cancel") {
-      $button.hide();
-      $button.prev().hide();
-      $("#" + getTableId($button)).restoreRow($button.parent().parent().attr('id'));
-      $button.prev().prev().show();
-      $button.prev().remove();
-      $button.remove();
-    }
+    $button.hide();
+    $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
+    s = "<input class='list4 save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
+    c = "<input class='list4 cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
+    $button.after(c).after(s);
     
   });
+
+  $('.list4.save.ui-button').live('click', function() {
+    var $button = $(this);
+    $button.hide(); 
+    $button.next().hide();
+    $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'));
+    $button.prev().show();
+    $button.next().remove(); 
+    $button.remove();    
+  });
+
+  $('.list4.cancel.ui-button').live('click', function() {
+    var $button = $(this);
+    $button.hide();
+    $button.prev().hide();
+    $("#" + getTableId($button)).restoreRow($button.parent().parent().attr('id'));
+    $button.prev().prev().show();
+    $button.prev().remove();
+    $button.remove();    
+  });
   
+  
+  function getProductsJSON(orderId) {
+    console.log("getProductsJSON");
+    $.getJSON('/grecocos/supplier/orders/productsJSON/'+orderId, function(data) {
+      console.log(data);
+    })
+  }
   function getTableId($button) {
     return $button.closest('table').attr('id');
   }
