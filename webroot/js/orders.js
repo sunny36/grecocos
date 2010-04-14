@@ -31,12 +31,19 @@ $(document).ready(function(){
             return;
           }
         }
-        else if(status == "delivered"){
+        if(status == "delivered"){
           msg = "Order is already delivered, cannot be changed to unpaid";
           alert(msg);
           $paidCheckbox.attr("checked", true);
           return;
         }
+        if(status == "packed"){
+          msg = "Supplier has alread packed this order. Cannot be unpaid.";
+          alert(msg);
+          $paidCheckbox.attr("checked", true);
+          return;
+        }
+        
       });  
     }
   });

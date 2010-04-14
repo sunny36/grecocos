@@ -57,6 +57,13 @@
 		                                 'checked' => true,
 		                                 'class' => 'paid'));
 		    }
+		    if($order['Order']['status'] == "packed"){
+		      echo $form->checkbox('status', 
+		                           array('value' => "1", 
+		                                 'checked' => true,
+		                                 'class' => 'paid'));
+		    }
+		    
 		    if($order['Order']['status'] == "delivered"){
 		      echo $form->checkbox('status', 
 		                           array('value' => "1", 
