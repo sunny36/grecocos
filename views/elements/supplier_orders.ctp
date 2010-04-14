@@ -17,9 +17,9 @@ echo "<cell>". $orders[$i]['Delivery']['date']."</cell>";
 echo "<cell>". $orders[$i]['User']['firstname'] ." " . $orders[$i]['User']['lastname'] ."</cell>";
 
 if ($orders[$i]['Order']['status'] != "packed") {
-  echo "<cell>". "No" ."</cell>";
+  echo "<cell>". "0" ."</cell>";
 } else {
-  echo "<cell>". "Yes" ."</cell>";
+  echo "<cell>". "1" ."</cell>";
 }
 echo "<cell>". $orders[$i]['Order']['total']."</cell>";
 echo "<cell>"."</cell>"; // for action

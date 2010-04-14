@@ -25,7 +25,8 @@ class OrdersController extends AppController {
        $orders = $this->Order->find('all', array(
          'recursive' => 0, 
          'offset' => $start,
-         'limit' => $limit));
+         'limit' => $limit,
+         'conditions' => array('Order.status <>' => 'entered')));
 
        $this->set('page',$page);
        $this->set('total_pages',$total_pages);

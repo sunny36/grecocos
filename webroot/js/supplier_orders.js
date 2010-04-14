@@ -1,7 +1,7 @@
 var productsNum = 0;
 $(document).ready(function(){
   var lastsel2;
-  jQuery("#list4").jqGrid({
+  jQuery("#orders").jqGrid({
     url: '/grecocos/supplier/orders/index',
   	datatype: "xml",
      	colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 'Actions'],
@@ -10,22 +10,22 @@ $(document).ready(function(){
      		{name:'id',index:'id', width:100, sorttype:"int", editable: false},
      		{name:'delivery_date',index:'delivery_date', editable: false},
      		{name:'customer',index:'customer', editable: false},
-     		{name:'status',index:'status', width:50, editable: true, edittype:"checkbox",editoptions: {value:"Yes:No"}},
+     		{name:'status',index:'status', width:50, align:'center', formatter:'checkbox', editable: true, edittype:"checkbox",editoptions: {value:"Yes:No"}},
      		{name:'amount',index:'amount', width:80, editable: false},
      		{name:'act',index:'act', width:140,sortable:false}
      		
      	],
      	rowNum:10,
      	rowList:[10,20,30],
-     	pager: jQuery('#pager1'),
+     	pager: jQuery('#orders_pager'),
      	sortname: 'id',
     sortorder: "desc",
     gridComplete: function(){
-     var ids = jQuery("#list4").jqGrid('getDataIDs');
+     var ids = jQuery("#orders").jqGrid('getDataIDs');
      for(var i=0;i < ids.length;i++){
        var cl = ids[i];
-       be = "<input class='list4 edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
-       jQuery("#list4").jqGrid('setRowData',ids[i],{act:be});
+       be = "<input class='orders edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
+       jQuery("#orders").jqGrid('setRowData',ids[i],{act:be});
      } 
     },       
     editurl: '/grecocos/supplier/orders/edit',
@@ -33,26 +33,26 @@ $(document).ready(function(){
     onSelectRow: function(ids) {
       if(ids == null) {
         ids = 0; 
-        if(jQuery("#list4_d").jqGrid('getGridParam','records') > 0) {
-          jQuery("#list4_d").jqGrid('setGridParam',{
+        if(jQuery("#order_d").jqGrid('getGridParam','records') > 0) {
+          jQuery("#order_d").jqGrid('setGridParam',{
             url:"/grecocos/supplier/orders/view/"+ids,
             editurl:"/grecocos/supplier/orders/edit/"+ids,
             page:1});
-          jQuery("#list4_d").jqGrid('setCaption',"Order Detail: "+ids)
+          jQuery("#order_d").jqGrid('setCaption',"Order Detail: "+ids)
           .trigger('reloadGrid');
         }
       } else {
-        jQuery("#list4_d").jqGrid('setGridParam',{
+        jQuery("#order_d").jqGrid('setGridParam',{
           url:"/grecocos/supplier/orders/view/"+ids,
           editurl:"/grecocos/supplier/orders/edit/"+ids,
           page:1});
-        jQuery("#list4_d").jqGrid('setCaption',"Order Detail: "+ids)
+        jQuery("#order_d").jqGrid('setCaption',"Order Detail: "+ids)
         .trigger('reloadGrid');	
       }
     }
-  }).navGrid('#pager1',{edit:false,add:false,del:false});	
+  }).navGrid('#order_pager',{edit:false,add:false,del:false});	
   
-  jQuery('#list4_d').jqGrid({
+  jQuery('#order_d').jqGrid({
     height: 100, 
     url: '/grecocos/supplier/orders/view/0', 
     colNames: ['No','Qty','Product', 'Action'], 
@@ -66,34 +66,34 @@ $(document).ready(function(){
        		{name:'act',index:'act', width:140,sortable:false}
        	],
     gridComplete: function(){
-     var ids = jQuery("#list4_d").jqGrid('getDataIDs');
+     var ids = jQuery("#order_d").jqGrid('getDataIDs');
      for(var i=0;i < ids.length;i++){
        var cl = ids[i];
-       be = "<input class='list4_d edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
-       jQuery("#list4_d").jqGrid('setRowData',ids[i],{act:be});
+       be = "<input class='order_d edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
+       jQuery("#order_d").jqGrid('setRowData',ids[i],{act:be});
      } 
     },       
     editurl: '/grecocos/supplier/orders/edit',
     rowNum: 5,
     rowList:[5,10,20],
-    pager: '#pager10_d',
+    pager: '#order_d_pager',
     sortname: 'product',
     viewrecords: true,
     sortorder: "asc",
     caption:"Order Details"
-  }).navGrid('#pager1_d',{add:false,edit:false,del:false});
+  }).navGrid('#order_d_pager',{add:false,edit:false,del:false});
   
-  $('.list4.edit.ui-button').live('click', function() {
+  $('.orders.edit.ui-button').live('click', function() {
     var $button = $(this);
     $button.hide();
     $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
-    s = "<input class='list4 save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
-    c = "<input class='list4 cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
+    s = "<input class='orders save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
+    c = "<input class='orders cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
     $button.after(c).after(s);
     
   });
 
-  $('.list4.save.ui-button').live('click', function() {
+  $('.orders.save.ui-button').live('click', function() {
     var $button = $(this);
     $button.hide(); 
     $button.next().hide();
@@ -103,7 +103,7 @@ $(document).ready(function(){
     $button.remove();    
   });
 
-  $('.list4.cancel.ui-button').live('click', function() {
+  $('.orders.cancel.ui-button').live('click', function() {
     var $button = $(this);
     $button.hide();
     $button.prev().hide();
@@ -113,10 +113,10 @@ $(document).ready(function(){
     $button.remove();    
   });
   
-  $('.list4_d.edit.ui-button').live('click', function() {
+  $('.order_d.edit.ui-button').live('click', function() {
     var $button = $(this);
     $button.hide();
-    var editurl = jQuery("#list4_d").jqGrid('getGridParam','editurl');
+    var editurl = jQuery("#order_d").jqGrid('getGridParam','editurl');
     var orderId = editurl.match(/\d+$/);
     var productId = $button.parent().parent().attr('id'); 
     var currentQuantity = $button.parent().parent().children()[1].innerHTML
@@ -131,13 +131,13 @@ $(document).ready(function(){
     });
     
     $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
-    s = "<input class='list4_d save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
-    c = "<input class='list4_d cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
+    s = "<input class='order_d save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
+    c = "<input class='order_d cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
     $button.after(c).after(s);
     
   });
   
-  $('.list4_d.cancel.ui-button').live('click', function() {
+  $('.order_d.cancel.ui-button').live('click', function() {
     var $button = $(this);
     $button.hide();
     $button.prev().hide();
@@ -147,7 +147,7 @@ $(document).ready(function(){
     $button.remove();    
   });
   
-  $('.list4_d.save.ui-button').live('click', function() {
+  $('.order_d.save.ui-button').live('click', function() {
     var $button = $(this);
     $button.hide(); 
     $button.next().hide();
