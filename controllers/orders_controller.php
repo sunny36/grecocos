@@ -115,6 +115,31 @@ class OrdersController extends AppController {
     }
 	}
 	
+	function supplier_lineitem() {
+	  Configure::write('debug', 0);
+	  if($this->RequestHandler->isAjax()) {
+	    $this->log($this->params, 'activity');
+      $orderId = $this->params['url']['order_id'];
+      $productId = $this->params['url']['product_id'];
+      $this->log($orderId, 'activity');
+      $this->log($productId, 'activity');
+      $conditions = array( "AND" => array (
+      	"LineItem.order_id" => $orderId,
+      	"LineItem.product_id >" => $productId));
+      $lineItem = $this->LineItem->find('first', array(
+        'conditions' => array('LineItem.order_id' => $orderId,
+                              'LineItem.product_id' => $productId)));
+      $this->log($lineItem, 'activity');
+      $this->LineItem->id = $lineItem['LineItem']['id'];
+      $originalLineItem = $this->LineItem->oldest();
+      $this->log($originalLineItem, 'activity');
+      $lineItem = json_encode($originalLineItem);
+      
+      $this->set('lineItem', $lineItem);
+      $this->render('/elements/order_products');
+    }
+	}
+	
 	function admin_index() {
 	  if(!empty($this->params['url']['id'])){
 	    $id = $this->params['url']['id'];

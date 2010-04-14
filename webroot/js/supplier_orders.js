@@ -1,3 +1,4 @@
+var productsNum = 0;
 $(document).ready(function(){
   var lastsel2;
   jQuery("#list4").jqGrid({
@@ -112,12 +113,58 @@ $(document).ready(function(){
     $button.remove();    
   });
   
+  $('.list4_d.edit.ui-button').live('click', function() {
+    var $button = $(this);
+    $button.hide();
+    var editurl = jQuery("#list4_d").jqGrid('getGridParam','editurl');
+    var orderId = editurl.match(/\d+$/);
+    var productId = $button.parent().parent().attr('id'); 
+    var currentQuantity = $button.parent().parent().children()[1].innerHTML
+    var products = getProductsNum(orderId, productId, function(result) {
+      var lineItem = eval('(' + result + ')');
+      console.log(lineItem["LineItem"]);
+      var quantity = parseInt(lineItem["LineItem"]["quantity"], 10);
+      for (var i = 1; i <= quantity; i++ ) {
+        $('#' + productId + '_qty').prepend($("<option></option>").attr("value",i).text(i));
+      }
+      $('#' + productId + '_qty').val(currentQuantity);
+    });
+    
+    $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
+    s = "<input class='list4_d save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
+    c = "<input class='list4_d cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
+    $button.after(c).after(s);
+    
+  });
   
-  function getProductsJSON(orderId) {
-    console.log("getProductsJSON");
-    $.getJSON('/grecocos/supplier/orders/productsJSON/'+orderId, function(data) {
-      console.log(data);
-    })
+  $('.list4_d.cancel.ui-button').live('click', function() {
+    var $button = $(this);
+    $button.hide();
+    $button.prev().hide();
+    $("#" + getTableId($button)).restoreRow($button.parent().parent().attr('id'));
+    $button.prev().prev().show();
+    $button.prev().remove();
+    $button.remove();    
+  });
+  
+  $('.list4_d.save.ui-button').live('click', function() {
+    var $button = $(this);
+    $button.hide(); 
+    $button.next().hide();
+    $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'));
+    $button.prev().show();
+    $button.next().remove(); 
+    $button.remove();    
+  });
+  
+  
+  var productsNum = 0;
+  function getProductsNum(orderId, productId, callback) {
+    var url = '/grecocos/supplier/orders/lineitem';
+    $.get(url + '?order_id=' + orderId + '&product_id=' + productId, function(data) {
+      callback(data);
+    });
+
   }
   function getTableId($button) {
     return $button.closest('table').attr('id');
