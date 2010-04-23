@@ -3,6 +3,7 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $components = array('Email');
+	var $helpers = array('Html', 'Form', 'Javascript');
 	
 	function admin_index() {
 		$this->User->recursive = 0;
@@ -158,19 +159,27 @@ class UsersController extends AppController {
 	}
 	
 	function login(){
-	  if( $this->Auth->user( ) )
-        {
-            $this->redirect( array(
-                    'controller'    =>      'carts' ,
-                    'action'        =>      'index' ,
-            ));
-        }
-	  
+	  if( $this->Auth->user( )){
+	    $this->redirect( array('controller' => 'carts' , 'action' => 'index'));
+    }
 	}
 	
 	function logout() { 
  	  $this->Session->setFlash('You have logged out!!');
 	  $this->redirect($this->Auth->logout());
+  }
+  
+  function admin_login(){ 
+    $this->set('title_for_layout', 'Login | Grecocos Administration');
+    $this->layout = "admin_login"; 
+    if( $this->Auth->user( ) )
+        {
+            $this->redirect( array(
+                    'controller'    =>      'dashboard' ,
+                    'action'        =>      'index' ,
+            ));
+          }
+	  
   }
 
 }
