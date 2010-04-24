@@ -3,6 +3,7 @@ class ProductsController extends AppController {
 
 	var $name = 'Products';
 	var $components = array('Attachment');
+	var $helpers = array('Html', 'Form', 'Javascript');
 
 	function view($id = null) {
 		if (!$id) {

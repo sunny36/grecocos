@@ -1,3 +1,5 @@
+<?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
+<?php echo $javascript->link('admin/admin_index.js', false); ?>
 <div id="content" class="flex">
   <h1>Products</h1> 
   <div id="content-main">
