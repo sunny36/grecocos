@@ -143,7 +143,7 @@
         <?php 
           e($form->label('display', "Display", 
                          array('class' => 'required'))); 
-          e($form->checkbox('stock', array('class' => 'vCheckBoxField')));
+          e($form->checkbox('display', array('class' => 'vCheckBoxField')));
         ?>        
       </div>        
       
