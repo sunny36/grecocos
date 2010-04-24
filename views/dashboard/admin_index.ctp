@@ -6,7 +6,11 @@
       <table summary="Models available in the Auth application.">
       <caption><a href="auth/" class="section">Auth</a></caption>
         <tr>
-          <th scope="row"><a href="auth/user/">Users</a></th>
+          <th scope="row">
+            <?php e($html->link('Users', array('controller' => 'users', 
+                                                  'action' => 'index')))
+            ?>            
+          </th>
           <!-- Two empty <td> so that the table doesn't break -->
           <td></td>
           <td></td>

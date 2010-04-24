@@ -6,6 +6,7 @@ class UsersController extends AppController {
 	var $helpers = array('Html', 'Form', 'Javascript');
 	
 	function admin_index() {
+	  $this->layout = "admin_index"; 
 		$this->User->recursive = 0;
 		$this->set('users', $this->paginate());
 	}
