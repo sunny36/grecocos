@@ -24,6 +24,7 @@ class AppController extends Controller {
     $this->set('loggedIn', $this->Auth->user('id'));
     $this->Auth->authorize = 'controller';
     $this->currentUser = $this->Auth->user();
+    $this->set('currentUser', $this->Auth->user());
     $this->Auth->loginError = "Please enter a correct username and password. " . 
                               "Note that password is case-sensitive.";
   }

@@ -13,6 +13,7 @@ class ProductsController extends AppController {
 	}
 
 	function admin_index() {
+	  $this->layout = 'admin_index'; 
 		$this->Product->recursive = 0;
 		$this->set('products', $this->paginate());
 		
