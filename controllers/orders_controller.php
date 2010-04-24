@@ -142,6 +142,7 @@ class OrdersController extends AppController {
 	}
 	
 	function admin_index() {
+	  $this->layout = "admin_index";
 	  if(!empty($this->params['url']['id'])){
 	    $id = $this->params['url']['id'];
       $this->paginate = array(
