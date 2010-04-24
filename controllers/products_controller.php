@@ -28,6 +28,7 @@ class ProductsController extends AppController {
 	}
 	
 	function admin_add() {
+	  $this->layout = 'admin_add'; 
 	  $this->set('categories', $this->Product->Category->find('list'));
 		if (!empty($this->data)) {
       $this->data['Product']['image'] = 
@@ -37,7 +38,8 @@ class ProductsController extends AppController {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'));
+				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'),
+				'flash_error');
 			}
 		}
 	}

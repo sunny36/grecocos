@@ -14,6 +14,7 @@
 	Router::connect('/login', array('controller' => 'users', 'action' => 'login'));  
   // Router::connect('/admin/users/login', array('controller' => 'users', 'action' => 'login'));
   Router::connect('/admin/users/logout', array('controller' => 'users', 'action' => 'logout'));
+  Router::connect('/admin', array('controller' => 'dashboard', 'action' => 'index', 'admin' => true));
 	Router::connect('/supplier/users/login', array('controller' => 'users', 'action' => 'login'));
 	Router::connect('/supplier/users/logout', array('controller' => 'users', 'action' => 'logout'));
 ?>
