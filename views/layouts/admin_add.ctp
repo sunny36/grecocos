@@ -17,34 +17,7 @@
 <!-- Container -->
 <div id="container">    
     <!-- Header -->
-    <div id="header">
-        <div id="branding">        
-          <h1 id="site-name">Django administration</h1>
-
-        </div>
-        
-        <div id="user-tools">
-            Welcome,
-            <strong>somchok</strong>.
-            
-                
-                
-                
-                
-                    <a href="/admin/password_change/">
-
-                
-                Change password</a> /
-                
-                
-                    <a href="/admin/logout/">
-                
-                Log out</a>
-            
-        </div>
-        
-        
-    </div>
+      <?php e($this->element('header')); ?>
     <!-- END Header -->
     
 <div class="breadcrumbs">
