@@ -1,5 +1,12 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('orders.js', false); ?>
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index'))); 
+  ?> &rsaquo; 
+  Orders
+</div>
 <div id="content" class="flex">
   <h1>Orders</h1> 
   <div id="content-main">

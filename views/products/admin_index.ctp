@@ -1,5 +1,14 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('admin/admin_index.js', false); ?>
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index'))); ?> &rsaquo; 
+    Products
+</div>
+<!-- End Navigation  -->
+
 <div id="content" class="flex">
   <h1>Products</h1> 
   <div id="content-main">

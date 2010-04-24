@@ -31,23 +31,22 @@
         <td><a href="sites/site/" class="changelink">Change</a></td>  
       </tr>
       <tr>
-        <th scope="row"><a href="sites/site/">Orders</a></th>
-        
+        <th scope="row">
+          <?php e($html->link('Orders', array('controller' => 'orders', 
+                                                'action' => 'index')))?>
+        </th>
         <td><a href="sites/site/add/" class="addlink">Add</a></td>
         <td><a href="sites/site/" class="changelink">Change</a></td>  
       </tr>
       <tr>
-        <th scope="row"><a href="sites/site/">Sites</a></th>
+        <th scope="row">
+        <?php e($html->link('Delivery Date', array('controller' => 'deliveries', 
+                                                   'action' => 'index')))?>
         
+        </th>
         <td><a href="sites/site/add/" class="addlink">Add</a></td>
         <td><a href="sites/site/" class="changelink">Change</a></td>  
       </tr>            
-        <tr>
-          <th scope="row"><a href="sites/site/">Sites</a></th>
-          
-          <td><a href="sites/site/add/" class="addlink">Add</a></td>
-          <td><a href="sites/site/" class="changelink">Change</a></td>  
-        </tr>
       </table>
     </div>
   </div>

@@ -1,5 +1,12 @@
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index'))); 
+  ?> &rsaquo; 
+  Users
+</div>
 <div id="content" class="flex">
-  <h1>Products</h1> 
+  <h1>Users</h1> 
   <div id="content-main">
     <div class="module" id="changelist">
       <div id="toolbar">

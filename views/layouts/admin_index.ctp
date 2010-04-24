@@ -19,24 +19,6 @@
     <!-- Header -->
     <?php e($this->element('header')); ?>
     <!-- END Header -->
-    
-    <div class="breadcrumbs">
-      <a href="../../">
-        Home
-      </a>
-       &rsaquo; 
-       <a href="../">
-         Auth
-      </a>
-
-      &rsaquo; 
-      Users
-    </div>
-  
-    
-
-        
-
     <!-- Content -->
       <?php echo $content_for_layout; ?>
     <!-- END Content -->

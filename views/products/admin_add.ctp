@@ -1,3 +1,17 @@
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index'))); 
+  ?> &rsaquo; 
+  <?php 
+    e($html->link('Products', array('controller' => 'products', 
+                                'action' => 'index'))); 
+  ?> &rsaquo;                            
+  Add Product
+</div>
+<!-- End Navigation  -->
+
 <div id="content" class="colM">
   <h1>Add product</h1>
   <div id="content-main">
