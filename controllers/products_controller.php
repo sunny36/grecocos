@@ -34,6 +34,7 @@ class ProductsController extends AppController {
       $this->data['Product']['image'] = 
         $this->Attachment->upload($this->data['Product']['Attachment']);
 			$this->Product->create();
+			debug($this->data); die();
 			if ($this->Product->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
 				$this->redirect(array('action' => 'index'));
@@ -45,6 +46,7 @@ class ProductsController extends AppController {
 	}
 
 	function admin_edit($id = null) {
+	  	  $this->layout = 'admin_add'; 
 	  $this->set('categories', $this->Product->Category->find('list'));
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));

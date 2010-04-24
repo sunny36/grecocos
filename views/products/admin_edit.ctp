@@ -1,33 +1,165 @@
-<div class="products form">
-<?php echo $this->Form->create('Product', array('type' => 'file'));?>
-	<fieldset>
- 		<legend><?php printf(__('Edit %s', true), __('Product', true)); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('short_description');
-		echo $this->Form->input('long_description');
-		echo $this->Form->input('selling_price');
-		echo $this->Form->input('buying_price');
-		echo $this->Form->input('quantity');
-		echo $this->Form->input('stock');
-		echo $this->Form->input('display');
-		echo $this->Form->input('category_id');
-		echo $this->Form->label('current image');
-		e($html->image('/attachments/photos/small/' .               
-		  $this->Form->value('image')));
-		  e("<br/>");
-		echo $this->Form->label('upload new image');
-		echo $form->file('Attachment');
-		
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
+<div id="content" class="colM">
+  <h1>Add product</h1>
+  <div id="content-main">
+    <?php echo $this->Form->create('Product', array('type' => 'file'));?>
+  <div>
+    <?php e($form->hidden('id'))?>
+  <?php echo $session->flash(); ?>
+  <fieldset class="module aligned ">
+    <!-- Begin Short Description  -->
+    <div class="form-row short_description">
+      <ul class="errorlist">
+      <?php 
+        if($form->isFieldError('Product.short_description')) 
+          e($form->error ('Product.short_description', null, 
+                          array('wrap' => 'li'))); 
+      ?>
+      </ul>      
+      <div>
+        <?php 
+          e($form->label('short_description', "Short Description", 
+                         array('class' => 'required'))); 
+          e($form->text('short_description', array('class' => 'vTextField')));
+        ?>        
+      </div>        
+    </div>
+    <!-- End Short Description  -->
+    
+    <!-- Begin Long Description  -->
+    <div class="form-row long_description">
+      <div>
+        <?php 
+          e($form->label('long_description', "Long Description")); 
+          e($form->textarea('long_description', 
+                        array('class' => 'vLargeTextField')));
+        ?>        
+      </div>
+    </div>
+    <!-- End Long Description  -->
+    
+    <!-- End Selling Price  -->    
+    <div class="form-row selling_price">
+      <ul class="errorlist">
+      <?php 
+        if($form->isFieldError('Product.selling_price')) 
+          e($form->error ('Product.selling_price', null, 
+                          array('wrap' => 'li'))); 
+      ?>
+      </ul>      
+      <div>
+        <?php 
+          e($form->label('selling_price', "Selling Price", 
+                         array('class' => 'required'))); 
+          e($form->text('selling_price'));
+        ?>        
+      </div>            
+    </div>
+    <!-- End Selling Price  -->    
+    
+    <!-- Begin Buying Price  -->    
+    <div class="form-row buying_price">
+      <ul class="errorlist">
+      <?php 
+        if($form->isFieldError('Product.buying_price')) 
+          e($form->error ('Product.buying_price', null, 
+                          array('wrap' => 'li'))); 
+      ?>
+      </ul>      
+      <div>
+        <?php 
+          e($form->label('buying_price', "Buying Price", 
+                         array('class' => 'required'))); 
+          e($form->text('buying_price'));
+        ?>        
+      </div>            
+    </div>
+    <!-- End Buying Price  -->    
+    
+    <!-- Begin Quantity  -->    
+    <div class="form-row quantity">
+      <ul class="errorlist">
+      <?php 
+        if($form->isFieldError('Product.quantity')) 
+          e($form->error ('Product.quantity', null, 
+                          array('wrap' => 'li'))); 
+      ?>
+      </ul>      
+      <div>
+        <?php 
+          e($form->label('quantity', "Quantity", 
+                         array('class' => 'required'))); 
+          e($form->text('quantity'));
+        ?>        
+      </div>                  
+    </div>    
+    <!-- End Quantity  -->    
 
-		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Product.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Product.id'))); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('action' => 'index'));?></li>
-	</ul>
+    <!-- Begin Stock  -->        
+    <div class="form-row stock">
+      <ul class="errorlist">
+      <?php 
+        if($form->isFieldError('Product.stock')) 
+          e($form->error ('Product.stock', null, 
+                          array('wrap' => 'li'))); 
+      ?>
+      </ul>      
+      <div>
+        <?php 
+          e($form->label('stock', "Stock", 
+                         array('class' => 'required'))); 
+          e($form->text('stock', array('class' => 'vIntegerField')));
+        ?>        
+      </div>        
+    </div>    
+    <!-- End Stock  -->        
+
+    <!-- Begin Image  -->            
+    <div class="form-row image">
+      <ul class="errorlist">
+      <?php 
+        if($form->isFieldError('Product.image')) 
+          e($form->error ('Product.image', null, 
+                          array('wrap' => 'li'))); 
+      ?>
+      </ul>      
+      <div>
+        <?php 
+          e($form->label('image', "Image", 
+                         array('class' => 'required'))); 
+          e($form->file('Attachment'));e("<br/>"); 
+          e("<label></label>");
+          e($html->image('/attachments/photos/small/' .   
+                         $this->Form->value('image')));
+        ?>        
+      </div>                   
+    </div>
+    
+     <!-- Begin Display  -->    
+    <div class="form-row display">
+      <ul class="errorlist">
+      <?php 
+        if($form->isFieldError('Product.display')) 
+          e($form->error ('Product.display', null, 
+                          array('wrap' => 'li'))); 
+      ?>
+      </ul>      
+      <div>
+        <?php 
+          e($form->label('display', "Display", 
+                         array('class' => 'required'))); 
+          e($form->checkbox('display', array('class' => 'vCheckBoxField')));
+        ?>        
+      </div>        
+      
+    </div>        
+</fieldset>
+   
+<div class="submit-row" >
+  <?php echo $form->end(array('label' => 'Save', 'class' => 'default', 'div' => array('class' => false)));?>
+
 </div>
+
+</div>
+</form></div>
+        <br class="clear" />
+    </div>

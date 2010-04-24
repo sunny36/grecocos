@@ -27,7 +27,7 @@
         <td><a href="sites/site/" class="changelink">Change</a></td>  
       </tr>
       <tr>
-        <th scope="row"><a href="sites/site/">Sites</a></th>
+        <th scope="row"><a href="sites/site/">Orders</a></th>
         
         <td><a href="sites/site/add/" class="addlink">Add</a></td>
         <td><a href="sites/site/" class="changelink">Change</a></td>  
