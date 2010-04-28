@@ -1,89 +1,152 @@
-<div class="users view">
-<h2><?php  __('User');?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Password'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['password']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Email'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['email']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Firstname'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['firstname']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Lastname'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['lastname']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Middlename'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['middlename']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Address1'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['address1']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Address2'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['address2']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Address3'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['address3']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('City'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['city']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Postalcode'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['postalcode']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Phone'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['phone']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Status'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['status']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['created']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['modified']; ?>
-			&nbsp;
-		</dd>
-	</dl>
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index'))); 
+  ?> &rsaquo; 
+  <?php 
+    e($html->link('Products', array('controller' => 'products', 
+                                'action' => 'index'))); 
+  ?> &rsaquo;                            
+  Add Product
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(sprintf(__('Edit %s', true), __('User', true)), array('action' => 'edit', $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('User', true)), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Users', true)), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('User', true)), array('action' => 'add')); ?> </li>
-	</ul>
+<!-- End Navigation  -->
+
+<div id="content" class="colM">
+  <h1>Add product</h1>
+  <div id="content-main">
+    <?php echo $this->Form->create('Product', array('type' => 'file'));?>
+  <div>
+  <?php echo $session->flash(); ?>
+  <fieldset class="module aligned ">
+    <!-- Begin Id  -->
+    <div class="form-row id">
+      <div>
+        <?php e($form->label('id', "User Id")); ?>        
+        <strong> <?php e($user['User']['id']); ?></strong>
+      </div>        
+    </div>
+    <!-- End Id  -->
+    
+    <!-- Begin First Name  -->
+    <div class="form-row firstname">
+      <div>
+        <div>
+          <?php e($form->label('firstname', "First Name")); ?>        
+          <strong> <?php e($user['User']['firstname']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End First Name  -->
+    
+    <!-- Begin Middle Name  -->
+    <div class="form-row firstname">
+      <div>
+        <div>
+          <?php e($form->label('middlename', "Middle Name")); ?>        
+          <strong> <?php e($user['User']['middlename']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Middle Name  -->
+    
+    <!-- Begin Last Name  -->
+    <div class="form-row firstname">
+      <div>
+        <div>
+          <?php e($form->label('lastname', "Last Name")); ?>        
+          <strong> <?php e($user['User']['lastname']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Last Name  -->
+
+    <!-- Begin Email  -->
+    <div class="form-row email">
+      <div>
+        <div>
+          <?php e($form->label('email', "Email")); ?>        
+          <strong> <?php e($user['User']['email']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Email  -->
+
+    <!-- Begin Address1  -->
+    <div class="form-row address1">
+      <div>
+        <div>
+          <?php e($form->label('address1', "Address1")); ?>        
+          <strong> <?php e($user['User']['address1']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Address1  -->
+
+    <!-- Begin Address2  -->
+    <div class="form-row address2">
+      <div>
+        <div>
+          <?php e($form->label('address2', "Address2")); ?>        
+          <strong> <?php e($user['User']['address2']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Address2  -->
+
+    <!-- Begin Address3  -->
+    <div class="form-row address1">
+      <div>
+        <div>
+          <?php e($form->label('address3', "Address3")); ?>        
+          <strong> <?php e($user['User']['address3']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Address3  -->
+
+    <!-- Begin City  -->
+    <div class="form-row city">
+      <div>
+        <div>
+          <?php e($form->label('city', "City")); ?>        
+          <strong> <?php e($user['User']['city']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End City  -->
+
+    <!-- Begin PostalCode  -->
+    <div class="form-row postalcode">
+      <div>
+        <div>
+          <?php e($form->label('postalcode', "PostalCode")); ?>        
+          <strong> <?php e($user['User']['postalcode']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End PostalCode  -->
+    
+    <!-- Begin Status  -->
+    <div class="form-row status">
+      <div>
+        <div>
+          <?php e($form->label('status', "Status")); ?>        
+          <strong> <?php e($user['User']['status']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Status  -->
+    
+    
+</fieldset>
+
+<div class="submit-row" >
+  <?php echo $form->end(array('label' => 'Save', 'class' => 'default', 'div' => array('class' => false)));?>
+
 </div>
+
+</div>
+</form></div>
+        <br class="clear" />
+    </div>

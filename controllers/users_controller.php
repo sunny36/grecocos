@@ -12,11 +12,17 @@ class UsersController extends AppController {
 	}
 
 	function admin_view($id = null) {
+	  $this->layout = "admin_add";
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('user', $this->User->read(null, $id));
+		$user =  $this->User->read(null, $id);
+		if (strlen($user['User']['middlename']) < 1) {
+		  $user['User']['middlename'] = "-";
+		}
+                $user['User']['status'] = ucwords($user['User']['status']);
+		$this->set('user', $user);
 	}
 
 	function admin_edit($id = null) {
