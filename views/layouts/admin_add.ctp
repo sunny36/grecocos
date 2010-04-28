@@ -4,6 +4,7 @@
 <title><?php echo $title_for_layout; ?></title>
 <?php echo $this->Html->css('admin/base.css'); ?>
 <?php echo $this->Html->css('admin/forms.css'); ?>
+<?php echo $this->Html->css('admin/menu.css'); ?>
 <!--[if lte IE 7]>
 <?php echo $this->Html->css('admin/ie.css'); ?>
 <![endif]-->
