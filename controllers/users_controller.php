@@ -17,11 +17,7 @@ class UsersController extends AppController {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$user =  $this->User->read(null, $id);
-		if (strlen($user['User']['middlename']) < 1) {
-		  $user['User']['middlename'] = "-";
-		}
-                $user['User']['status'] = ucwords($user['User']['status']);
+		$user = $this->User->getUser($id); 
 		$this->set('user', $user);
 	}
 

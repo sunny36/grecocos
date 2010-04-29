@@ -99,5 +99,14 @@ class User extends AppModel {
 	    }
 	    return false;
 	  }
+	  
+	  function getUser($id) {
+	    $user =  $this->read(null, $id);
+  		if (strlen($user['User']['middlename']) < 1) {
+  		  $user['User']['middlename'] = "-";
+  		}
+      $user['User']['status'] = ucwords($user['User']['status']);
+      return $user;
+	  }
 }
 ?>
