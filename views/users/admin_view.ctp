@@ -2,13 +2,13 @@
 <div class="breadcrumbs">
   <?php 
     e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); 
+                                'action' => 'index', 'admin' => true))); 
   ?> &rsaquo; 
   <?php 
-    e($html->link('Products', array('controller' => 'products', 
-                                'action' => 'index'))); 
+    e($html->link('Users', array('controller' => 'users', 
+                                'action' => 'index', 'admin' => true))); 
   ?> &rsaquo;                            
-  Add Product
+  View User
 </div>
 <!-- End Navigation  -->
 

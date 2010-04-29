@@ -12,18 +12,25 @@
 
 
     <ul id="navigation-menu">
-
-    <li class="menu-item first"><a href="/admin/">Dashboard</a></li>
-
-    <li class="menu-item bookmark"><a>Products</a></li>
-    <li class="menu-item bookmark"><a>Orders</a></li>
-    <li class="menu-item bookmark"><a>Users</a></li>
-
-    <li class="menu-item"><a href="#"><span class="icon"></span>Applications</a><ul><li class="menu-item"><a href="/admin/products/"><span class="icon"></span>Products</a><ul><li class="menu-item"><a href="/admin/products/product/">Products</a></li></ul></li></ul></li>
-
-    <li class="menu-item"><a href="#"><span class="icon"></span>Administration</a><ul><li class="menu-item"><a href="/admin/auth/"><span class="icon"></span>Auth</a><ul><li class="menu-item"><a href="/admin/auth/group/">Groups</a></li><li class="menu-item"><a href="/admin/auth/user/">Users</a></li></ul></li><li class="menu-item"><a href="/admin/sites/"><span class="icon"></span>Sites</a><ul><li class="menu-item"><a href="/admin/sites/site/">Sites</a></li></ul></li></ul></li>
-
+      <li class="menu-item first">
+        <?php e($html->link('Dashboard',
+                            array('controller' => 'dashboard', 
+                                  'action' => 'index', 'admin' => true))); ?>
+      </li>
+      <li class="menu-item bookmark">
+        <?php e($html->link('Products',
+                            array('controller' => 'products', 
+                                  'action' => 'index', 'admin' => true))); ?>      
+      </li>
+      <li class="menu-item bookmark">
+        <?php e($html->link('Orders',
+                            array('controller' => 'orders', 
+                                  'action' => 'index', 'admin' => true))); ?>      
+      </li>
+      <li class="menu-item bookmark">
+        <?php e($html->link('Users',
+                            array('controller' => 'users', 
+                                  'action' => 'index', 'admin' => true))); ?>      
+      </li>
     </ul>
-
-
 </div>

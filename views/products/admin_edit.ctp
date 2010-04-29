@@ -1,5 +1,16 @@
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index', 'admin' => true))); ?> 
+  &rsaquo; 
+  <?php e($html->link('Products', array('controller' => 'products', 
+                                'action' => 'index', 'admin' => true))); ?> 
+  &rsaquo;                            
+  Edit Product
+</div>
+
 <div id="content" class="colM">
-  <h1>Add product</h1>
+  <h1>Edit Product</h1>
   <div id="content-main">
     <?php echo $this->Form->create('Product', array('type' => 'file'));?>
   <div>
