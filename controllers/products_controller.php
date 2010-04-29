@@ -21,6 +21,7 @@ class ProductsController extends AppController {
 	}
 
   function admin_view($id = null) {
+    $this->layout = 'admin_add'; 
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
 			$this->redirect(array('action' => 'index'));

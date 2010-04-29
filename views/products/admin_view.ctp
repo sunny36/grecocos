@@ -1,62 +1,125 @@
-<div class="products view">
-<h2><?php  __('Product');?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $product['Product']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Short Description'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $product['Product']['short_description']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Long Description'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $product['Product']['long_description']; ?>
-			&nbsp;
-		</dd>
-		
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Selling Price'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $product['Product']['selling_price']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Buying Price'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $product['Product']['buying_price']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Image'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php 
-			  e($html->image('/attachments/photos/small/' . 
-			                 $product['Product']['image']));
-			 ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Quantity'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $product['Product']['quantity']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Stock'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $product['Product']['stock']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Display'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php if($product['Product']['display'] == '1') e('Yes'); else e('No'); ?>
-			&nbsp;
-		</dd>
-	</dl>
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index'))); 
+  ?> &rsaquo; 
+  <?php 
+    e($html->link('Products', array('controller' => 'products', 
+                                'action' => 'index'))); 
+  ?> &rsaquo;                            
+  Add Product
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(sprintf(__('Edit %s', true), __('Product', true)), array('action' => 'edit', $product['Product']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('Product', true)), array('action' => 'delete', $product['Product']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $product['Product']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product', true)), array('action' => 'add')); ?> </li>
-</div>
+<!-- End Navigation  -->
+<div id="content" class="colM">
+  <h1>Add product</h1>
+  <div id="content-main">
+  <div>
+  <?php echo $session->flash(); ?>
+  <fieldset class="module aligned ">
+    <!-- Begin Id  -->
+    <div class="form-row id">
+      <div>
+        <?php e($form->label('id', "Product Id")); ?>        
+        <strong> <?php e($product['Product']['id']); ?></strong>
+      </div>        
+    </div>
+    <!-- End Id  -->
+    
+    <!-- Begin Short Description  -->
+    <div class="form-row short_description">
+      <div>
+        <div>
+          <?php e($form->label('short_description', "Short Description")); ?>        
+          <strong> 
+            <?php e($product['Product']['short_description']); ?>
+          </strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Short Description  -->
+    
+    <!-- Begin Long Description  -->
+    <div class="form-row long_description">
+      <div>
+        <div>
+          <?php e($form->label('long_description', "Long Description")); ?>        
+          <strong> <?php e($product['Product']['long_description']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Long Description  -->
+    
+    <!-- Begin Selling Price  -->
+    <div class="form-row selling_price">
+      <div>
+        <div>
+          <?php e($form->label('selling_price', "Selling Price")); ?>        
+          <strong> <?php e($product['Product']['selling_price']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Selling Price  -->
+
+    <!-- Begin Buying Price  -->
+    <div class="form-row buying_price">
+      <div>
+        <div>
+          <?php e($form->label('buying_price', "Buying Price")); ?>        
+          <strong> <?php e($product['Product']['buying_price']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Buying Price  -->
+
+    <!-- Begin Quantity  -->
+    <div class="form-row quantity">
+      <div>
+        <div>
+          <?php e($form->label('quantity', "Quantity")); ?>        
+          <strong> <?php e($product['Product']['quantity']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Quantity  -->
+
+    <!-- Begin Stock  -->
+    <div class="form-row stock">
+      <div>
+        <div>
+          <?php e($form->label('stock', "Stock")); ?>        
+          <strong> <?php e($product['Product']['stock']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Stock  -->
+
+    <!-- Begin Stock  -->
+    <div class="form-row display">
+      <div>
+        <div>
+          <?php e($form->label('display', "Display")); ?>        
+          <strong> <?php e($product['Product']['display']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Stock  -->
+
+    <!-- Begin Image  -->
+    <div class="form-row image">
+      <div>
+        <div>
+          <?php e($form->label('image', "Image")); ?>        
+          <?php 
+            e($html->image('/attachments/photos/small/' . 
+            $product['Product']['image']));
+          ?>
+        </div>                
+      </div>
+    </div>
+    <!-- End Buying Price  -->
+
+
+    
+    
+</fieldset>
