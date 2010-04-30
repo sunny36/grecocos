@@ -163,6 +163,40 @@ class OrdersController extends AppController {
 	}
 
 	function admin_view($id = null) {
+	  $this->layout = "admin_add";
+	  if($this->RequestHandler->isAjax()) {
+      $this->autoRender = false;
+      
+	    $page = $this->params['url']['page']; 
+      $limit = $this->params['url']['rows']; 
+      $sidx = $this->params['url']['sidx']; 
+      $sord = $this->params['url']['sord']; 
+      $order_id = $this->params['pass'][0];
+
+      if(!$sidx) $sidx =1;
+      $products = $this->Order->getProductsByOrderId($order_id);
+	    $count = count($products);
+
+      if( $count >0 ) {
+        $total_pages = ceil($count/$limit);
+      } else {
+       $total_pages = 0;
+      }
+      if ($page > $total_pages) $page=$total_pages;
+      $start = $limit*$page - $limit;
+
+      $products = $this->Order->getProductsByOrderId($order_id, $start, $limit); 
+      $this->log($products, "activity"); 
+      $this->set('page',$page);
+      $this->set('total_pages',$total_pages);
+      $this->set('count',$count); 
+      //$this->log($products, "activity"); 
+      $this->set('products', $products);
+
+      
+      $this->render('/elements/order_details_for_coordinator', 'ajax');
+	    
+    }
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
 			$this->redirect(array('action' => 'index'));
