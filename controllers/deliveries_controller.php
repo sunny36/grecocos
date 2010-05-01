@@ -2,8 +2,10 @@
 class DeliveriesController extends AppController {
 
 	var $name = 'Deliveries';
-
+  var $helpers = array('Html', 'Form', 'Javascript');
+  
 	function admin_index() {
+	  $this->layout = "admin_index";  
 		$this->Delivery->recursive = 0;
 		$this->set('deliveries', $this->paginate());
 	}
