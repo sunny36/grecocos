@@ -184,6 +184,15 @@ class UsersController extends AppController {
           }
 	  
   }
+  function admin_logout() { 
+ 	  $this->Session->setFlash('You have logged out!!');
+ 	  if($this->Auth->logout()){
+ 	    $this->redirect(array('controller' => 'users', 
+  	                        'action' => 'login', 'admin' => true));
+  	  
+ 	  }
+  }
+	
 
 }
 ?>
