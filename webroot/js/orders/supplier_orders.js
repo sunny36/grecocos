@@ -2,7 +2,7 @@ var productsNum = 0;
 $(document).ready(function(){
   var lastsel2;
   jQuery("#orders").jqGrid({
-    url: '/grecocos/supplier/orders/index',
+    url: '/index.php/supplier/orders/index',
   	datatype: "xml",
      	colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 'Actions'],
      	colModel:[
@@ -28,23 +28,23 @@ $(document).ready(function(){
        jQuery("#orders").jqGrid('setRowData',ids[i],{act:be});
      } 
     },       
-    editurl: '/grecocos/supplier/orders/edit',
+    editurl: '/index.php/supplier/orders/edit',
     caption:"Orders",
     onSelectRow: function(ids) {
       if(ids == null) {
         ids = 0; 
         if(jQuery("#order_d").jqGrid('getGridParam','records') > 0) {
           jQuery("#order_d").jqGrid('setGridParam',{
-            url:"/grecocos/supplier/orders/view/"+ids,
-            editurl:"/grecocos/supplier/orders/edit/"+ids,
+            url:"/index.php/supplier/orders/view/"+ids,
+            editurl:"/index.php/supplier/orders/edit/"+ids,
             page:1});
           jQuery("#order_d").jqGrid('setCaption',"Order Detail: "+ids)
           .trigger('reloadGrid');
         }
       } else {
         jQuery("#order_d").jqGrid('setGridParam',{
-          url:"/grecocos/supplier/orders/view/"+ids,
-          editurl:"/grecocos/supplier/orders/edit/"+ids,
+          url:"/index.php/supplier/orders/view/"+ids,
+          editurl:"/index.php/supplier/orders/edit/"+ids,
           page:1});
         jQuery("#order_d").jqGrid('setCaption',"Order Detail: "+ids)
         .trigger('reloadGrid');	
@@ -53,15 +53,16 @@ $(document).ready(function(){
   }).navGrid('#order_pager',{edit:false,add:false,del:false});	
   
   jQuery('#order_d').jqGrid({
-    height: 100, 
-    url: '/grecocos/supplier/orders/view/0', 
-    colNames: ['No','Qty','Product', 'Action'], 
+    height: 'auto', 
+    url: '/index.php/supplier/orders/view/0', 
+    colNames: ['No','Quantity Ordered', 'Quantity Supplied', 'Product', 'Action'], 
     colModel:[
        		{name:'num',index:'num', width:55},
-       		{name:'qty',index:'qty', width:80, align:"right", 
-       		 editable: true, edittype:"select", 
-       		 editoptions: {value: "0:0"}
-       		 },
+       		{name:'qty',index:'qty', width:80, align:"right"},
+      		{name:'quantity_supplied',index:'quantity_supplied', width:80, align:"right", 
+      		 editable: true, edittype:"select", 
+      		 editoptions: {value: "0:0"}
+      		 },     		 
        		{name:'product',index:'product', width:200},
        		{name:'act',index:'act', width:140,sortable:false}
        	],
@@ -73,15 +74,12 @@ $(document).ready(function(){
        jQuery("#order_d").jqGrid('setRowData',ids[i],{act:be});
      } 
     },       
-    editurl: '/grecocos/supplier/orders/edit',
-    rowNum: 5,
-    rowList:[5,10,20],
-    pager: '#order_d_pager',
+    editurl: '/index.php/supplier/orders/edit',
     sortname: 'product',
     viewrecords: true,
     sortorder: "asc",
     caption:"Order Details"
-  }).navGrid('#order_d_pager',{add:false,edit:false,del:false});
+  });
   
   $('.orders.edit.ui-button').live('click', function() {
     var $button = $(this);
@@ -122,12 +120,13 @@ $(document).ready(function(){
     var currentQuantity = $button.parent().parent().children()[1].innerHTML
     var products = getProductsNum(orderId, productId, function(result) {
       var lineItem = eval('(' + result + ')');
-      console.log(lineItem["LineItem"]);
+      console.log(lineItem);
       var quantity = parseInt(lineItem["LineItem"]["quantity"], 10);
+      var quantitySupplied = parseInt(lineItem["LineItem"]["quantity_supplied"], 10);
       for (var i = 1; i <= quantity; i++ ) {
-        $('#' + productId + '_qty').prepend($("<option></option>").attr("value",i).text(i));
+        $('#' + productId + '_quantity_supplied').prepend($("<option></option>").attr("value",i).text(i));
       }
-      $('#' + productId + '_qty').val(currentQuantity);
+      $('#' + productId + '_quantity_supplied').val(quantitySupplied);
     });
     
     $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
@@ -160,7 +159,7 @@ $(document).ready(function(){
   
   var productsNum = 0;
   function getProductsNum(orderId, productId, callback) {
-    var url = '/grecocos/supplier/orders/lineitem';
+    var url = '/index.php/supplier/orders/lineitem';
     $.get(url + '?order_id=' + orderId + '&product_id=' + productId, function(data) {
       callback(data);
     });
