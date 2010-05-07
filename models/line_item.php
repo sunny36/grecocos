@@ -3,6 +3,5 @@ class LineItem extends AppModel {
 	var $name = 'LineItem';
 	var $belongsTo = array('Product', 'Order');
 	
-	var $actsAs = array('Revision');
 }
 ?>
