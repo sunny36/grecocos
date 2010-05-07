@@ -1,6 +1,6 @@
 <p>
   <?php e($html->link('Click here to download your invoice.', 
-                      array('../../' . $filename)));?>
+                      array('../../../' . $filename)));?>
 </p>
 
 <p>
