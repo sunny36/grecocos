@@ -2,7 +2,7 @@
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
 <?php echo $javascript->link('grid.locale-en.js', false); ?>
 <?php echo $javascript->link('jquery.jqGrid.min.js', false); ?>
-<?php echo $javascript->link('supplier_orders.js', false); ?>
+<?php echo $javascript->link('orders/supplier_orders.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 <?php echo $html->css('ui.jqgrid', null, array('inline' => false)); ?>
 
