@@ -6,7 +6,7 @@ class OrdersController extends AppController {
 	var $helpers = array('Html', 'Form', 'Javascript');
 
   function supplier_index() {
-    $this->layout = 'supplier';
+    $this->layout = 'admin_index';
     if($this->RequestHandler->isAjax()) {
  	     $page = $this->params['url']['page']; 
        $limit = $this->params['url']['rows']; 
@@ -37,6 +37,49 @@ class OrdersController extends AppController {
 
      }    
   }
+
+	function admin_index() {
+	  $this->layout = "admin_index";
+	  $this->log($this->params, 'activity');
+	  if(!empty($this->params['url']['id'])){
+	    $id = $this->params['url']['id'];
+      $this->paginate = array(
+        'conditions' => array('Order.id' => $this->params['url']['id'])
+        );
+	  }
+	  if(!empty($this->params['url']['user_name'])){
+      $this->paginate = array(
+        'conditions' => array(
+          'OR' => array(
+          'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
+          'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
+          )
+        );
+	  }	  
+		$this->Order->recursive = 0;
+		$this->set('orders', $this->paginate());
+	}
+	
+	function coordinator_mark_as_paid() {
+	  $this->layout = "admin_index";
+	  if(!empty($this->params['url']['id'])){
+	    $id = $this->params['url']['id'];
+      $this->paginate = array(
+        'conditions' => array('Order.id' => $this->params['url']['id'])
+        );
+	  }
+	  if(!empty($this->params['url']['user_name'])){
+      $this->paginate = array(
+        'conditions' => array(
+          'OR' => array(
+          'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
+          'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
+          )
+        );
+	  }	  
+		$this->Order->recursive = 0;
+		$this->set('orders', $this->paginate());	  
+	}
   
   
 	function supplier_view($id = null) {
@@ -82,15 +125,15 @@ class OrdersController extends AppController {
   		$this->set('order', $this->Order->read(null, $id));
     }
 	}
+	
 	function supplier_edit($id = null) {	  
 	  if($this->RequestHandler->isAjax()) {
 	    $this->autoRender = false;
-	    $this->log($this->params['form'], 'activity');
+	
 	    
 	    if($this->params['form']['status']) {
 	      $status = $this->params['form']['status'];
 	      $order = $this->Order->findById($this->params['form']['id']);
-	      $this->log($order, 'activity');
 	      if($status == 'Yes') {
   	      $order['Order']['status'] = 'packed';
   	      $this->Order->save($order);
@@ -100,19 +143,19 @@ class OrdersController extends AppController {
   	      $this->Order->save($order);
   	    }
 	    }
-	   if($this->params['form']['qty']) {
-	     $order_id = $this->params['pass'][0];
-	     $product_id = $this->params['form']['id'];
-	     $this->log($order_id, 'activity');
-	     $lineItems = $this->Order->getProductsByOrderId($order_id);
-	     $this->log($lineItems, 'activity');
-	     foreach($lineItems as $lineItem) {
-	       if($lineItem['LineItem']['product_id'] == $product_id) {
-	         $lineItem['LineItem']['quantity'] = $this->params['form']['qty'];
-	         $this->LineItem->save($lineItem);
-	       }
-	     }
-	   }
+	    
+	    if($this->params['form']['quantity_supplied']) {
+	      $order_id = $this->params['pass'][0];
+	      $product_id = $this->params['form']['id'];
+ 	      $lineItems = $this->Order->getProductsByOrderId($order_id);
+ 	      foreach($lineItems as $lineItem) {
+ 	        if($lineItem['LineItem']['product_id'] == $product_id) {
+ 	         $lineItem['LineItem']['quantity_supplied'] = 
+ 	           $this->params['form']['quantity_supplied'];
+ 	         $this->LineItem->save($lineItem);
+ 	       }
+ 	     } 
+	    }
     }
 	}
 	
@@ -125,42 +168,22 @@ class OrdersController extends AppController {
       $this->log($orderId, 'activity');
       $this->log($productId, 'activity');
       $conditions = array( "AND" => array (
-      	"LineItem.order_id" => $orderId,
-      	"LineItem.product_id >" => $productId));
+       "LineItem.order_id" => $orderId,
+       "LineItem.product_id >" => $productId));
       $lineItem = $this->LineItem->find('first', array(
         'conditions' => array('LineItem.order_id' => $orderId,
                               'LineItem.product_id' => $productId)));
       $this->log($lineItem, 'activity');
       $this->LineItem->id = $lineItem['LineItem']['id'];
-      $originalLineItem = $this->LineItem->oldest();
-      $this->log($originalLineItem, 'activity');
-      $lineItem = json_encode($originalLineItem);
+
+
+      $lineItem = json_encode($lineItem);
       
       $this->set('lineItem', $lineItem);
       $this->render('/elements/order_products');
     }
 	}
 	
-	function admin_index() {
-	  $this->layout = "admin_index";
-	  if(!empty($this->params['url']['id'])){
-	    $id = $this->params['url']['id'];
-      $this->paginate = array(
-        'conditions' => array('Order.id' => $this->params['url']['id'])
-        );
-	  }
-	  if(!empty($this->params['url']['user_name'])){
-      $this->paginate = array(
-        'conditions' => array(
-          'OR' => array(
-          'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
-          'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
-          )
-        );
-	  }	  
-		$this->Order->recursive = 0;
-		$this->set('orders', $this->paginate());
-	}
 
 	function admin_view($id = null) {
 	  $this->layout = "admin_add";
@@ -206,59 +229,8 @@ class OrdersController extends AppController {
 	  
 		$this->set('order', $this->Order->read(null, $id));
 	}
-
-	function admin_add() {
-		if (!empty($this->data)) {
-			$this->Order->create();
-			if ($this->Order->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'order'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'order'));
-			}
-		}
-		$users = $this->Order->User->find('list');
-		$this->set(compact('users'));
-	}
-
-	function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
-			$this->redirect(array('action' => 'index'));
-		}
-		if (!empty($this->data)) {
-			if ($this->Order->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'order'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'order'));
-			}
-		}
-		if (empty($this->data)) {
-		  $products = $this->Order->getProducts($id);
-		  $this->set('products', $products);
-			$this->data = $this->Order->read(null, $id);
-			$this->set('order', $this->Order->read(null, $id));
-
-		}
-		$users = $this->Order->User->find('list');
-		$this->set(compact('users'));
-	}
-
-	function admin_delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'order'));
-			$this->redirect(array('action'=>'index'));
-		}
-		if ($this->Order->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Order'));
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Order'));
-		$this->redirect(array('action' => 'index'));
-	}
 	
-	function admin_changeStatus(){
+	function changeStatus(){
     Configure::write('debug', 0);
     $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
@@ -273,7 +245,7 @@ class OrdersController extends AppController {
     }
 	}
 	
-	function admin_getstatus(){
+	function getstatus(){
     Configure::write('debug', 0);
     // $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
