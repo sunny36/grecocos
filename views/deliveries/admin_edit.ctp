@@ -1,20 +1,63 @@
-<div class="deliveries form">
-<?php echo $this->Form->create('Delivery');?>
-	<fieldset>
- 		<legend><?php printf(__('Edit %s', true), __('Delivery', true)); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('date');
-		echo $this->Form->input('next_delivery');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+                                'action' => 'index'))); 
+  ?> &rsaquo; 
+  <?php 
+    e($html->link('Delivery Date', array('controller' => 'deliveries', 
+                                'action' => 'index'))); 
+  ?> &rsaquo;                            
+  Add Delivery Date
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
+<!-- End Navigation  -->
 
-		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Delivery.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Delivery.id'))); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Deliveries', true)), array('action' => 'index'));?></li>
-	</ul>
+<div id="content" class="colM">
+  <h1>Add product</h1>
+  <div id="content-main">
+    <?php echo $this->Form->create('Delivery');?>
+  <div>
+  <?php echo $session->flash(); ?>
+  <fieldset class="module aligned ">
+    <!-- Begin Date  -->        
+    <div class="form-row date">
+      <div>
+        <?php 
+        e($form->label('date', "Date", 
+                       array('class' => 'required')));  
+        e($this->Form->input('date', array('label' => false)));
+        ?>        
+      </div>        
+    </div>    
+    <!-- End Date  -->        
+
+    <!-- Begin Next Delivery  -->        
+    <div class="form-row date">
+      <div>
+        <?php 
+        e($form->label('next_delivery', "Next Delivery?", 
+                       array('class' => 'required')));
+        e($form->checkbox('next_delivery', array('class' => 'vCheckBoxField')));
+        ?>        
+      </div>        
+    </div>    
+    <!-- End Next Delivery  -->        
+
+     
+ </fieldset>
+
+<div class="submit-row" >
+  <p class="deletelink-box">
+    <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $delivery['Delivery']['id']), array('class' => 'deletelink'), sprintf(__('Are you sure you want to delete # %s?', true), $delivery['Delivery']['id'])); ?>
+
+  </p>
+	
+ 
+  <?php echo $form->end(array('label' => 'Save', 'class' => 'default', 'div' => array('class' => false)));?>
+
 </div>
+
+</div>
+</form></div>
+        <br class="clear" />
+    </div>

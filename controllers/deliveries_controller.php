@@ -19,6 +19,7 @@ class DeliveriesController extends AppController {
 	}
 
 	function admin_add() {
+	   $this->layout = "admin_add";  
 		if (!empty($this->data)) {
 			$this->Delivery->create();
 			if ($this->Delivery->save($this->data)) {
@@ -31,6 +32,7 @@ class DeliveriesController extends AppController {
 	}
 
 	function admin_edit($id = null) {
+	  $this->layout = "admin_add";  
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'delivery'));
 			$this->redirect(array('action' => 'index'));
@@ -45,6 +47,7 @@ class DeliveriesController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Delivery->read(null, $id);
+			$this->set('delivery', $this->Delivery->read(null, $id));
 		}
 	}
 
