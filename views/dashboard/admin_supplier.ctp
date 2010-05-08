@@ -11,6 +11,15 @@
         <td></td>
         <td></td>  
       </tr>
+      <tr>
+        <th scope="row">
+          <?php e($html->link('Close Batch',
+                              '/supplier/orders/close_batch'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>
+      
       </table>
     </div>
     
