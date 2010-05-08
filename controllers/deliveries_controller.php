@@ -63,5 +63,27 @@ class DeliveriesController extends AppController {
 		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Delivery'));
 		$this->redirect(array('action' => 'index'));
 	}
+
+  function supplier_edit($id = null) {
+    if($this->RequestHandler->isAjax()) {
+      $this->autoRender = false; 
+
+      if($this->params['form']['closed']) {
+        $closed = $this->params['form']['closed'];
+        $this->Delivery->recursive = -1;
+        $delivery = $this->Delivery->findById($this->params['form']['id']);
+        
+        if($closed == 'Yes') {
+          $this->log($delivery, 'activity');
+          $delivery['Delivery']['closed'] = true;
+          $this->log($delivery, 'activity');
+        }
+        if($closed == 'No') {
+          $delivery['Delivery']['closed'] = false;    
+        }
+        $this->Delivery->save($delivery);
+      }
+    }
+  }
 }
 ?>
