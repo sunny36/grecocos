@@ -95,7 +95,6 @@ class OrdersController extends AppController {
         );
 	  }	  
 		$this->set('orders', $this->paginate());	  
-	  
 	}
   
   
@@ -144,33 +143,17 @@ class OrdersController extends AppController {
 	
 	function supplier_edit($id = null) {	  
 	  if($this->RequestHandler->isAjax()) {
-	    $this->autoRender = false;
-	
-	    
+	    $this->autoRender = false;    
 	    if($this->params['form']['status']) {
 	      $status = $this->params['form']['status'];
-	      $order = $this->Order->findById($this->params['form']['id']);
-	      if($status == 'Yes') {
-  	      $order['Order']['status'] = 'packed';
-  	      $this->Order->save($order);
-  	    }
-  	    if($status == 'No') {
-  	      $order['Order']['status'] = 'paid';
-  	      $this->Order->save($order);
-  	    }
-	    }
-	    
+	      $this->Order->updateOrderStatus($this->params['form']['id'],
+	                                      $this->params['form']['status']);
+ 	    }
 	    if($this->params['form']['quantity_supplied']) {
 	      $order_id = $this->params['pass'][0];
 	      $product_id = $this->params['form']['id'];
- 	      $lineItems = $this->Order->getProductsByOrderId($order_id);
- 	      foreach($lineItems as $lineItem) {
- 	        if($lineItem['LineItem']['product_id'] == $product_id) {
- 	         $lineItem['LineItem']['quantity_supplied'] = 
- 	           $this->params['form']['quantity_supplied'];
- 	         $this->LineItem->save($lineItem);
- 	       }
- 	     } 
+	      $this->LineItem->updateQuantitySupplied($order_id, $product_id,
+	                                              $this->params['form']['quantity_supplied']); 	     
 	    }
     }
 	}
@@ -232,7 +215,7 @@ class OrdersController extends AppController {
     }
 	}
 
-	function admin_view($id = null) {
+	function coordinator_view($id = null) {
 	  $this->layout = "admin_add";
 	  if($this->RequestHandler->isAjax()) {
       $this->autoRender = false;

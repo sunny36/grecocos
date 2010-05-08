@@ -19,5 +19,29 @@ class Order extends AppModel {
     $products = ClassRegistry::init('LineItem')->find('all',$params);
 	  return $products;
 	}
+	
+	function updateOrderStatus($id, $status) {
+	  $this->recursive = 2;
+    $order = $this->findById($id);
+    if($status == 'Yes') {
+      //Update status to packed
+      $order['Order']['status'] = 'packed';
+      //Update total for each line item as well as the order total 
+      $total_supplied = 0; 
+      foreach($order['LineItem'] as &$line_item) {
+        $line_item['total_price_supplied'] = $line_item['quantity_supplied'] * 
+                                             $line_item['Product']['selling_price'];
+        $total_supplied += $line_item['total_price_supplied'];
+      }
+      $order['Order']['total_supplied'] = $total_supplied;
+      $this->log($order, 'activity');   
+      $this->save($order);
+    }
+    if($status == 'No') {
+      $order['Order']['status'] = 'paid';
+      $this->save($order);
+    }
+	}
+	
 }
 ?>
