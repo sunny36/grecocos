@@ -65,7 +65,7 @@
       <tr>
         <th scope="row">
           <?php e($html->link('View Orders and mark as delivered',
-                              '/coordinator/orders/mark_as_paid'))?>
+                              '/coordinator/orders/mark_as_delivered'))?>
         </th>        
         <td></td>
         <td></td>  
