@@ -38,27 +38,6 @@ class OrdersController extends AppController {
      }    
   }
  
-	function admin_index() {
-	  $this->layout = "admin_index";
-	  $this->log($this->params, 'activity');
-	  if(!empty($this->params['url']['id'])){
-	    $id = $this->params['url']['id'];
-      $this->paginate = array(
-        'conditions' => array('Order.id' => $this->params['url']['id'])
-        );
-	  }
-	  if(!empty($this->params['url']['user_name'])){
-      $this->paginate = array(
-        'conditions' => array(
-          'OR' => array(
-          'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
-          'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
-          )
-        );
-	  }	  
-		$this->Order->recursive = 0;
-		$this->set('orders', $this->paginate());
-	}
 	
 	function coordinator_mark_as_paid() {
 	  $this->layout = "admin_index";
