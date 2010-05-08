@@ -65,8 +65,37 @@ class OrdersController extends AppController {
           )
         );
 	  }	  
-		$this->Order->recursive = 0;
+	
 		$this->set('orders', $this->paginate());	  
+	}
+	
+	function coordinator_mark_as_delivered() {
+	  $this->layout = "admin_index";
+		$this->Order->recursive = 0;
+		$this->paginate = array('conditions' => array('Order.status' => array('packed', 'delivered')));
+	  if(!empty($this->params['url']['id'])){
+	    $id = $this->params['url']['id'];
+      $this->paginate = array(
+        'conditions' => array('AND' => array(
+          'Order.id' => $this->params['url']['id'],
+          'Order.status' => array('packed', 'delivered')))
+          );
+	  }
+	  if(!empty($this->params['url']['user_name'])){
+      $this->paginate = array(
+        'conditions' => array(
+          'AND' => array(
+            'OR' => array(
+            'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
+            'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
+            ),
+         'Order.status' => array('packed', 'delivered')
+            
+            )
+        );
+	  }	  
+		$this->set('orders', $this->paginate());	  
+	  
 	}
   
   
