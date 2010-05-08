@@ -72,8 +72,7 @@ class OrdersController extends AppController {
   
 	function supplier_view($id = null) {
 	  if($this->RequestHandler->isAjax()) {
-      $this->autoRender = false;
-      
+      $this->autoRender = false;      
 	    $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
       $sidx = $this->params['url']['sidx']; 
@@ -153,25 +152,56 @@ class OrdersController extends AppController {
 	    $this->log($this->params, 'activity');
       $orderId = $this->params['url']['order_id'];
       $productId = $this->params['url']['product_id'];
-      $this->log($orderId, 'activity');
-      $this->log($productId, 'activity');
       $conditions = array( "AND" => array (
        "LineItem.order_id" => $orderId,
        "LineItem.product_id >" => $productId));
       $lineItem = $this->LineItem->find('first', array(
         'conditions' => array('LineItem.order_id' => $orderId,
                               'LineItem.product_id' => $productId)));
-      $this->log($lineItem, 'activity');
       $this->LineItem->id = $lineItem['LineItem']['id'];
-
-
-      $lineItem = json_encode($lineItem);
-      
+      $lineItem = json_encode($lineItem);      
       $this->set('lineItem', $lineItem);
       $this->render('/elements/order_products');
     }
 	}
 	
+	function supplier_close_batch() {
+	  $this->layout = 'admin_index';
+	  if($this->RequestHandler->isAjax()) {
+	    $page = $this->params['url']['page']; 
+      $limit = $this->params['url']['rows']; 
+      $sidx = $this->params['url']['sidx']; 
+      $sord = $this->params['url']['sord']; 
+	    if(!$sidx) $sidx =1;
+	    $count = $this->Delivery->find('count');
+      if( $count >0 ) {
+        $total_pages = ceil($count/$limit);
+      } else {
+       $total_pages = 0;
+      }
+      if ($page > $total_pages) $page=$total_pages;
+      $start = $limit*$page - $limit;
+      $delivery_dates = $this->Delivery->find('all'); 
+      foreach($delivery_dates as &$delivery) {
+        $packed = 0; 
+        $paid = 0;
+        foreach($delivery['Order'] as $order) {
+         if($order['status'] == "packed") $packed = $packed + 1;
+         if($order['status'] == "paid") $paid = $paid + 1;
+        }         
+       $delivery['Delivery']['packed'] = $packed;
+       $delivery['Delivery']['ordered'] = $packed + $paid;
+      }
+      $this->log($delivery_dates, 'activity');
+      $this->set('page',$page);
+      $this->set('total_pages',$total_pages);
+      $this->set('count',$count); 
+      $this->set('delivery_dates', $delivery_dates);
+
+      $this->render('/elements/supplier_close_batch', 'ajax');
+	    
+    }
+	}
 
 	function admin_view($id = null) {
 	  $this->layout = "admin_add";
