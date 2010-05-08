@@ -175,16 +175,46 @@ class UsersController extends AppController {
   function admin_login(){ 
     $this->set('title_for_layout', 'Login | Grecocos Administration');
     $this->layout = "admin_login"; 
-    if( $this->Auth->user( ) )
-        {
-            $this->redirect( array(
-                    'controller'    =>      'dashboard' ,
-                    'action'        =>      'index' ,
-            ));
-          }
-	  
+    if($this->Auth->user()) {
+      $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
+    }
   }
+
+  function coordinator_login(){ 
+    $this->set('title_for_layout', 'Login | Grecocos Administration');
+    $this->layout = "admin_login"; 
+    if($this->Auth->user()) {
+      $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
+    }
+  }
+
+  function supplier_login(){ 
+    $this->set('title_for_layout', 'Login | Grecocos Administration');
+    $this->layout = "admin_login"; 
+    if($this->Auth->user()) {
+      $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
+    }
+  }
+  
   function admin_logout() { 
+ 	  $this->Session->setFlash('You have logged out!!');
+ 	  if($this->Auth->logout()){
+ 	    $this->redirect(array('controller' => 'users', 
+  	                        'action' => 'login', 'admin' => true));
+  	  
+ 	  }
+  }
+
+  function coordinator_logout() { 
+ 	  $this->Session->setFlash('You have logged out!!');
+ 	  if($this->Auth->logout()){
+ 	    $this->redirect(array('controller' => 'users', 
+  	                        'action' => 'login', 'admin' => true));
+  	  
+ 	  }
+  }
+
+  function supplier_logout() { 
  	  $this->Session->setFlash('You have logged out!!');
  	  if($this->Auth->logout()){
  	    $this->redirect(array('controller' => 'users', 
