@@ -12,8 +12,6 @@ echo "<records>".$count."</records>";
 
 for($i=0;$i<sizeof($products);$i++){
 echo "<row id='".$products[$i]['Product']['id']."'>"; 
-$num = $i + 1;           
-echo "<cell>". $num ."</cell>";
 echo "<cell>". $products[$i]['LineItem']['quantity']."</cell>";
 echo "<cell>". $products[$i]['LineItem']['quantity_supplied']."</cell>";
 echo "<cell><![CDATA[". $products[$i]['Product']['short_description'] . "]]></cell>";

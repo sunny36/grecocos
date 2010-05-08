@@ -15,6 +15,7 @@ $(document).ready(function(){
      		{name:'act',index:'act', width:140,sortable:false}
      		
      	],
+ 	    rownumbers: true, 
      	rowNum:10,
      	rowList:[10,20,30],
      	pager: jQuery('#orders_pager'),
@@ -54,16 +55,16 @@ $(document).ready(function(){
   
   jQuery('#order_d').jqGrid({
     height: 'auto', 
+    rownumbers: true, 
     url: '/index.php/supplier/orders/view/0', 
-    colNames: ['No','Quantity Ordered', 'Quantity Supplied', 'Product', 'Action'], 
+    colNames: ['Quantity Ordered', 'Quantity Supplied', 'Product', 'Action'], 
     colModel:[
-       		{name:'num',index:'num', width:55},
-       		{name:'qty',index:'qty', width:80, align:"right"},
-      		{name:'quantity_supplied',index:'quantity_supplied', width:80, align:"right", 
+       		{name:'quantity_ordered',index:'quantity_ordered', width:120, align:"right"},
+      		{name:'quantity_supplied',index:'quantity_supplied', width:120, align:"right", 
       		 editable: true, edittype:"select", 
       		 editoptions: {value: "0:0"}
       		 },     		 
-       		{name:'product',index:'product', width:200},
+       		{name:'product',index:'product', width:250},
        		{name:'act',index:'act', width:140,sortable:false}
        	],
     gridComplete: function(){
