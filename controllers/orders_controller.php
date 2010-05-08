@@ -9,23 +9,35 @@ class OrdersController extends AppController {
   function supplier_index() {
     $this->layout = 'admin_index';
     if($this->RequestHandler->isAjax()) {
-       $start = $this->Jqgrid->getStart($this->params, 'Order');
+ 	     $page = $this->params['url']['page']; 
+       $limit = $this->params['url']['rows']; 
+       $sidx = $this->params['url']['sidx']; 
+       $sord = $this->params['url']['sord']; 
+       if(!$sidx) $sidx =1;
+       $count = $this->Order->find('count');
+
+       if( $count >0 ) {
+       	$total_pages = ceil($count/$limit);
+       } else {
+       	$total_pages = 0;
+       }
+       if ($page > $total_pages) $page=$total_pages;
+       $start = $limit*$page - $limit;
        $orders = $this->Order->find('all', array(
          'recursive' => 0, 
          'offset' => $start,
-         'limit' => $this->Jqgrid->getLimit($this->params, 'Order'),
+         'limit' => $limit,
          'conditions' => array('Order.status <>' => 'entered')));
 
-       $this->set('page', $this->Jqgrid->getLimit($this->params, 'Order'));
-       $this->set('total_pages', $this->Jqgrid->getTotalPages($this->params, 'Order'));
-       $this->set('count', $this->Jqgrid->getCount($this->params, 'Order')); 
-       $this->set('orders', $orders);
-       
+       $this->set('page',$page);
+       $this->set('total_pages',$total_pages);
+       $this->set('count',$count); 
+       $this->set('orders', $orders);      
        $this->render('/elements/supplier_orders', 'ajax');
 
      }    
   }
-
+ 
 	function admin_index() {
 	  $this->layout = "admin_index";
 	  $this->log($this->params, 'activity');
