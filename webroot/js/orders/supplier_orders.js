@@ -4,7 +4,8 @@ $(document).ready(function(){
   jQuery("#orders").jqGrid({
     url: '/index.php/supplier/orders/index',
   	datatype: "xml",
-     	colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 'Actions'],
+     	colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 
+     	          'Actions', 'Print'],
      	colModel:[
         
      		{name:'id',index:'id', width:100, sorttype:"int", editable: false},
@@ -12,8 +13,8 @@ $(document).ready(function(){
      		{name:'customer',index:'customer', editable: false},
      		{name:'status',index:'status', width:50, align:'center', formatter:'checkbox', editable: true, edittype:"checkbox",editoptions: {value:"Yes:No"}},
      		{name:'amount',index:'amount', width:80, editable: false},
-     		{name:'act',index:'act', width:140,sortable:false}
-     		
+     		{name:'act',index:'act', width:140,sortable:false},
+     		{name:'print',index:'print', width:140,sortable:false,formatter:link_formatter},
      	],
  	    rownumbers: true, 
      	rowNum:10,
@@ -52,6 +53,11 @@ $(document).ready(function(){
       }
     }
   }).navGrid('#order_pager',{edit:false,add:false,del:false});	
+
+  function link_formatter(cellvalue, options, rowObject) {
+    link = "\"/index.php/supplier/orders/view/" + options["rowId"] + "\"";
+    return "<a href=" + link + ">" + cellvalue + "</a> ";
+  }
   
   jQuery('#order_d').jqGrid({
     height: 'auto', 

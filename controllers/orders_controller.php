@@ -37,8 +37,7 @@ class OrdersController extends AppController {
 
      }    
   }
- 
-	
+ 	
 	function coordinator_mark_as_paid() {
 	  $this->layout = "admin_index";
 	  if(!empty($this->params['url']['id'])){
@@ -122,13 +121,13 @@ class OrdersController extends AppController {
       $this->render('/elements/order', 'ajax');
     } else {
       //Non-Ajax
-      if (!$id) {
-  			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'order'));
-  			$this->redirect(array('action' => 'index'));
-  		}
-  		$products = $this->Order->getProducts($id);
-  	  $this->set('products', $products);
-  		$this->set('order', $this->Order->read(null, $id));
+      //Show pdf
+      $this->log($this->params, 'activity');
+      $this->layout = "fpdf";
+      $products = $this->Order->getProducts($id);
+      $this->set('products', $products);
+      $this->set('order', $this->Order->read(null, $id));     
+      $this->render('/elements/supplier_order_pdf');
     }
 	}
 	
