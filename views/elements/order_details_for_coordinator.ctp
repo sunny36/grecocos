@@ -10,8 +10,16 @@ echo "<page>".$page."</page>";
 echo "<total>".$total_pages."</total>";
 echo "<records>".$count."</records>";
 
-
-echo "<userdata name=\"price\">" . "Total" . "</userdata>";
+$quantity_ordered = 0; 
+$quantity_supplied = 0; 
+foreach($products as $product) {
+  $quantity_ordered += $product['LineItem']['quantity'];
+  $quantity_supplied += $product['LineItem']['quantity_supplied'];
+}
+echo "<userdata name=\"short_description\">" . "Total" . "</userdata>";
+echo "<userdata name=\"quantity_ordered\">" . $quantity_ordered . "</userdata>";
+echo "<userdata name=\"quantity_supplied\">" . $quantity_supplied . "</userdata>";
+echo "<userdata name=\"price\">" . "N.A." . "</userdata>";
 echo "<userdata name=\"sub_total\">" . $products[0]['Order']['total'] . "</userdata>";
 
 for($i=0;$i<sizeof($products);$i++){
@@ -21,6 +29,8 @@ echo "<cell><![CDATA[". $products[$i]['Product']['short_description'] .
      "]]></cell>";
 
 echo "<cell>". $products[$i]['LineItem']['quantity'] . "</cell>";
+
+echo "<cell>". $products[$i]['LineItem']['quantity_supplied'] . "</cell>";
      
 echo "<cell>" . $products[$i]['Product']['selling_price'] . "</cell>"; 
 
