@@ -16,7 +16,7 @@ foreach($products as $product) {
   $quantity_ordered += $product['LineItem']['quantity'];
   $quantity_supplied += $product['LineItem']['quantity_supplied'];
 }
-echo "<userdata name=\"short_description\">" . "Total" . "</userdata>";
+echo "<userdata name=\"short_description\">" . "Totals" . "</userdata>";
 echo "<userdata name=\"quantity_ordered\">" . $quantity_ordered . "</userdata>";
 echo "<userdata name=\"quantity_supplied\">" . $quantity_supplied . "</userdata>";
 echo "<userdata name=\"price\">" . "N.A." . "</userdata>";

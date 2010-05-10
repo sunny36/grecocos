@@ -9,12 +9,21 @@ echo "<rows>";
 echo "<page>".$page."</page>";
 echo "<total>".$total_pages."</total>";
 echo "<records>".$count."</records>";
+$quantity_ordered = 0; 
+$quantity_supplied = 0; 
+foreach($products as $product) {
+  $quantity_ordered += $product['LineItem']['quantity'];
+  $quantity_supplied += $product['LineItem']['quantity_supplied'];
+}
+echo "<userdata name=\"short_description\">" . "Totals" . "</userdata>";
+echo "<userdata name=\"quantity_ordered\">" . $quantity_ordered . "</userdata>";
+echo "<userdata name=\"quantity_supplied\">" . $quantity_supplied . "</userdata>";
 
 for($i=0;$i<sizeof($products);$i++){
 echo "<row id='".$products[$i]['Product']['id']."'>"; 
+echo "<cell><![CDATA[". $products[$i]['Product']['short_description'] . "]]></cell>";
 echo "<cell>". $products[$i]['LineItem']['quantity']."</cell>";
 echo "<cell>". $products[$i]['LineItem']['quantity_supplied']."</cell>";
-echo "<cell><![CDATA[". $products[$i]['Product']['short_description'] . "]]></cell>";
 echo "<cell>"."</cell>"; //for action
 echo "</row>";
 }
