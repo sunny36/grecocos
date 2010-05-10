@@ -11,26 +11,5 @@
     
 
 
-    <ul id="navigation-menu">
-      <li class="menu-item first">
-        <?php e($html->link('Dashboard',
-                            array('controller' => 'dashboard', 
-                                  'action' => 'index', 'admin' => true))); ?>
-      </li>
-      <li class="menu-item bookmark">
-        <?php e($html->link('Products',
-                            array('controller' => 'products', 
-                                  'action' => 'index', 'admin' => true))); ?>      
-      </li>
-      <li class="menu-item bookmark">
-        <?php e($html->link('Orders',
-                            array('controller' => 'orders', 
-                                  'action' => 'index', 'admin' => true))); ?>      
-      </li>
-      <li class="menu-item bookmark">
-        <?php e($html->link('Users',
-                            array('controller' => 'users', 
-                                  'action' => 'index', 'admin' => true))); ?>      
-      </li>
-    </ul>
+
 </div>
