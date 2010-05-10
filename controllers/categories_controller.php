@@ -19,7 +19,8 @@ class CategoriesController extends AppController {
     $this->set('category', $this->Category->read(null, $id));
   }
 
-  function add() {
+  function supplier_add() {
+    $this->layout = "supplier/add";
     if (!empty($this->data)) {
       $this->Category->create();
       if ($this->Category->save($this->data)) {
@@ -29,9 +30,11 @@ class CategoriesController extends AppController {
         $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'category'));
       }
     }
+    $this->render('/categories/admin_add'); 
   }
 
-  function edit($id = null) {
+  function supplier_edit($id = null) {
+    $this->layout = "supplier/add";
     if (!$id && empty($this->data)) {
       $this->Session->setFlash(sprintf(__('Invalid %s', true), 'category'));
       $this->redirect(array('action' => 'index'));
@@ -47,9 +50,10 @@ class CategoriesController extends AppController {
     if (empty($this->data)) {
       $this->data = $this->Category->read(null, $id);
     }
+    $this->render("/categories/admin_edit");
   }
 
-  function delete($id = null) {
+  function supplier_delete($id = null) {
     if (!$id) {
       $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'category'));
       $this->redirect(array('action'=>'index'));

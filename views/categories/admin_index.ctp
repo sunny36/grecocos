@@ -1,49 +1,103 @@
-<div class="categories index">
-	<h2><?php __('Categories');?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-	$i = 0;
-	foreach ($categories as $category):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $category['Category']['id']; ?>&nbsp;</td>
-		<td><?php echo $category['Category']['name']; ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $category['Category']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $category['Category']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $category['Category']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $category['Category']['id'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
-	</div>
+<?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
+<?php echo $javascript->link('admin/admin_index.js', false); ?>
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Home', array('controller' => 'dashboard', 
+  'action' => 'index'))); ?> &rsaquo; 
+  Product Categories
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Category', true)), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('controller' => 'products', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product', true)), array('controller' => 'products', 'action' => 'add')); ?> </li>
-	</ul>
+<!-- End Navigation  -->
+
+<div id="content" class="flex">
+  <h1>Product Categories</h1> 
+  <div id="content-main" style="width: auto !important">
+    <ul class="object-tools">
+      <li>
+        <?php echo $html->link('Add Category', 
+          array('controller' => 'categories',                                               
+                'action' => 'add'), 
+        array('class' => 'addlink'))?>
+      </li>
+    </ul>    
+    <?php echo $session->flash(); ?> 
+    <div class="module" id="changelist" >
+      <div id="toolbar">
+        <form id="changelist-search" action="" method="get">
+          <div><!-- DIV needed for valid HTML -->
+            <label for="searchbar">
+              <?php echo $html->image('admin/icon_searchbox.png')?>
+
+            </label>
+            <input type="text" size="40" name="q" value="" id="searchbar" />
+            <input type="submit" value="Search" />
+          </div>
+        </form>
+      </div>
+      
+      <table cellspacing="0" >
+        <thead>
+          <tr>
+            <th><?php echo $this->Paginator->sort('id');?></th>
+            <th><?php echo $this->Paginator->sort('name');?></th>
+            <th><?php __('Actions');?></th>
+          </tr>
+        </thead>
+        <tbody>
+  	  <?php
+  	    $i = 0;
+  	    foreach ($categories as $category):
+  	    $class = null;
+  	    if ($i++ % 2 == 0) {
+              $class = ' class="row1"';
+            } else {
+              $class = ' class="row2"';
+            }
+  	  ?>
+          <tr<?php echo $class;?>>
+          <td><?php echo $category['Category']['id']; ?>&nbsp;</td>
+	  <td><?php echo $category['Category']['name']; ?>&nbsp;</td>
+          <td>
+            <?php echo $this->Html->link(__('Edit', true), 
+array('action' => 'edit', $category['Category']['id'])); ?> |
+            <?php echo $this->Html->link(__('Delete', true), 
+array('action' => 'delete', $category['Category']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $category['Category']['id'])); ?>
+          </td>
+  	</tr>
+        <?php endforeach; ?>
+
+      </tbody>
+    </table>
+
+
+    <?php
+      echo $this->Paginator->counter(array(
+                                           'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+                                           ));
+    ?>	</p>
+
+    <p class="paginator">
+      <?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
+      | 	<?php echo $this->Paginator->numbers();?>
+      |
+      <?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
+    </div>
+    
+    
+    
+
+    <!-- <p class="paginator">
+
+2 users
+
+
+</p> -->
+
+  </form>
+</div>
+
+</div>
+
+
+<br class="clear" />
 </div>
