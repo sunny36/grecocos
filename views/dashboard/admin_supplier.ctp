@@ -37,7 +37,7 @@
       <tr>
         <th scope="row">
           <?php e($html->link('View Product Categories',
-                              '/supplier/products/index'))?>
+                              '/supplier/categories/index'))?>
         </th>        
         <td></td>
         <td></td>  
