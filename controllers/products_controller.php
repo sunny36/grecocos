@@ -35,6 +35,16 @@ class ProductsController extends AppController {
     }
     $this->set('product', $this->Product->read(null, $id));
   }
+
+  function supplier_view($id = null) {
+    $this->layout = 'supplier/add'; 
+    if (!$id) {
+      $this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
+      $this->redirect(array('action' => 'index'));
+    }
+    $this->set('product', $this->Product->read(null, $id));
+    $this->render('/products/admin_view');
+  }
   
   function admin_add() {
     $this->layout = 'admin_add'; 

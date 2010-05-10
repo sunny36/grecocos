@@ -47,6 +47,17 @@
       </div>
     </div>
     <!-- End Long Description  -->
+
+    <!-- Begin Product Category  -->
+    <div class="form-row category">
+      <div>
+        <div>
+          <?php e($form->label('category', "Category")); ?>        
+          <strong> <?php e($product['Category']['name']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Product Category  -->
     
     <!-- Begin Selling Price  -->
     <div class="form-row selling_price">
