@@ -13,33 +13,6 @@
           <td></td>
           <td></td>
         </tr>
-        <tr>
-          <th scope="row">
-            <?php e($html->link('Orders', array('controller' => 'orders', 
-                                                  'action' => 'index')))?>
-          </th>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th scope="row">
-            <?php e($html->link('Products', array('controller' => 'products', 
-                                                  'action' => 'index')))?>
-          </th>
-
-          <td></td>
-          <td></td>  
-        </tr>
-        <tr>
-          <th scope="row">
-          <?php e($html->link('Delivery Date', array('controller' => 'deliveries', 
-                                                     'action' => 'index')))?>
-
-          </th>
-          <td><a href="sites/site/add/" class="addlink">Add</a></td>
-          <td><a href="sites/site/" class="changelink">Change</a></td>  
-        </tr>            
-        
       </table>
     </div>
   
@@ -71,17 +44,6 @@
         <td></td>  
       </tr>      
       </table>
-    </div>
-  </div>
-
-  <div id="content-related">
-    <div class="module" id="recent-actions-module">
-      <h2>Recent Actions</h2>
-      <h3>My Actions</h3>
-        <ul class="actionlist">
-          
-        </ul>
-          
     </div>
   </div>
 
