@@ -35,10 +35,11 @@
           <li class="menu-item">
             <?php e($html->link('View products',
                                 '/supplier/products/index'))?>
-
           </li>
           <li class="menu-item">
-            <a href="#">View product categories</a>
+            <?php e($html->link('View product categories',
+                                '/supplier/categories/index'))?>
+
           </li>
         </ul>
       </li>
