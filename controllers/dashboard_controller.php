@@ -10,7 +10,7 @@ class DashboardController extends AppController{
 	
 	function admin_coordinator() { 
 	  $this->set('title_for_layout', 'Grecocos | Co-ordinator');
-    $this->layout = "admin_dashboard"; 
+    $this->layout = "coordinator/dashboard"; 
 	}
 
 	function admin_supplier() { 
