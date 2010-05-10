@@ -1,3 +1,8 @@
+<?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
+<?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
+<?php echo $javascript->link('deliveries/supplier_deliveries_add.js', false); ?>
+<?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
+
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 
@@ -21,11 +26,17 @@
   <fieldset class="module aligned ">
     <!-- Begin Date  -->        
     <div class="form-row date">
+      <ul class="errorlist">
+        <?php 
+          if($form->isFieldError("Delivery.date"))
+             e($form->error('Delivery.date', null, array('wrap' => 'li'))); 
+        ?>
+      </ul>
       <div>
         <?php 
         e($form->label('date', "Date", 
                        array('class' => 'required')));  
-        e($this->Form->input('date', array('label' => false)));
+        e($form->text('date'));
         ?>        
       </div>        
     </div>    
@@ -48,7 +59,7 @@
 
 <div class="submit-row" >
   <p class="deletelink-box">
-    <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $delivery['Delivery']['id']), array('class' => 'deletelink'), sprintf(__('Are you sure you want to delete # %s?', true), $delivery['Delivery']['id'])); ?>
+    <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Delivery.id')), array('class' => 'deletelink'), sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Delivery.id'))); ?>
 
   </p>
 	

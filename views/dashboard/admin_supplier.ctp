@@ -25,7 +25,7 @@
     
     <div class="module">
       <table>
-      <caption><a href="sites/" class="section">Products</a></caption>
+      <caption>Products</caption>
       <tr>
         <th scope="row">
           <?php e($html->link('View Products',
@@ -42,9 +42,23 @@
         <td></td>
         <td></td>  
       </tr>
-      
       </table>
-    </div>    
+    </div> 
+
+    <div class="module">
+      <table>
+      <caption>Delivery date</caption>
+      <tr>
+        <th scope="row">
+          <?php e($html->link('Add / Modify next delivery',
+                              '/supplier/deliveries/index'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>
+      </table>
+    </div> 
+   
   </div>
 
   <br class="clear" />
