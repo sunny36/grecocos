@@ -1,5 +1,8 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
+<?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
 <?php echo $javascript->link('orders.js', false); ?>
+<?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
+
 <div class="breadcrumbs">
   <?php 
     e($html->link('Home', array('controller' => 'dashboard', 
@@ -7,6 +10,7 @@
   ?> &rsaquo; 
   Orders
 </div>
+<div id="confirmation_dialog"></div>
 <div id="content" class="flex">
   <h1>Orders</h1> 
   <div id="content-main">
