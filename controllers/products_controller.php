@@ -71,7 +71,6 @@ class ProductsController extends AppController {
       $this->data['Product']['image'] = 
         $this->Attachment->upload($this->data['Product']['Attachment']);
       $this->Product->create();
-      debug($this->data); die();
       if ($this->Product->save($this->data)) {
         $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
         $this->redirect(array('action' => 'index'));
@@ -146,5 +145,19 @@ class ProductsController extends AppController {
     $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Product'));
     $this->redirect(array('action' => 'index'));
   }
+
+  function supplier_delete($id = null) {
+    if (!$id) {
+      $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'product'));
+      $this->redirect(array('action'=>'index'));
+    }
+    if ($this->Product->delete($id)) {
+      $this->Session->setFlash(sprintf(__('%s deleted', true), 'Product'));
+      $this->redirect(array('action'=>'index'));
+    }
+    $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Product'));
+    $this->redirect(array('action' => 'index'));
+  }
+
 }
 ?>
