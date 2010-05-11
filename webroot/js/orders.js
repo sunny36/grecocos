@@ -1,49 +1,39 @@
+var $dialog;
+var pathname = window.location.pathname; 
 $(document).ready(function(){
   var msg = "";
-  var ajaxImage = '<img src="/grecocos/img/ajax-loader.gif" '+
+  var ajaxImage = '<img src="/img/ajax-loader.gif" '+
                   'alt="Loading" id="ajax_loader"/>';
+
   $('.paid').click(function(){
     var $paidCheckbox = $(this);
     var orderId = $(this).parent().children()[1].value;
     if($paidCheckbox.is(':checked')) {
       msg = "Are you sure you want to mark Order: " + orderId + " as paid.";
-      if(!confirm(msg)) {
-        $paidCheckbox.attr("checked", false);
-        return; 
-      }
-      else {
-        changeStatus($paidCheckbox, orderId, "paid");
-        return;
-      }
+      custom_confirm_yes_no(msg, 
+        function() {changeStatus($paidCheckbox, orderId, "paid");},
+        function() {$paidCheckbox.attr("checked", false);});
     }
     //paid is uncheck
     else {
-      $.get('/grecocos/admin/orders/getstatus', {id: orderId}, 
+      $.get(pathname + '/getstatus', {id: orderId}, 
       function(status){
         if(status == "paid"){
           msg = "Are you sure you want to mark Order: " + orderId + " as unpaid.";
-          if(!confirm(msg)) {
-            $paidCheckbox.attr("checked", true);
-            return; 
-          }
-          else {
-            changeStatus($paidCheckbox, orderId, "entered");
-            return;
-          }
+          custom_confirm_yes_no(msg, 
+            function() {changeStatus($paidCheckbox, orderId, "entered");},
+            function() {$paidCheckbox.attr("checked", true);});
         }
         if(status == "delivered"){
           msg = "Order is already delivered, cannot be changed to unpaid";
-          alert(msg);
-          $paidCheckbox.attr("checked", true);
-          return;
+          custom_confirm_ok(msg,
+            function() {$paidCheckbox.attr("checked", true);})
         }
         if(status == "packed"){
           msg = "Supplier has alread packed this order. Cannot be unpaid.";
-          alert(msg);
-          $paidCheckbox.attr("checked", true);
-          return;
-        }
-        
+          custom_confirm_ok(msg,
+            function() {$paidCheckbox.attr("checked", true);})
+        }        
       });  
     }
   });
@@ -52,26 +42,20 @@ $(document).ready(function(){
     var deliveredCheckbox = $(this);
     var orderId = $(this).parent().children()[1].value;
     if(deliveredCheckbox.is(':checked')) {
-      $.get('/grecocos/admin/orders/getstatus', {id: orderId}, 
+      $.get(pathname + '/getstatus', {id: orderId}, 
       function(status){
-        if(status == "paid") {
+        if(status == "packed") {
           msg = "Are you sure you want to mark Order: " + orderId + 
                 " as delivered.";
-          if(!confirm(msg)) {
-            deliveredCheckbox.attr("checked", false);
-            return;
-          }
-          else {
-            changeStatus(deliveredCheckbox, orderId, "delivered");
-            return
-          }
+          custom_confirm_yes_no(msg, 
+            function() {changeStatus(deliveredCheckbox, orderId, "delivered");},
+            function() {deliveredCheckbox.attr("checked", false);});                
         }
-        // status is not paid
+        // status is not packed
         else {
-          msg = "Order cannot be marked as delivered unless it's already marked as paid";
-          alert(msg);
-          deliveredCheckbox.attr("checked", false);
-          return;
+          msg = "Supplier has not marked this order as packed";
+          custom_confirm_ok(msg, 
+            function() {deliveredCheckbox.attr("checked", false);})
         }
       });
     }
@@ -79,26 +63,67 @@ $(document).ready(function(){
     else {
       msg = "Are you sure you want to mark Order: " + orderId + 
             " as not delivered.";
-      if(!confirm(msg)) {
-        deliveredCheckbox.attr("checked", true);
-        return;
-      }
-      else {
-        changeStatus(deliveredCheckbox, orderId, "paid");
-        return
-      }
+      custom_confirm_yes_no(msg, 
+        function() {changeStatus(deliveredCheckbox, orderId, "paid");},
+        function() {deliveredCheckbox.attr("checked", true);});                
     }
   });
   
   function changeStatus($checkbox, orderId, orderStatus) {
     $checkbox.hide();
     $checkbox.after(ajaxImage);
-    $.post('/grecocos/admin/orders/changeStatus', 
+    $.post(pathname + '/changeStatus', 
            {id: orderId, status: orderStatus}, function() {
              $('#ajax_loader').remove();
              $checkbox.fadeIn();
            });               
     return; 
-  }    
-      
+  } 
+
+  function custom_confirm_yes_no(prompt, action_yes, action_no) {
+    var $dialog = $('<div></div>')
+    		.html(prompt)
+    		.dialog({
+    			autoOpen: false,
+    			title: 'Grecocos',
+    			modal: true,
+    			resizable: false,
+    			closeOnEscape: false,
+          open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+          width: 'auto',
+          buttons: {
+            'Yes': function() {
+              $(this).dialog('close');
+              action_yes();
+              },
+            No: function() {
+              $(this).dialog('close');
+              action_no();
+              }
+            }
+    		});
+    $dialog.dialog('open');
+  }   
+
+  function custom_confirm_ok(prompt, action) {
+    var $dialog = $('<div></div>')
+    		.html(prompt)
+    		.dialog({
+    			autoOpen: false,
+    			title: 'Grecocos',
+    			modal: true,
+    			resizable: false,
+    			closeOnEscape: false,
+          open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+          width: 'auto',
+          buttons: {
+            'OK': function() {
+              $(this).dialog('close');
+              action();
+              }
+            }
+    		});
+    $dialog.dialog('open');
+  }   
+  
 });
