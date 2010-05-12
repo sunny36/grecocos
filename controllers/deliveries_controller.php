@@ -3,18 +3,41 @@ class DeliveriesController extends AppController {
 
   var $name = 'Deliveries';
   var $helpers = array('Html', 'Form', 'Javascript');
+  var $uses = array('Delivery', 'Order');
   
   function admin_index() {
     $this->layout = "admin_index";  
-    $this->Delivery->recursive = 0;
+    $this->Delivery->recursive = 1;
     $this->set('deliveries', $this->paginate());
   }
 
   function supplier_index() {
     $this->layout = "supplier/index";  
-    $this->Delivery->recursive = 0;
+    $this->Delivery->recursive = 3;
     $this->set('deliveries', $this->paginate());
     $this->render('/deliveries/admin_index');
+  }
+
+  function coordinator_notify_arrival_of_shipment() {
+    $this->log($this->params, 'activity'); 
+    $this->layout = "coordinator/index"; 
+
+    $delivery = $this->Delivery->findByOrderStatus("packed");
+    
+    if(!empty($this->params['form'])) {
+      $this->log($this->params['form']['send_email'], 'activity'); 
+
+      $delivery_id = $this->params['form']['id']; 
+      $delivery = $this->Order->find('all', 
+                                        array('conditions' => 
+                                            array('Delivery.id' => $delivery_id,
+                                                  'Order.status' => "packed")                                                    
+                                                  )
+                                                ); 
+      $this->log($delivery, 'activity'); 
+    } else {
+      $this->set('deliveries', $this->paginate()); 
+    }
   }
 
   function admin_view($id = null) {
