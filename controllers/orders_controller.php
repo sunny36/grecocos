@@ -7,7 +7,7 @@ class OrdersController extends AppController {
   var $components = array('Jqgrid');
 
   function supplier_index() {
-    $this->layout = 'admin_index';
+    $this->layout = 'supplier/index';
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
@@ -168,7 +168,7 @@ class OrdersController extends AppController {
   }
   
   function supplier_close_batch() {
-    $this->layout = 'admin_index';
+    $this->layout = 'supplier/index';
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
