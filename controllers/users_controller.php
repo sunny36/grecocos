@@ -229,6 +229,7 @@ class UsersController extends AppController {
     if($this->Auth->user()) {
       $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
     }
+    $this->render('/users/admin_login');
   }
 
   function supplier_login(){ 
@@ -237,6 +238,7 @@ class UsersController extends AppController {
     if($this->Auth->user()) {
       $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
     }
+    $this->render('/users/admin_login');
   }
   
   function admin_logout() { 
