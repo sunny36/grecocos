@@ -7,7 +7,6 @@ $(document).ready(function(){
      	colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 
      	          'Actions', 'Print'],
      	colModel:[
-            
      	    {name:'id',index:'id', width:100, sorttype:"int", editable: false},
      	    {name:'delivery_date',index:'delivery_date', editable: false},
      	    {name:'customer',index:'customer', editable: false},
@@ -47,7 +46,8 @@ $(document).ready(function(){
                 jQuery("#order_d").jqGrid('setGridParam',{
                     url:"/index.php/supplier/orders/view/"+ids,
                     editurl:"/index.php/supplier/orders/edit/"+ids,
-                    page:1});
+                    page:1,
+                    orderId: ids}); // set order id for later referal
                 jQuery("#order_d").jqGrid('setCaption',"Order Detail: "+ids)
                     .trigger('reloadGrid');	
             }
@@ -70,17 +70,24 @@ $(document).ready(function(){
        	    {name:'quantity_ordered',index:'quantity_ordered', 
              width:120, align:"center"},
       	    {name:'quantity_supplied', index:'quantity_supplied', 
-             width:120, align:"center", editable: true, 
-             edittype:"select", editoptions: {value: "0:0"}},     		 
+             width:120, align:"center", editable: true},     		 
        	    {name:'act',index:'act', width:140,sortable:false}
        	],
         gridComplete: function(){
             var ids = jQuery("#order_d").jqGrid('getDataIDs');
-            for(var i=0;i < ids.length;i++){
-                var cl = ids[i];
-                be = "<input class='order_d edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
-                jQuery("#order_d").jqGrid('setRowData',ids[i],{act:be});
-            } 
+            console.log(ids);
+            var orderId = $('#order_d').jqGrid('getGridParam', 'orderId'); 
+            //Do not show edit button if the order has already been packed
+            getOrderDeliveryStatus(orderId, function(data) {
+                console.log(data); 
+                if(data == 0) {
+                    for(var i=0;i < ids.length;i++){
+                        var cl = ids[i];
+                        be = "<input class='order_d edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
+                        jQuery("#order_d").jqGrid('setRowData',ids[i],{act:be});
+                    } 
+                }
+            }); 
         },       
         editurl: '/index.php/supplier/orders/edit',
         sortname: 'product',
@@ -93,13 +100,29 @@ $(document).ready(function(){
     
     $('.orders.edit.ui-button').live('click', function() {
         var $button = $(this);
-        $button.hide();
-        $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
-        s = "<input class='orders save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
-        c = "<input class='orders cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
-        $button.after(c).after(s);
-        
+        console.log($button.parent().parent().attr('id'));
+        orderId = $button.parent().parent().attr('id'); 
+        getOrderDeliveryStatus(orderId, function(data) {
+            if(data == 1) {
+                console.log("closed"); 
+                custom_confirm_ok("Order has been closed. Cannot edit.", function() {return; })
+                return;
+            } else {
+                $button.hide();
+                $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
+                s = "<input class='orders save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
+                c = "<input class='orders cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
+                $button.after(c).after(s);
+            }
+        });
     });
+
+    function getOrderDeliveryStatus(orderId, callback) {
+        var url = '/index.php/orders/getdeliverystatus'; 
+        $.get(url + '?id=' + orderId, function(data) {
+            callback(data); 
+        });
+    }
 
     $('.orders.save.ui-button').live('click', function() {
         var $button = $(this);
@@ -124,21 +147,6 @@ $(document).ready(function(){
     $('.order_d.edit.ui-button').live('click', function() {
         var $button = $(this);
         $button.hide();
-        var editurl = jQuery("#order_d").jqGrid('getGridParam','editurl');
-        var orderId = editurl.match(/\d+$/);
-        var productId = $button.parent().parent().attr('id'); 
-        var currentQuantity = $button.parent().parent().children()[1].innerHTML
-        var products = getProductsNum(orderId, productId, function(result) {
-            var lineItem = eval('(' + result + ')');
-            console.log(lineItem);
-            var quantity = parseInt(lineItem["LineItem"]["quantity"], 10);
-            var quantitySupplied = parseInt(lineItem["LineItem"]["quantity_supplied"], 10);
-            for (var i = 1; i <= quantity; i++ ) {
-                $('#' + productId + '_quantity_supplied').prepend($("<option></option>").attr("value",i).text(i));
-            }
-            $('#' + productId + '_quantity_supplied').val(quantitySupplied);
-        });
-        
         $("#" + getTableId($button)).editRow($button.parent().parent().attr('id'));
         s = "<input class='order_d save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
         c = "<input class='order_d cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
@@ -158,12 +166,25 @@ $(document).ready(function(){
     
     $('.order_d.save.ui-button').live('click', function() {
         var $button = $(this);
-        $button.hide(); 
-        $button.next().hide();
-        $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'));
-        $button.prev().show();
-        $button.next().remove(); 
-        $button.remove();    
+        var rowid = $button.parent().parent().attr('id'); 
+
+        console.log(rowid); 
+        console.log($("#" + getTableId($button)).getCell(rowid, "quantity_ordered")); 
+        console.log($("#" + getTableId($button)).getCell(rowid, "quantity_supplied"));
+        console.log($("#" + rowid + "_quantity_supplied").val());  
+        var quantity_ordered = $("#" + getTableId($button)).
+            getCell(rowid, "quantity_ordered");
+        var quantity_supplied = $("#" + rowid + "_quantity_supplied").val(); 
+        if(parseInt(quantity_supplied, 10) > parseInt(quantity_ordered, 10)) { 
+            custom_confirm_ok("Quantity supplied must be LESS THAN or EQUAL to quantity ordered", function() { return }); 
+        } else { 
+            $button.hide(); 
+            $button.next().hide();
+            $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'));
+            $button.prev().show();
+            $button.next().remove(); 
+            $button.remove();    
+        }
     });
     
     
@@ -178,5 +199,27 @@ $(document).ready(function(){
     function getTableId($button) {
         return $button.closest('table').attr('id');
     }
+
+    function custom_confirm_ok(prompt, action) {
+        var $dialog = $('<div></div>')
+      	    .html(prompt)
+      	    .dialog({
+      		autoOpen: false,
+      		title: 'Grecocos',
+      		modal: true,
+      		resizable: false,
+      		closeOnEscape: false,
+                open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+                width: 'auto',
+                buttons: {
+                    'OK': function() {
+                        $(this).dialog('close');
+                        action();
+                    }
+                }
+      	    });
+        $dialog.dialog('open');
+    }   
+
 });
 

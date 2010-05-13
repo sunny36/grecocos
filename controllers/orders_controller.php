@@ -183,7 +183,14 @@ class OrdersController extends AppController {
       }
       if ($page > $total_pages) $page=$total_pages;
       $start = $limit*$page - $limit;
-      $delivery_dates = $this->Delivery->find('all'); 
+      $params = array('conditions' => array('Delivery.next_delivery' => true)); 
+      $next_delivery = $this->Delivery->find('first', $params);
+
+      $params = array('conditions' => array('Delivery.date <=' => 
+                                            $next_delivery['Delivery']['date']),
+                      'order' => array('Delivery.' . $sidx . ' ' . 
+                                       strtoupper($sord))); 
+      $delivery_dates = $this->Delivery->find('all', $params); 
       foreach($delivery_dates as &$delivery) {
         $packed = 0; 
         $paid = 0;
@@ -194,14 +201,11 @@ class OrdersController extends AppController {
         $delivery['Delivery']['packed'] = $packed;
         $delivery['Delivery']['ordered'] = $packed + $paid;
       }
-      $this->log($delivery_dates, 'activity');
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
       $this->set('delivery_dates', $delivery_dates);
-
       $this->render('/elements/supplier_close_batch', 'ajax');
-      
     }
   }
 
@@ -254,14 +258,13 @@ class OrdersController extends AppController {
     Configure::write('debug', 0);
     $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
-      // $this->log($this->params, 'activity');
       $order =  $this->Order->find('first', 
-                                   array('conditions' => array(
-                                                               'Order.id' => $this->params['form']['id']), 
+                                   array('conditions' => 
+                                         array('Order.id' => 
+                                               $this->params['form']['id']), 
                                          'recursive' => -1));
       $order['Order']['status'] = $this->params['form']['status'];
       $this->Order->save($order);
-      // $this->log($order, 'activity');
     }
   }
   
@@ -278,5 +281,22 @@ class OrdersController extends AppController {
       $this->log($order, 'activity');
     } 
   }
+
+  function getdeliverystatus(){
+    Configure::write('debug', 0);
+    // $this->autoRender = false;
+    if($this->RequestHandler->isAjax()) {
+      $this->log($this->params, 'activity');
+      $order =  $this->Order->find('first', 
+                                   array('conditions' => array(
+                                                               'Order.id' => $this->params['url']['id']), 
+                                         'recursive' => 1));
+      $this->set('status', $order['Delivery']['closed']);
+      $this->log($order, 'activity');
+    } 
+  }
+
+
+
 }
 ?>
