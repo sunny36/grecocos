@@ -6,7 +6,7 @@ $(document).ready(function(){
     $product = $(this);
     productId = $product.parent().parent().children().first().children().first().attr("value");
     //console.log(productId);
-    jQuery.facybox({ajax: '/grecocos/products/view/' + productId});
+    jQuery.facybox({ajax: '/index.php/products/view/' + productId});
   });
   
   $("button").button({
