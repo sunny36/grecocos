@@ -5,7 +5,13 @@
 <?php echo $javascript->link('orders/supplier_orders.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 <?php echo $html->css('ui.jqgrid', null, array('inline' => false)); ?>
+<!-- TODO Extract to external style sheet -->
+<style text="type/css">
+  input[type="button"] {
+  padding: 0em; 
 
+  }
+</style>
 <div class="breadcrumbs">
   <?php 
     e($html->link('Home', array('controller' => 'dashboard', 
@@ -19,14 +25,14 @@
   <div id="content-main">
     <div class="module" id="changelist">
 
-<p>Click anywhere on the row to view the details of the order.</p>
-<table id="orders"></table>
-<div id="orders_pager"></div>
+      <p>Click anywhere on the row to view the details of the order.</p>
+      <table id="orders"></table>
+      <div id="orders_pager"></div>
 
-<br/>
+      <br/>
 
-<table id="order_d"></table>
-<div id="order_d_pager"></div>
-</div>
-</div>
+      <table id="order_d"></table>
+      <div id="order_d_pager"></div>
+    </div>
+  </div>
 </div>
