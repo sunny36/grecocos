@@ -22,16 +22,17 @@
     </ul>    
     <div class="module" id="changelist">
       <div id="toolbar">
-        <form id="changelist-search" action="" method="get">
+        <?php e($form->create(null, array('type' => 'get', 'action' => 'index'))); ?>
       <div><!-- DIV needed for valid HTML -->
       <label for="searchbar">
         <?php echo $html->image('admin/icon_searchbox.png')?>
-
       </label>
-      <input type="text" size="40" name="q" value="" id="searchbar" />
-      <input type="submit" value="Search" />
+      <?php e($form->text('short_description', array('size' =>
+      '60'))); ?>
+    	<?php e($form->submit('Search', array('div' => false))); ?>
+    	 &nbsp;&nbsp;
+    	<?php e($html->link('View All', '/supplier/products/index'))?>
     </div>
-    </form>
     </div>
           
 <table cellspacing="0">

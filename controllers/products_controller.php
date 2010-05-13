@@ -6,6 +6,7 @@ class ProductsController extends AppController {
   var $helpers = array('Html', 'Form', 'Javascript');
   var $uses = array('Product', 'Category'); 
 
+
   function view($id = null) {
     if (!$id) {
       $this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
@@ -23,7 +24,16 @@ class ProductsController extends AppController {
   function supplier_index() {
     $this->layout = 'supplier/index'; 
     $this->Product->recursive = 0;
-    $this->set('products', $this->paginate());    
+    if(!empty($this->params['url']['short_description'])) {
+      $short_description = $this->params['url']['short_description'];
+      $this->paginate = (array('conditions' => 
+                               array('Product.short_description LIKE' => 
+                                     '%' . $short_description . '%'
+                                     ))); 
+      $this->set('products', $this->paginate());    
+    } else {
+      $this->set('products', $this->paginate());    
+    }
     $this->render('/products/admin_index');
   }
 
