@@ -1,5 +1,6 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('orders.js', false); ?>
+<?php echo $javascript->link('admin/admin_index.js', false); ?>
 <div class="breadcrumbs">
   <?php 
     e($html->link('Home', array('controller' => 'dashboard', 
