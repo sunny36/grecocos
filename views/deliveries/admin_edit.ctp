@@ -13,7 +13,7 @@
     e($html->link('Delivery Date', array('controller' => 'deliveries', 
                                 'action' => 'index'))); 
   ?> &rsaquo;                            
-  Add Delivery Date
+  Edit Delivery Date
 </div>
 <!-- End Navigation  -->
 
@@ -21,6 +21,7 @@
   <h1>Add product</h1>
   <div id="content-main">
     <?php echo $this->Form->create('Delivery');?>
+    <?php echo $form->hidden('id'); ?>
   <div>
   <?php echo $session->flash(); ?>
   <fieldset class="module aligned ">
