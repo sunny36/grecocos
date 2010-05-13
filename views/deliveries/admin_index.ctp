@@ -23,7 +23,6 @@
       <table cellspacing="0">
         <thead>
           <tr>
-            <th><?php echo $this->Paginator->sort('id');?></th>
             <th><?php echo $this->Paginator->sort('date');?></th>
             <th><?php echo $this->Paginator->sort('next_delivery');?></th>
             <th><?php __('Actions');?></th>
@@ -41,7 +40,6 @@
             }
   	  ?>
           <tr<?php echo $class;?>>
-          <td><?php echo $delivery['Delivery']['id']; ?>&nbsp;</td>
           <td><?php echo $delivery['Delivery']['date']; ?>&nbsp;</td>
           <td>
   	    <?php

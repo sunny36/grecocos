@@ -14,6 +14,7 @@ class DeliveriesController extends AppController {
   function supplier_index() {
     $this->layout = "supplier/index";  
     $this->Delivery->recursive = 3;
+    $this->paginate = array('order' => array('Delivery.date DESC'));
     $this->set('deliveries', $this->paginate());
     $this->render('/deliveries/admin_index');
   }
