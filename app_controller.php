@@ -1,6 +1,6 @@
 <?php
 class AppController extends Controller {
-  var $components = array('Auth', 'Session', 'RequestHandler', 'DebugKit.Toolbar');
+  var $components = array('Auth', 'Session', 'RequestHandler');
 
   function beforeFilter(){
     $this->Auth->fields = array('username' => 'email', 
@@ -20,6 +20,7 @@ class AppController extends Controller {
     //                                    'action' => 'index');
     $this->Auth->logoutRedirect = array('controller' => 'users',
                                         'action' => 'login');
+    $this->Auth->authError = "Please login.";
     $this->Auth->allow('signup');
     $this->set('loggedIn', $this->Auth->user('id'));
     $this->Auth->authorize = 'controller';
