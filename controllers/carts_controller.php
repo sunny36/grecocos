@@ -10,7 +10,12 @@ class CartsController extends AppController{
   
   function index(){
     $this->layout = 'cart'; 
-    $products = $this->Category->find('all');
+    $this->Category->Behaviors->attach('Containable'); 
+    $products = $this->Category->find('all', array(
+        'contain' => array('Product' => array(
+          'conditions' => array('AND' => array(
+            'Product.display = ' => '1', 
+            'Product.stock > ' => '0'))))));
     $this->set('products', $products);
   }
   
