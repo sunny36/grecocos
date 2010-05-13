@@ -29,11 +29,11 @@ class DeliveriesController extends AppController {
 
       $delivery_id = $this->params['form']['id']; 
       $delivery = $this->Order->find('all', 
-                                        array('conditions' => 
-                                            array('Delivery.id' => $delivery_id,
-                                                  'Order.status' => "packed")                                                    
-                                                  )
-                                                ); 
+                                     array('conditions' => 
+                                           array('Delivery.id' => $delivery_id,
+                                                 'Order.status' => "packed")                                                    
+                                           )
+                                     ); 
       $this->log($delivery, 'activity'); 
     } else {
       $this->set('deliveries', $this->paginate()); 
@@ -123,22 +123,6 @@ class DeliveriesController extends AppController {
 
   function supplier_edit($id = null) {
     $this->layout = "supplier/add";
-    if (!$id && empty($this->data)) {
-      $this->Session->setFlash(sprintf(__('Invalid %s', true), 'delivery'));
-      $this->redirect(array('action' => 'index'));
-    }
-    if (!empty($this->data)) {
-      if ($this->Delivery->save($this->data)) {
-        $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'delivery'));
-        $this->redirect(array('action' => 'index'));
-      } else {
-        $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 'flash_error');
-      }
-    }
-    if (empty($this->data)) {
-      $this->data = $this->Delivery->read(null, $id);
-      $this->set('delivery', $this->Delivery->read(null, $id));
-    }
     if($this->RequestHandler->isAjax()) {
       $this->autoRender = false; 
       if($this->params['form']['closed']) {
@@ -156,8 +140,29 @@ class DeliveriesController extends AppController {
         }
         $this->Delivery->save($delivery);
       }
+    } else {
+      //Non-Ajax request 
+      if (!$id && empty($this->data)) {
+        $this->Session->setFlash(sprintf(__('Invalid %s', true), 'delivery'));
+        $this->redirect(array('action' => 'index'));
+      }
+      if (!empty($this->data)) {
+        if ($this->Delivery->save($this->data)) {
+          $this->Session->setFlash(sprintf(__('The %s has been saved', true), 
+                                           'delivery'));
+          $this->redirect(array('action' => 'index'));
+        } else {
+          $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 'flash_error');
+        }
+      }
+      if (empty($this->data)) {
+        $this->data = $this->Delivery->read(null, $id);
+        $this->set('delivery', $this->Delivery->read(null, $id));
+      }
+
+      $this->render("/deliveries/admin_edit");
+
     }
-    $this->render("/deliveries/admin_edit");
   }
 }
 ?>
