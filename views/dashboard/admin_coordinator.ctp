@@ -6,8 +6,7 @@
         <tr>
           <th scope="row">
             <?php e($html->link('View Customers information', 
-                                array('controller' => 'users', 
-                                      'action' => 'index')))?>            
+                                '/coordinator/users'))?>            
           </th>
           <!-- Two empty <td> so that the table doesn't break -->
           <td></td>
