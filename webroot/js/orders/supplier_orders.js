@@ -1,21 +1,30 @@
 var productsNum = 0;
 $(document).ready(function(){
     var lastsel2;
-    jQuery("#orders").jqGrid({
+var mygrid =  jQuery("#orders").jqGrid({
         url: '/index.php/supplier/orders/index',
   	datatype: "xml",
      	colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 
      	          'Actions', 'Print'],
      	colModel:[
-     	    {name:'id',index:'id', width:100, sorttype:"int", editable: false},
-     	    {name:'delivery_date',index:'delivery_date', editable: false},
-     	    {name:'customer',index:'customer', editable: false},
-     	    {name:'status',index:'status', width:50, align:'center', formatter:'checkbox', editable: true, edittype:"checkbox",editoptions: {value:"Yes:No"}},
-     	    {name:'amount',index:'amount', width:80, editable: false},
-     	    {name:'act',index:'act', width:140,sortable:false},
-     	    {name:'print',index:'print', width:140,sortable:false,formatter:link_formatter},
+     	    {name:'id',index:'id', width:100, sorttype:"int", editable: false, 
+     	     search: false},
+     	    {name:'delivery_date',index:'delivery_date', width:180,
+      	   editable: false, stype:'select', 
+     	     searchoptions:{value:"all:All;current_delivery_date:Current Delivery Date"}},
+     	    {name:'customer',index:'customer', editable: false, search:false},
+     	    {name:'status',index:'status', width:100, align:'center', 
+     	     formatter:'checkbox', editable: true, edittype:"checkbox",
+     	     editoptions: {value:"Yes:No"}, stype:'select',
+     	     searchoptions:{value:"all:All;packed:Packed;not_packed:Not Packed"}},
+     	    {name:'amount',index:'amount', width:80, editable: false, 
+     	     search:false},
+     	    {name:'act',index:'act', width:140,sortable:false, search: false},
+     	    {name:'print',index:'print', width:140,sortable:false,
+     	     search: false, formatter:link_formatter},
      	],
- 	rownumbers: true, 
+     	gridview : true,
+ 	    rownumbers: true, 
      	rowNum:10,
      	rowList:[10,20,30],
      	pager: jQuery('#orders_pager'),
@@ -28,6 +37,7 @@ $(document).ready(function(){
                 be = "<input class='orders edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
                 jQuery("#orders").jqGrid('setRowData',ids[i],{act:be});
             } 
+            
         },       
         editurl: '/index.php/supplier/orders/edit',
         caption:"Orders",
@@ -52,8 +62,31 @@ $(document).ready(function(){
                     .trigger('reloadGrid');	
             }
         }
-    }).navGrid('#order_pager',{edit:false,add:false,del:false});	
+    });	
 
+    jQuery("#orders").jqGrid('navGrid','#orders_pager',{edit:false,add:false,del:false,search:false,refresh:false});
+    jQuery("#orders").jqGrid('navButtonAdd',"#orders_pager",{caption:"Toggle",title:"Toggle Search Toolbar", buttonicon :'ui-icon-pin-s',
+    	onClickButton:function(){
+    		mygrid[0].toggleToolbar();
+    	} 
+    });
+    jQuery("#orders").jqGrid('navButtonAdd',"#orders_pager",{caption:"Clear",title:"Clear Search",buttonicon :'ui-icon-refresh',
+    	onClickButton:function(){
+    	  mygrid[0].clearToolbar();
+    	} 
+    });
+    jQuery("#orders").jqGrid('filterToolbar');
+    $.get('/index.php/supplier/deliveries/getalljson', function(data) {
+      var delivery_dates = eval('(' + data + ')');
+      for(i = 0; i < delivery_dates.length; i++) {
+        console.log(delivery_dates[i]["Delivery"]["id"]);
+        console.log(delivery_dates[i]["Delivery"]["date"]);
+        $('#gs_delivery_date').append($("<option></option>").attr("value",delivery_dates[i]["Delivery"]["id"]).text(delivery_dates[i]["Delivery"]["date"]));
+      }
+    });
+	  
+                  
+    
     function link_formatter(cellvalue, options, rowObject) {
         link = "\"/index.php/supplier/orders/view/" + options["rowId"] + "\"";
         return "<a href=" + link + ">" + cellvalue + "</a> ";
@@ -220,6 +253,9 @@ $(document).ready(function(){
       	    });
         $dialog.dialog('open');
     }   
+
+
+    
 
 });
 

@@ -14,8 +14,29 @@ class OrdersController extends AppController {
       $sidx = $this->params['url']['sidx']; 
       $sord = $this->params['url']['sord']; 
       if(!$sidx) $sidx =1;
-      $count = $this->Order->find('count');
-
+      $search = $this->params['url']['_search']; 
+      $params = array('conditions' => array('Order.status <>' => 'entered'));
+      if($search == "true") {
+        if(!empty($this->params['url']['delivery_date'])) {
+          $delivery_id = $this->params['url']['delivery_date'];
+          if($delivery_id != "all") {
+            if($delivery_id == "current_delivery_date") {
+              $params = array(
+                'conditions' => array('Delivery.next_delivery' => true)); 
+              $next_delivery = $this->Delivery->find('first', $params);              
+              $params = array('conditions' => array(
+                'Delivery.id' => $next_delivery['Delivery']['id'], 
+                'Order.status <>' => 'entered'));                             
+              
+            } else {
+              $params = array('conditions' => array(
+                'Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));                             
+            }
+          } 
+        }
+      }
+      $count = $this->Order->find('count', $params);
+      $this->log($count, 'activity');
       if( $count >0 ) {
        	$total_pages = ceil($count/$limit);
       } else {
@@ -23,23 +44,40 @@ class OrdersController extends AppController {
       }
       if ($page > $total_pages) $page=$total_pages;
       $start = $limit*$page - $limit;
-      $orders = $this->Order->find('all', array(
-                                                'recursive' => 0, 
-                                                'offset' => $start,
-                                                'limit' => $limit,
-                                                'conditions' => array('Order.status <>' => 'entered')));
-
+      if($start < 0) $start = 0; 
+      if($limit < 0) $limit = 0; 
+      $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit,
+                      'conditions' => array('Order.status <>' => 'entered'));
+      if(!empty($this->params['url']['delivery_date'])) {
+         $delivery_id = $this->params['url']['delivery_date'];
+         if($delivery_id != "all") {
+           if($delivery_id == "current_delivery_date") {
+             $params = array(
+               'conditions' => array('Delivery.next_delivery' => true)); 
+             $next_delivery = $this->Delivery->find('first', $params);
+             $params = array('recursive' => 0, 'offset' => $start, '
+             limit' => $limit, 'conditions' => array( 
+               'Delivery.id' => $next_delivery['Delivery']['id'], 
+               'Order.status <>' => 'entered'));             
+           } else {
+             $params = array('recursive' => 0, 'offset' => $start, '
+             limit' => $limit, 'conditions' => array( 
+               'Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));
+           }
+         }
+         $orders = $this->Order->find('all', $params);
+       } 
+      $orders = $this->Order->find('all', $params);
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
       $this->set('orders', $orders);      
       $this->render('/elements/supplier_orders', 'ajax');
-
     }    
   }
   
   function coordinator_mark_as_paid() {
-    $this->layout = "admin_index";
+    $this->layout = "coordinator/index";
     if(!empty($this->params['url']['id'])){
       $id = $this->params['url']['id'];
       $this->paginate = array(
@@ -60,7 +98,7 @@ class OrdersController extends AppController {
   }
   
   function coordinator_mark_as_delivered() {
-    $this->layout = "admin_index";
+    $this->layout = "coordinator/index";
     $this->Order->recursive = 0;
     $this->paginate = array('conditions' => array('Order.status' => array('packed', 'delivered')));
     if(!empty($this->params['url']['id'])){
