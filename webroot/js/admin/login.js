@@ -3,8 +3,5 @@ $(document).ready(function(){
   if ($('#authMessage').exists()) { 
     var message = $('#authMessage').html(); 
     $('#authMessage').remove();
-    $('#content-main').before('<p class="errornote">' + message + '</p>'); 
-  } else { 
-    
   }  
 });
