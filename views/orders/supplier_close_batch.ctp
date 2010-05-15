@@ -1,5 +1,6 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
+<?php echo $javascript->link('util.js', false); ?>
 <?php echo $javascript->link('grid.locale-en.js', false); ?>
 <?php echo $javascript->link('jquery.jqGrid.min.js', false); ?>
 <?php echo $javascript->link('orders/supplier_close_batch.js', false); ?>

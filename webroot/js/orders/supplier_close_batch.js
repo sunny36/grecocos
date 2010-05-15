@@ -37,15 +37,20 @@ $(document).ready(function(){
     
     //confirm if total orders != packed orders
     $('input').live('click', function() {
-        if(this.id.match(/\d_closed/)){
-            total_orders = parseInt($(this).parent().parent().children()[3].innerHTML, 10)
-            total_packed = parseInt($(this).parent().parent().children()[4].innerHTML, 10)
-            if (total_orders != total_packed) {
-                msg = 'All orders have not been packed. Are you sure you want to close the orders for this delivery?'
-                
-            }
-        }
-        
+      if(this.id.match(/\d_closed/)){
+        $closed_checkbox = $(this);
+        total_orders = parseInt($(this).parent().parent().children()[3].innerHTML, 10)
+        total_packed = parseInt($(this).parent().parent().children()[4].innerHTML, 10)
+         if($closed_checkbox.is(':checked')) {
+           if (total_orders != total_packed) {
+               msg = 'All orders have not been packed. ' +
+                     'Batch cannot be closed.'
+               custom_confirm_ok(msg, function() {
+                 $closed_checkbox.attr("checked", false);
+                });
+           }
+         }
+        }        
     });
     
     $('.delivery_dates.edit.ui-button').live('click', function() {
@@ -79,32 +84,6 @@ $(document).ready(function(){
     
     function getTableId($button) {
         return $button.closest('table').attr('id');
-    }
-    
-    function custom_confirm_yes_no(prompt, action_yes, action_no) {
-        var $dialog = $('<div></div>')
-    	    .html(prompt)
-    	    .dialog({
-    		autoOpen: false,
-    		title: 'Grecocos',
-    		modal: true,
-    		resizable: false,
-    		closeOnEscape: false,
-                open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
-                width: 'auto',
-                buttons: {
-                    'Yes': function() {
-                        $(this).dialog('close');
-                        action_yes();
-                    },
-                    No: function() {
-                        $(this).dialog('close');
-                        action_no();
-                    }
-                }
-    	    });
-        $dialog.dialog('open');
-    }   
-    
+    }    
 });
 
