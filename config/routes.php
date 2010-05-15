@@ -14,4 +14,11 @@
 	Router::connect('/login', array('controller' => 'users', 'action' => 'login'));  
   Router::connect('/admin', array('controller' => 'dashboard', 'action' => 'index', 
                                   'admin' => true));
+  Router::connect('/coordinator', array('controller' => 'dashboard', 
+                                        'action' => 'coordinator', 
+                                        'admin' => true));
+  Router::connect('/supplier', array('controller' => 'dashboard', 
+                                        'action' => 'supplier', 
+                                        'admin' => true));
+                                  
   ?>
