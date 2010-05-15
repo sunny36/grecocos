@@ -1,6 +1,11 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('orders.js', false); ?>
 <?php echo $javascript->link('admin/admin_index.js', false); ?>
+<style>
+#changelist table tbody td:first-child {
+  text-align: left;
+}
+</style>
 <div class="breadcrumbs">
   <?php 
     e($html->link('Home', array('controller' => 'dashboard', 
@@ -41,7 +46,7 @@
             }
   	  ?>
           <tr<?php echo $class;?>>
-          <td><?php echo $delivery['Delivery']['date']; ?>&nbsp;</td>
+          <td><?php echo $delivery['Delivery']['date']; ?></td>
           <td>
   	    <?php
   	      if($delivery['Delivery']['next_delivery'] == 1) {
