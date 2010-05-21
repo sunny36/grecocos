@@ -10,3 +10,6 @@ db/*.sqlite3
 webroot/*.pdf
 webroot/attachments/*
 webroot/uploads/*
+.buildpath
+.settings
+.project
