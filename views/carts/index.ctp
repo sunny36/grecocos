@@ -57,7 +57,7 @@
   <?php $categoryNum++ ?>
   <?php endforeach; ?>
   <tr>
-    <td</td>
+    <td></td>
     <td></td>
     <td><h3>Total</h3></td>
     <td><h3>&#3647; 0<h3></td>
