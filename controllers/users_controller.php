@@ -174,33 +174,23 @@ class UsersController extends AppController {
       }
       $this->User->create();
       if($this->User->save($this->data)){
-        $this->Email->to = $this->data['User']['email']; 
-        $this->Email->subject = 'GRECOCOS: Signup'; 
-        $this->Email->replyTo = 'admin@grecocos.co.cc'; 
-        $this->Email->from = 'Somchok Sakjiraphong <somchok.sakjiraphong@ait.ac.th>'; 
-        $this->Email->sendAs = 'html';
-        $this->Email->template = 'signup';
         $this->set('firstname', $this->data['User']['firstname']); 
-        /* SMTP Options */
-        $this->Email->smtpOptions = array(
-                                          'port'=>'25', 
-                                          'timeout'=>'30',
-                                          'host' => 'smtp.ait.ac.th',
-                                          'username'=>'st108660',
-                                          'password'=>'m2037compaq'
-                                          );
-        /* Set delivery method */
-        $this->Email->delivery = 'smtp';
-        if($this->Email->send()){
-          $this->Session->setFlash('Please wait for an confirmation email from the co-ordinator.');
+        $sendEmail = $this->_sendMail($this->data['User']['email'], 
+                                      'GRECOCOS: Signup', 'signup');
+        if($sendEmail){
+          $msg = 'Please wait for an confirmation email from the co-ordinator.';
+          $this->Session->setFlash($msg);
           $this->redirect(array('controller' => 'users', 'action' => 'login'));
         } else {
-          $this->User->del($this->User->getLastInsertID());
-          $this->Session->setFlash('There was a problem in sending email. Please try again');
+          $this->User->delete($this->User->getLastInsertID());
+          $msg = 'There was a problem in sending email. Please try again';
+          $this->Session->setFlash($msg, 'flash_error');
+          $this->data['User']['password'] = null; 
+          $this->data['User']['password2'] = null; 
         }
       } else {
-        $this->Session->setFlash(
-                                 'There was an error signing up. Please try again.');
+        $msg = 'There was an error signing up. Please try again.';
+        $this->Session->setFlash($msg, 'flash_error');
         $this->data['User']['password'] = null; 
         $this->data['User']['password2'] = null; 
       }
@@ -270,7 +260,5 @@ class UsersController extends AppController {
       
     }
   }
-  
-
 }
 ?>

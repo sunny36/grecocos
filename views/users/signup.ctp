@@ -29,14 +29,14 @@
           <ul class="errorlist">
             <?php 
               if($form->isFieldError('User.password2')) 
-                e($form->error ('User.password2', null, array('wrap' => 'li'))); 
+                e($form->error('User.password2', null, array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('password', "Password", 
                              array('class' => 'required'))); 
-              e($form->text('password', array('class' => 'vTextField')));
+              e($form->password('password', array('class' => 'vTextField')));
             ?>        
           </div>        
         </div>
@@ -54,7 +54,7 @@
             <?php 
               e($form->label('password2', "Password Confirmation", 
                              array('class' => 'required'))); 
-              e($form->text('password2', array('class' => 'vTextField')));
+              e($form->password('password2', array('class' => 'vTextField')));
             ?>        
           </div>        
         </div>
