@@ -4,6 +4,7 @@ class UsersController extends AppController {
   var $name = 'Users';
   var $components = array('Email');
   var $helpers = array('Html', 'Form', 'Javascript');
+  var $uses = array('User', 'Organization');
   
   function admin_index() {
     $this->layout = "admin_index"; 
@@ -160,17 +161,19 @@ class UsersController extends AppController {
   }
   
   function signup(){
+    $this->set('title_for_layout', 'Customer Signup');
+    $this->layout = "users/signup"; 
+    $delivery_addresses = $this->Organization->find('list', 
+      array('fields' => 'Organization.delivery_address'));
+    $this->set('delivery_addresses', $delivery_addresses);
     if(!empty($this->data)) {
-      //status: 000 means self registered but not accepted
       $this->data['User']['status'] = 'registered';
       if(isset($this->data['User']['password2'])){
         $this->data['User']['password2hashed'] =
           $this->Auth->password($this->data['User']['password2']);
       }
       $this->User->create();
-      
       if($this->User->save($this->data)){
-        
         $this->Email->to = $this->data['User']['email']; 
         $this->Email->subject = 'GRECOCOS: Signup'; 
         $this->Email->replyTo = 'admin@grecocos.co.cc'; 

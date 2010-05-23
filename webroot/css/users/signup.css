@@ -1,0 +1,7 @@
+#content-main {
+  width: 40%;
+}
+
+input.default[type="submit"] {
+  float: left;
+}
