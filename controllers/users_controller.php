@@ -192,7 +192,6 @@ class UsersController extends AppController {
   }
   
   function logout() { 
-    $this->Session->setFlash('You have logged out!!');
     $this->redirect($this->Auth->logout());
   }
   
@@ -223,7 +222,6 @@ class UsersController extends AppController {
   }
   
   function admin_logout() { 
-    $this->Session->setFlash('You have logged out!!');
     if($this->Auth->logout()){
       $this->redirect(array('controller' => 'users', 
                             'action' => 'login', 'admin' => true));
@@ -232,7 +230,6 @@ class UsersController extends AppController {
   }
 
   function coordinator_logout() { 
-    $this->Session->setFlash('You have logged out!!');
     if($this->Auth->logout()){
       $this->redirect(array('controller' => 'users', 
                             'action' => 'login', 'admin' => true));
@@ -241,7 +238,6 @@ class UsersController extends AppController {
   }
 
   function supplier_logout() { 
-    $this->Session->setFlash('You have logged out!!');
     if($this->Auth->logout()){
       $this->redirect(array('controller' => 'users', 
                             'action' => 'login', 'admin' => true));

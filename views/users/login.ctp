@@ -1,9 +1,8 @@
-<?php echo $javascript->link('admin/login.js', false); ?>
+<?php echo $javascript->link('users/login.js', false); ?>
 <div id="content" class="colM">
   <?php echo$this->Session->flash('auth', 'flash_error'); ?>
   <div id="content-main">
-    <?php e($form->create('User', array('action' => 'login', 
-    'admin' => true  )));?> 
+    <?php e($form->create('User', array('action' => 'login')));?> 
       <div class="form-row">
         <label for="UserEmail">Email:</label> 
         <?php e($form->text('email', array('class' => 'fullwidth'))); ?>
