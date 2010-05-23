@@ -50,9 +50,12 @@ class AppController extends Controller {
                                       'password'=>'m2037compaq'
                                       );
     /* Set delivery method */
-    $this->Email->delivery = 'smtp';
-    
-    $this->Email->send();
+    $this->Email->delivery = 'smtp';    
+    if($this->Email->send()) {
+      return true; 
+    } else {
+      return false; 
+    }
   }
   
 }
