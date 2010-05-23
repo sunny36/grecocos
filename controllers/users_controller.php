@@ -198,6 +198,8 @@ class UsersController extends AppController {
   }
   
   function login(){
+    $this->set('title_for_layout', 'Login');
+    $this->layout = "users/login";
     if( $this->Auth->user( )){
       $this->redirect( array('controller' => 'carts' , 'action' => 'index'));
     }

@@ -1,22 +1,27 @@
-<h2>Log In </h2>
+<?php echo $javascript->link('admin/login.js', false); ?>
+<div id="content" class="colM">
+  <?php echo$this->Session->flash('auth', 'flash_error'); ?>
+  <div id="content-main">
+    <?php e($form->create('User', array('action' => 'login', 
+    'admin' => true  )));?> 
+      <div class="form-row">
+        <label for="UserEmail">Email:</label> 
+        <?php e($form->text('email', array('class' => 'fullwidth'))); ?>
+      </div>
+      <div class="form-row">
+        <label for="UserPassword">Password:</label> 
+        <?php e($form->password('password', array('class' => 'fullwidth'))); ?>
+      </div>
+      <div class="submit-row">
+        <label>&nbsp;</label>
+        <?php e($form->submit('Login In', array('div' => false, 
+                                                'class' => 'submitbutton'))); ?>
+        
+      </div>
+    <?php e($form->end()); ?>
+    <br class="clear" />
+    <p>New users <?php echo $html->link('Signup', '/users/signup')?></p>
+  </div>
+</div>
 
-<?php 
-         echo$this->Session->flash('auth'); 
-      
-?>
 
-<?php e($form->create('User', array('action' => 'login')));?> 
-<fieldset>
-  <label for="UserEmail" class="emaillabel">
-    <span>Email </span>
-  </label>
-  <?php e($form->text('email', array('class' => 'fullwidth'))); ?>
-  
-  <label for="UserPassword" class="passwordlabel">
-    <span>Password </span>
-  </label>
-  <?php e($form->password('password', array('class' => 'fullwidth'))); ?>
-  
-  <?php e($form->submit('Login In', array('div' => false, 'class' => 'submitbutton'))); ?>
-</fieldset> 
-<?php e($form->end()); ?>
