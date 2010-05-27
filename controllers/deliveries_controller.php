@@ -18,6 +18,22 @@ class DeliveriesController extends AppController {
     $this->set('deliveries', $this->paginate());
     $this->render('/deliveries/admin_index');
   }
+  
+  function supplier_getAllJSON() {
+    Configure::write('debug', 0);
+    if($this->RequestHandler->isAjax()) {
+      $params = array('conditions' => array('Delivery.next_delivery' => true)); 
+      $next_delivery = $this->Delivery->find('first', $params);
+      $params = array('conditions' => array(
+        'Delivery.date <=' => $next_delivery['Delivery']['date'])); 
+      $temp = $this->Delivery->recursive;
+      $this->Delivery->recursive = 0; 
+      $delivery_dates = $this->Delivery->find('all', $params); 
+      $this->Delivery->recursive = $temp ;
+      $delivery_dates = json_encode($delivery_dates);      
+      $this->set('delivery_dates', $delivery_dates);
+    }
+  }
 
   function coordinator_notify_arrival_of_shipment() {
     $this->log($this->params, 'activity'); 
