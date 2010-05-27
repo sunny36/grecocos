@@ -184,8 +184,11 @@ var mygrid =  jQuery("#orders").jqGrid({
         s = "<input class='order_d save ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Save' />";
         c = "<input class='order_d cancel ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Cancel' />";
         $button.after(c).after(s);
-        
     });
+
+    function reload(rowid, result) {
+      $("#order_d").trigger("reloadGrid"); 
+    }
     
     $('.order_d.cancel.ui-button').live('click', function() {
         var $button = $(this);
@@ -200,11 +203,6 @@ var mygrid =  jQuery("#orders").jqGrid({
     $('.order_d.save.ui-button').live('click', function() {
         var $button = $(this);
         var rowid = $button.parent().parent().attr('id'); 
-
-        console.log(rowid); 
-        console.log($("#" + getTableId($button)).getCell(rowid, "quantity_ordered")); 
-        console.log($("#" + getTableId($button)).getCell(rowid, "quantity_supplied"));
-        console.log($("#" + rowid + "_quantity_supplied").val());  
         var quantity_ordered = $("#" + getTableId($button)).
             getCell(rowid, "quantity_ordered");
         var quantity_supplied = $("#" + rowid + "_quantity_supplied").val(); 
@@ -213,13 +211,16 @@ var mygrid =  jQuery("#orders").jqGrid({
         } else { 
             $button.hide(); 
             $button.next().hide();
-            $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'));
+            $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'), '', '', '', reload, '');
             $button.prev().show();
             $button.next().remove(); 
             $button.remove();    
         }
     });
-    
+     function reload(rowid, result) {
+      $("#order_d").trigger("reloadGrid"); 
+    }
+   
     
     var productsNum = 0;
     function getProductsNum(orderId, productId, callback) {
