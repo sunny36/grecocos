@@ -139,7 +139,6 @@ class OrdersController extends AppController {
       if(!$sidx) $sidx =1;
       $products = $this->Order->getProductsByOrderId($order_id);
       $count = count($products);
-      //$this->log($products, "activity"); 
       if( $count >0 ) {
         $total_pages = ceil($count/$limit);
       } else {
@@ -147,16 +146,11 @@ class OrdersController extends AppController {
       }
       if ($page > $total_pages) $page=$total_pages;
       $start = $limit*$page - $limit;
-
       $products = $this->Order->getProductsByOrderId($order_id, $start, $limit); 
-
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
-      //$this->log($products, "activity"); 
       $this->set('products', $products);
-
-
       $this->render('/elements/order', 'ajax');
     } else {
       //Non-Ajax
