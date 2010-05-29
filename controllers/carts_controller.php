@@ -66,7 +66,8 @@ class CartsController extends AppController{
       'complete' => false,
       'user_id' => $this->currentUser['User']['id'],
       'delivery_id' => $delivery['Delivery']['id'],
-      'total' => $total));
+      'total' => $total,
+      'total_supplied' => $total));
     $this->Order->create();
     $this->Order->save($order);
     $orderId = $this->Order->id;
@@ -76,7 +77,9 @@ class CartsController extends AppController{
       $lineItems['Order'][] = array('product_id' => $cartItem['id'], 
         'order_id' => $orderId, 
         'quantity' => $cartItem['quantity'],
-        'total_price' =>  $cartItem['subtotal']);
+        'total_price' =>  $cartItem['subtotal'],
+        'quantity_supplied' => $cartItem['quantity'],
+        'total_price_supplied' => $cartItem['subtotal']);
     }
     $this->LineItem->saveAll($lineItems['Order']);
     $transaction = array('Transaction' => array(
