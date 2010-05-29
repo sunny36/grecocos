@@ -34,12 +34,15 @@ class AppController extends Controller {
     return true;
   }
   
-  function _sendMail($to,$subject,$template) {
+  function _sendMail($to, $subject, $template, $attachments = NULL) {
     $this->Email->to = $to;
     $this->Email->subject = $subject;
     $this->Email->replyTo = 'admin@grecocos.co.cc'; 
     $this->Email->from = 'Somchok Sakjiraphong <somchok.sakjiraphong@ait.ac.th>';
     $this->Email->template = $template;
+    if ($attachments) {
+      $this->Email->attachments = $attachments; 
+    }
     $this->Email->sendAs = 'html';
     /* SMTP Options */
     $this->Email->smtpOptions = array(
