@@ -45,6 +45,19 @@
       </table>
     </div>
   </div>
+    <div class="module">
+      <table>
+      <caption><a href="auth/" class="section">Payments</a></caption>
+        <tr>
+          <th scope="row">
+            <?php e($html->link('View Refunds', 
+                                '/coordinator/orders/refunds'))?>
+          </th>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
 
   <br class="clear" />
 </div>
