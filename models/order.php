@@ -43,5 +43,15 @@ class Order extends AppModel {
     }
 	}
 	
+	function updateTotalSupplied($id) {
+	  $this->recursive = 2;
+	  $order = $this->findById($id);
+	  $total_supplied = 0; 
+    foreach($order['LineItem'] as &$line_item) {
+      $total_supplied += $line_item['total_price_supplied'];
+    }
+    $order['Order']['total_supplied'] = $total_supplied;
+    $this->save($order);
+	}
 }
 ?>

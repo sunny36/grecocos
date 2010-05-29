@@ -16,9 +16,19 @@ class LineItem extends AppModel {
      foreach($lineItems as $lineItem) {
        if($lineItem['LineItem']['product_id'] == $product_id) {
         $lineItem['LineItem']['quantity_supplied'] = $quantity_supplied;
+        $lineItem['LineItem']['total_price_supplied'] = $quantity_supplied * 
+                                                        $lineItem['Product']['selling_price'];;
         $this->save($lineItem);
       }
     }  
+	}
+	
+	function afterSave($created) {
+	  if(!$created) {
+	    $orderId = $this->data['Order']['id'];
+	    ClassRegistry::init('Order')->updateTotalSupplied($orderId);
+	  }
+	  
 	}
 	
 }
