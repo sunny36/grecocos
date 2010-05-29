@@ -22,18 +22,22 @@ class CartsController extends AppController{
 
   function getCartTotalPrice(){
     $total = 0; 
+    $total2 = 0; 
     $cart = $this->Session->read('cart');			
     foreach ($cart as $cartItem) {
       $total += $cartItem['subtotal'];
+      $total2 += $cartItem['subtotal2'];
     }
-    return $total; 
+    return array($total, $total2); 
   }
 
   function update() {
     $cart = $this->Cart->update($this->data);
     if($cart){
       $this->Session->write('cart', $cart);
-      $this->Session->write('cart_total', $this->getCartTotalPrice());
+      list($cart_total, $cart_total2) = $this->getCartTotalPrice();
+      $this->Session->write('cart_total', $cart_total);
+      $this->Session->write('cart_total2', $cart_total2);
     }		
     $this->redirect(array('controller' => 'carts', 'action' => 'confirm'));
   }
@@ -59,6 +63,7 @@ class CartsController extends AppController{
       }
     }
     $total = $this->Session->read('cart_total');
+    $total2 = $this->Session->read('cart_total2');
     $delivery = $this->Delivery->find('first', 
       array('conditions' => array('Delivery.next_delivery' => true)));
     $order = array('Order' => array('status' => 'entered', 
@@ -67,6 +72,7 @@ class CartsController extends AppController{
       'user_id' => $this->currentUser['User']['id'],
       'delivery_id' => $delivery['Delivery']['id'],
       'total' => $total,
+      'total2' => $total2,
       'total_supplied' => $total));
     $this->Order->create();
     $this->Order->save($order);

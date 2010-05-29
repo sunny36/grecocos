@@ -15,7 +15,9 @@ class Cart extends AppModel{
     									'price' => $product['Product']['selling_price'],
     									'name' => $product['Product']['short_description'],
     									'subtotal' => $data[$i]['quantity'] * 
-    									              $product['Product']['selling_price']);
+    									              $product['Product']['selling_price'],
+    									'subtotal2' => $data[$i]['quantity'] * 
+    									               $product['Product']['buying_price']);
     	$cart[$item['rowid']] = $item;
       }
 		}
