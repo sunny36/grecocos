@@ -151,7 +151,9 @@ class CartsController extends AppController{
     $fileName = $orderId . '_' . 'invoice.pdf';
     $pdf->Output($fileName, 'F');
 
-    $this->sendEmail($fileName, $orderId);
+    $to = "s@sunny.in.th";
+    $subject = 'Order ID:' . ' ' . $orderId; 
+    $this->_sendMail($to, $subject, 'order', array($fileName));
 
     $this->Session->delete('cart');
     $this->Session->delete('cart_total');
@@ -165,27 +167,4 @@ class CartsController extends AppController{
     $this->set('filename', $this->Session->read('filename'));
     $this->Session->delete('filename');
   }
-
-
-  function sendEmail($filename, $orderID){
-    $this->Email->to = 'coordinator@grecocos.co.cc'; 
-    $this->Email->subject = 'Order ID:' . ' ' . $orderID; 
-    $this->Email->replyTo = 'admin@grecocos.co.cc'; 
-    $this->Email->from = 'Somchok Sakjiraphong <somchok.sakjiraphong@ait.ac.th>'; 
-    $this->Email->sendAs = 'html';
-    $this->Email->template = 'order';
-    $this->Email->attachments = array($filename);
-    /* SMTP Options */
-    $this->Email->smtpOptions = array(
-      'port'=>'25', 
-      'timeout'=>'30',
-      'host' => 'smtp.ait.ac.th',
-      'username'=>'st108660',
-      'password'=>'m2037compaq'
-    );
-    /* Set delivery method */
-    $this->Email->delivery = 'smtp';
-    $this->Email->send();		
-  }
-
 }
