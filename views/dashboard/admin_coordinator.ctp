@@ -56,6 +56,15 @@
           <td></td>
           <td></td>
         </tr>
+        <tr>
+          <th scope="row">
+            <?php e($html->link('View Payments', 
+                                '/coordinator/deliveries/payments'))?>
+          </th>
+          <td></td>
+          <td></td>
+        </tr>
+        
       </table>
     </div>
 
