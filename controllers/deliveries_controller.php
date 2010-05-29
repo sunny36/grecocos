@@ -146,11 +146,8 @@ class DeliveriesController extends AppController {
         $closed = $this->params['form']['closed'];
         $this->Delivery->recursive = -1;
         $delivery = $this->Delivery->findById($this->params['form']['id']);
-        
         if($closed == 'Yes') {
-          $this->log($delivery, 'activity');
           $delivery['Delivery']['closed'] = true;
-          $this->log($delivery, 'activity');
         }
         if($closed == 'No') {
           $delivery['Delivery']['closed'] = false;    
