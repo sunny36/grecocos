@@ -126,6 +126,19 @@ class OrdersController extends AppController {
     $this->set('orders', $this->paginate());	  
   }
 
+  function coordinator_refunds() {
+    $this->layout = "coordinator/index"; 
+    $this->Order->recursive = 1; 
+    $this->paginate = array('conditions' => array(
+      'AND' =>(
+        array(
+          'Delivery.closed' => true,
+          'Order.status' => 'packed',
+          'Order.total_supplied <> Order.total'))));
+    $this->set('orders', $this->paginate());	  
+    
+  }
+
 
   function supplier_view($id = null) {
     if($this->RequestHandler->isAjax()) {
@@ -299,19 +312,29 @@ class OrdersController extends AppController {
     $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
       $order =  $this->Order->find('first', 
-        array('conditions' => 
-        array('Order.id' => 
-        $this->params['form']['id']), 
-        'recursive' => -1));
-      $order['Order']['status'] = $this->params['form']['status'];
+        array('conditions' => array('Order.id' => $this->params['form']['id']), 
+              'recursive' => -1));
+      $transactionType = "";
+      if(!empty($this->params['form']['status'])) {
+        $order['Order']['status'] = $this->params['form']['status'];
+        if ($order['Order']['status'] == "paid") {
+         $transactionType = "Cash Payment";  
+        }
+        if ($order['Order']['status'] == "delivered") {
+         $transactionType = "Delivery";  
+        }
+      }
+      if(!empty($this->params['form']['refund'])) {
+        if($this->params['form']['refund'] == "yes") {
+          $order['Order']['refund'] = true;
+        } 
+        if($this->params['form']['refund'] == "no") {
+          $order['Order']['refund'] = false;
+        } 
+        $transactionType = "Refund";  
+      }      
       $this->Order->save($order);
       //Log to Transaction table
-      if ($order['Order']['status'] == "paid") {
-        $transactionType = "Cash Payment"; 
-      }
-      if ($order['Order']['status'] == "delivered") {
-        $transactionType = "Delivery"; 
-      }
       $transaction = array('Transaction' => array(
       'type' => $transactionType, 
       'user_id' => $this->currentUser['User']['id'], 
