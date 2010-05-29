@@ -57,6 +57,50 @@ class DeliveriesController extends AppController {
     }
   }
 
+  function coordinator_payments() {
+    $this->layout = "coordinator/index"; 
+    if($this->RequestHandler->isAjax()) {
+      $this->autoRender = false;
+      $page = $this->params['url']['page']; 
+      $limit = $this->params['url']['rows']; 
+      $sidx = $this->params['url']['sidx']; 
+      $sord = $this->params['url']['sord']; 
+
+      if(!$sidx) $sidx =1;
+      $params = array('conditions' => array('Delivery.closed' => true));
+      $count = $this->Delivery->find('count', $params);
+      if( $count >0 ) {
+        $total_pages = ceil($count/$limit);
+      } else {
+        $total_pages = 0;
+      }
+      if ($page > $total_pages) $page=$total_pages;
+      $start = $limit*$page - $limit;
+    
+      $params = array('recursive' => 1, 'offset' => $start, 'limit' => $limit, 
+      'conditions' => array('Delivery.closed' => true));
+      $deliveries = $this->Delivery->find('all', $params);
+      foreach ($deliveries as &$delivery) {
+        $total_received = 0; 
+        $total_refund = 0; 
+        $total_due = 0; 
+        foreach($delivery['Order'] as $order) {
+          $total_received += $order['total'];
+          $total_refund += ($order['total'] - $order['total_supplied']);
+          $total_due += $order['total2'];
+        }
+        $delivery['Delivery']['total_received'] = $total_received; 
+        $delivery['Delivery']['total_refund'] = $total_refund; 
+        $delivery['Delivery']['total_due'] = $total_due;
+      }
+      $this->log($deliveries, 'activity');
+      $this->set('page',$page);
+      $this->set('total_pages',$total_pages);
+      $this->set('count',$count); 
+      $this->set('deliveries', $deliveries);
+      $this->render('/elements/coordinator_deliveries_payments', 'ajax');      
+    }
+  }
   function admin_view($id = null) {
     if (!$id) {
       $this->Session->setFlash(sprintf(__('Invalid %s', true), 'delivery'));
