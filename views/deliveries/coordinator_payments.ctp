@@ -6,6 +6,14 @@
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom', null, 
   array('inline' => false)); ?>
 <?php echo $html->css('ui.jqgrid', null, array('inline' => false)); ?>
+<!-- TODO Extract to external style sheet -->
+<style text="type/css">
+  input[type="button"] {
+  padding: 0em; 
+
+  }
+</style>
+
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 

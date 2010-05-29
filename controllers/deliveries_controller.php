@@ -182,6 +182,34 @@ class DeliveriesController extends AppController {
     $this->redirect(array('action' => 'index'));
   }
 
+  function coordinator_edit($id = null) {
+    if($this->RequestHandler->isAjax()) {
+      $this->log($this->params, 'activity');
+      $this->autoRender = false; 
+      if($this->params['form']['paid']) {
+        $paid = $this->params['form']['paid'];
+        $this->Delivery->recursive = -1;
+        if(!empty($this->params['form']['ids'])) {
+          foreach ($this->params['form']['ids'] as $id) {
+            $delivery = $this->Delivery->findById($id);
+            if($paid == 'Yes') $delivery['Delivery']['paid'] = true;
+            if($paid == 'No') $delivery['Delivery']['paid'] = false;    
+            $this->Delivery->save($delivery);
+          }
+        } else {
+          $delivery = $this->Delivery->findById($this->params['form']['id']);
+          if($paid == 'Yes') {
+            $delivery['Delivery']['paid'] = true;
+          }
+          if($paid == 'No') {
+            $delivery['Delivery']['paid'] = false;    
+          }
+          $this->Delivery->save($delivery);          
+        }
+      }
+    }     
+  }
+  
   function supplier_edit($id = null) {
     $this->layout = "supplier/add";
     if($this->RequestHandler->isAjax()) {

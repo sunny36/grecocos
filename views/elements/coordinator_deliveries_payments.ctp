@@ -15,6 +15,12 @@ echo "<cell>". $deliveries[$i]['Delivery']['date']."</cell>";
 echo "<cell>". $deliveries[$i]['Delivery']['total_received']."</cell>";
 echo "<cell>". $deliveries[$i]['Delivery']['total_refund']."</cell>";
 echo "<cell>". $deliveries[$i]['Delivery']['total_due']."</cell>";
+if ($deliveries[$i]['Delivery']['paid']) {
+  echo "<cell>". "1" ."</cell>";
+} else {
+  echo "<cell>". "0" ."</cell>";
+}
+echo "<cell>"."</cell>"; // for action
 echo "</row>";
 }
 echo "</rows>"; 
