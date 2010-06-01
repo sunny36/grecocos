@@ -22,10 +22,12 @@
           <tr>
             <td></td>
             <td>
-              <button id="<?php echo "category{$categoryNum}"; ?>" class="category">
-              <?php echo $productCategory['Category']['name']?>
-            </button>
-            <strong><?php echo $productCategory['Category']['name']?></strong>
+              <span id = "<?php echo "category{$categoryNum}"; ?>" class="category ui-state-default ui-corner-all ui-icon ui-icon-minus" style="float:left;margin-right:0.5em;">  
+              </span>
+              <strong><?php e($productCategory['Category']['name']); ?></strong>
+             
+
+              
           </td>
           <td></td>
           <td></td>
