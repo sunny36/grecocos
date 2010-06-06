@@ -31,7 +31,7 @@ class CartsController extends AppController{
     return array($total, $total2); 
   }
 
-  function update() {
+  function confirm() {
     $cart = $this->Cart->update($this->data);
     if($cart){
       $this->Session->write('cart', $cart);
@@ -39,11 +39,7 @@ class CartsController extends AppController{
       $this->Session->write('cart_total', $cart_total);
       $this->Session->write('cart_total2', $cart_total2);
     }		
-    $this->redirect(array('controller' => 'carts', 'action' => 'confirm'));
-  }
-
-
-  function confirm() {
+    
     if(!$this->Session->check('cart')){
       $this->Session->setFlash('Your cart is currently empty.!!');
       $this->redirect(array('controller' => 'carts', 'action' => 'index'));
