@@ -1,6 +1,8 @@
 <p>
   <?php e($html->link('Click here to download your invoice.', 
-                      array('../../../' . $filename)));?>
+                      array('controller' => 'carts', 
+                            'action' => 'getInvoice')));
+  ?>
 </p>
 
 <p>
