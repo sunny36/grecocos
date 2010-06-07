@@ -6,7 +6,7 @@
   <div class="cart_list">
     <h3>Your shopping cart</h3>
     <div id="cart_content">
-      <?php e($form->create(null, array('controller' => 'carts', 'action' => 'update'))); ?>
+      <?php e($form->create(null, array('controller' => 'carts', 'action' => 'confirm'))); ?>
       <table id="products" width="100%" cellpadding="0" cellspacing="0">
         <thead>
           <tr>
