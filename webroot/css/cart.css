@@ -1,6 +1,6 @@
 body{
 	font-family: "Lucida Sans";
-	font-size: 12px;
+	font-size: 13px;
 }
 
 #wrap{
@@ -56,6 +56,7 @@ div.cart_list{
 	padding: 5px;
 	float: left;	
 	width: 800px;
+	margin: 10px 0px 0px 10px;
 }
 
 	div.cart_list h3{

@@ -3,7 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>GRECOCOS Shopping Cart</title>
+<?php echo $this->Html->css('cart/base.css'); ?>
 <?php echo $this->Html->css('cart.css'); ?>
+
 <?php echo $javascript->link('jquery-1.4.2.min.js'); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js'); ?>
 <?php echo $this->Html->css('jquery-ui/smoothness/jquery-ui-1.8.custom.css'); ?>
@@ -12,15 +14,24 @@
 <?php echo $this->Html->css('faceplant.css'); ?>
 <?php echo $javascript->link('facybox.js'); ?>
 
-<style type="text/css">
-	body{ margin: 20px;}
-</style>	
 </head>
-<body>
-  <?php echo $this->Session->flash(); ?>
+<body class="change-list">
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <?php e($this->element('header')); ?>
+    <!-- END Header -->
+    <?php echo $this->Session->flash(); ?>
+    <!-- Content -->
+      <?php echo $content_for_layout; ?>
+    <!-- END Content -->
 
-	<?php echo $content_for_layout; ?>
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+
 </body>
+
 </html>
 
 
