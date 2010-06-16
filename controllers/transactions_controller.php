@@ -4,7 +4,7 @@ class TransactionsController extends AppController {
   var $name = 'Transactions';
   var $helpers = array('Html', 'Form', 'Javascript');
 
-  function admin_index() {
+  function administrator_index() {
     $this->layout = "admin_index"; 
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
