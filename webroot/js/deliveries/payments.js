@@ -37,6 +37,12 @@ $(document).ready(function(){
   $('#mark_as_paid').live('click', function () {
     var ids;
   	ids = jQuery("#deliveries").jqGrid('getGridParam','selarrrow');
+  	if (ids.length == 0) {
+  	  //No rows have been selected
+  	  custom_confirm_ok("No rows have been selected.", function () { return; });
+  	  return;
+  	}
+  	
   	$.post('/index.php/coordinator/deliveries/edit', 
   	       {'ids[]': ids, 'paid': 'Yes'}, function(data) {
   	          $("#deliveries").trigger("reloadGrid"); 
