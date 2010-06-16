@@ -20,5 +20,8 @@
   Router::connect('/supplier', array('controller' => 'dashboard', 
                                         'action' => 'supplier', 
                                         'admin' => true));
+  Router::connect('/administrator', array('controller' => 'dashboard', 
+                                          'action' => 'administrator', 
+                                          'admin' => true));
                                   
   ?>

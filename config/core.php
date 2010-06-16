@@ -96,7 +96,7 @@
  */
   
 	Configure::write('Routing.prefixes', 
-	                 array('admin', 'supplier', 'coordinator'));
+	                 array('admin', 'supplier', 'coordinator', 'administrator'));
 	
 
 /**
