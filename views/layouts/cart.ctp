@@ -13,7 +13,7 @@
 <?php echo $this->Html->css('facybox.css'); ?>
 <?php echo $this->Html->css('faceplant.css'); ?>
 <?php echo $javascript->link('facybox.js'); ?>
-
+<?php echo $javascript->link('jquery.textchange.min.js'); ?>
 </head>
 <body class="change-list">
 <!-- Container -->

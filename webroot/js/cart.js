@@ -35,6 +35,18 @@ $(document).ready(function(){
     calculateTotal();        
   });
   
+  $('input[type="text"]').bind('textchange', function (event, previousText) {
+    var quantity = $(this).val();
+    var row = $(this).parent().parent();
+    var children = row.children();
+    var priceText = children[2].innerHTML;
+    var price = (priceText.split(" "))[1];
+    var subTotal = quantity * price; 
+    children[3].innerHTML = "\u0E3F" + " " + subTotal;
+    calculateTotal();        
+  });
+  
+  
   $('#empty_cart').click(function(){
     $("form")[0].reset();
     var products = $('#products tr');
