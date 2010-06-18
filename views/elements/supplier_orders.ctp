@@ -23,7 +23,7 @@ if ($orders[$i]['Order']['status'] != "packed") {
 }
 echo "<cell>". $orders[$i]['Order']['total']."</cell>";
 echo "<cell>"."</cell>"; // for action
-echo "<cell>" . "Download". "</cell>"; // for pdf
+echo "<cell>" . "Print". "</cell>"; // for pdf
 echo "</row>";
 }
 echo "</rows>"; 
