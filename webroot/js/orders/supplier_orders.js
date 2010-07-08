@@ -7,7 +7,7 @@ var mygrid =  jQuery("#orders").jqGrid({
      	colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 
      	          'Actions', 'Print'],
      	colModel:[
-     	    {name:'id',index:'id', width:100, sorttype:"int", editable: false, 
+     	    {name:'id',index:'id', width:80, sorttype:"int", editable: false, 
      	     search: false},
      	    {name:'delivery_date',index:'delivery_date', width:180,
       	   editable: false, stype:'select', 
@@ -24,7 +24,6 @@ var mygrid =  jQuery("#orders").jqGrid({
      	     search: false, formatter:link_formatter},
      	],
      	gridview : true,
- 	    rownumbers: true, 
      	rowNum:10,
      	rowList:[10,20,30],
      	pager: jQuery('#orders_pager'),
