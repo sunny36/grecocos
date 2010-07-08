@@ -178,21 +178,30 @@ class OrdersController extends AppController {
   }
 
   function supplier_edit($id = null) {	  
+     $this->log($this->params, 'activity');
     if($this->RequestHandler->isAjax()) {
       $this->autoRender = false;    
-      if($this->params['form']['status']) {
+      if(isset($this->params['form']['status'])) {
         $status = $this->params['form']['status'];
-        $this->Order->updateOrderStatus($this->params['form']['id'],
-          $this->params['form']['status']);
-        $transaction = array('Transaction' => array(
-          'type' => "Sales", 
-          'user_id' => $this->currentUser['User']['id'], 
-          'order_id' => $this->params['form']['id'])); 
-        $this->Transaction->create(); 
-        $this->Transaction->save($transaction); 
-
+        $this->Order->updateOrderStatus($this->params['form']['id'], $this->params['form']['status']);
+        //If transaction already exists delete it and re-create it. 
+        $params = array('conditions' => array('AND' => array(
+          array('Transaction.type' => 'Sales'),
+          array('Transaction.order_id' => $this->params['form']['id']))));
+        $transaction = $this->Transaction->find('first', $params);
+        if ($transaction) {
+          $this->Transaction->delete($transaction['Transaction']['id']);
+        }
+        //Create transaction only if the order is packed. 
+        if ($this->params['form']['status'] == "Yes") {
+          $transaction = array('Transaction' => array(
+            'type' => "Sales", 'user_id' => $this->currentUser['User']['id'], 'order_id' => $this->params['form']['id'])); 
+          $this->Transaction->create(); 
+          $this->Transaction->save($transaction); 
+        }
       }
-      if($this->params['form']['quantity_supplied']) {
+      if(isset($this->params['form']['quantity_supplied'])) {
+        $this->log($this->params, 'activity');
         $order_id = $this->params['pass'][0];
         $product_id = $this->params['form']['id'];
         $this->LineItem->updateQuantitySupplied($order_id, $product_id,
