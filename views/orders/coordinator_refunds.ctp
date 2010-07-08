@@ -94,7 +94,6 @@
     		    echo $form->hidden('id', 
     		                        array('value' => $order['Order']['id']))
     		    ?>
-    		    <?php echo $order['Order']['refund'];?>
     		  <?php
     		    if($order['Order']['refund']==1){
     		      echo $form->checkbox('refund', 
