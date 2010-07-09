@@ -189,7 +189,7 @@ class DeliveriesController extends AppController {
       if($this->params['form']['paid']) {
         $paid = $this->params['form']['paid'];
         $this->Delivery->recursive = -1;
-        if(!empty($this->params['form']['ids'])) {
+        if(isset($this->params['form']['ids'])) {
           foreach ($this->params['form']['ids'] as $id) {
             $delivery = $this->Delivery->findById($id);
             if($paid == 'Yes') $delivery['Delivery']['paid'] = true;
