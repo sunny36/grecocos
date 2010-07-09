@@ -9,14 +9,18 @@ echo "<rows>";
 echo "<page>".$page."</page>";
 echo "<total>".$total_pages."</total>";
 echo "<records>".$count."</records>";
+echo "<userdata name=\"type\">" . "Totals" . "</userdata>";
+echo "<userdata name=\"cash_in\">" . $cash_in . "</userdata>";
+echo "<userdata name=\"cash_out\">" . $cash_out . "</userdata>";
 for($i=0;$i<sizeof($transactions);$i++){
 echo "<row id='".$transactions[$i]['Transaction']['id']."'>";            
 
-echo "<cell>". $transactions[$i]['Transaction']['id']."</cell>";
-echo "<cell>". $transactions[$i]['Transaction']['type']."</cell>";
 echo "<cell>". $transactions[$i]['User']['name']."</cell>";
-echo "<cell>". $transactions[$i]['Transaction']['order_id']."</cell>";
-echo "<cell>". $transactions[$i]['Transaction']['created']."</cell>";
+echo "<cell>". $transactions[$i]['Transaction']['type']."</cell>";
+echo "<cell>". $transactions[$i]['Order']['ordered_date']."</cell>";
+echo "<cell>". $transactions[$i]['Order']['Delivery']['date']."</cell>";
+echo "<cell>". $transactions[$i]['Transaction']['cash_in']."</cell>";
+echo "<cell>". $transactions[$i]['Transaction']['cash_out']."</cell>";
 echo "</row>";
 }
 echo "</rows>"; 
