@@ -194,8 +194,12 @@ class OrdersController extends AppController {
         }
         //Create transaction only if the order is packed. 
         if ($this->params['form']['status'] == "Yes") {
+          $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['form']['id']), 
+                                       'recursive' => 2));
+          
           $transaction = array('Transaction' => array(
-            'type' => "Sales", 'user_id' => $this->currentUser['User']['id'], 'order_id' => $this->params['form']['id'])); 
+            'type' => "Sales", 'user_id' => $this->currentUser['User']['id'], 'order_id' => $this->params['form']['id'], 
+            'delivery_id' => $order['Delivery']['id'])); 
           $this->Transaction->create(); 
           $this->Transaction->save($transaction); 
         }
@@ -322,8 +326,9 @@ class OrdersController extends AppController {
     if($this->RequestHandler->isAjax()) {
       $order =  $this->Order->find('first', 
         array('conditions' => array('Order.id' => $this->params['form']['id']), 
-              'recursive' => -1));
+              'recursive' => 2));
       $transactionType = "";
+      $this->log($order, 'activity');
       if(!empty($this->params['form']['status'])) {
         $order['Order']['status'] = $this->params['form']['status'];
         if ($order['Order']['status'] == "paid") {
@@ -347,7 +352,8 @@ class OrdersController extends AppController {
       $transaction = array('Transaction' => array(
       'type' => $transactionType, 
       'user_id' => $this->currentUser['User']['id'], 
-      'order_id' => $order['Order']['id'])); 
+      'order_id' => $order['Order']['id'],
+      'delivery_id' => $order['Delivery']['id'])); 
       $this->Transaction->create(); 
       $this->Transaction->save($transaction); 
     }

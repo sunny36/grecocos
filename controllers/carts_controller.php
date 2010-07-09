@@ -87,7 +87,8 @@ class CartsController extends AppController{
     $transaction = array('Transaction' => array(
       'type' => 'Order', 
       'user_id' => $this->currentUser['User']['id'], 
-      'order_id' => $orderId)); 
+      'order_id' => $orderId,
+      'delivery_id' => $delivery['Delivery']['id'])); 
     $this->Transaction->create(); 
     $this->Transaction->save($transaction); 
     
