@@ -243,5 +243,20 @@ class DeliveriesController extends AppController {
 
     }
   }
+  
+  function edit($id = null) {
+    if($this->RequestHandler->isAjax()) {
+      Configure::write('debug', 0);
+      $this->autoRender = false;
+      $this->log($this->params, 'activity');
+      if (isset($this->params['form']['next_delivery'])) {
+        if ($this->params['form']['next_delivery'] == "1") {
+          $this->Delivery->changeNextDelivery($id); 
+          
+        }
+      }
+    }
+    
+  }
 }
 ?>
