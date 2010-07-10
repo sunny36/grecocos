@@ -20,7 +20,7 @@
   <?php 
     e($html->link('Home', array('controller' => 'dashboard', 
                                 'action' => 'index'))); ?> &rsaquo; 
-    Products
+    Payments
 </div>
 <!-- End Navigation  -->
 
