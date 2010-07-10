@@ -5,18 +5,11 @@ class DeliveriesController extends AppController {
   var $helpers = array('Html', 'Form', 'Javascript');
   var $uses = array('Delivery', 'Order');
   
-  function admin_index() {
-    $this->layout = "admin_index";  
-    $this->Delivery->recursive = 1;
-    $this->set('deliveries', $this->paginate());
-  }
-
   function supplier_index() {
     $this->layout = "supplier/index";  
     $this->Delivery->recursive = 3;
     $this->paginate = array('order' => array('Delivery.date DESC'));
     $this->set('deliveries', $this->paginate());
-    $this->render('/deliveries/admin_index');
   }
   
   function supplier_getAllJSON() {
