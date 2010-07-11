@@ -5,10 +5,10 @@
 
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); 
-  ?> &rsaquo; 
-  Orders
+   e($html->link('Home', '/coordinator')); 
+  ?>
+  &rsaquo;
+  Mark orders as paid
 </div>
 <div id="confirmation_dialog"></div>
 <div id="content" class="flex">

@@ -5,10 +5,9 @@
 
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); 
+    e($html->link('Home', '/coordinator')); 
   ?> &rsaquo; 
-  Orders
+  Refunds
 </div>
 <div id="confirmation_dialog"></div>
 <div id="content" class="flex">

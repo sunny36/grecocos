@@ -18,9 +18,10 @@
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); ?> &rsaquo; 
-    Payments
+    e($html->link('Home', '/coordinator')); 
+  ?>
+   &rsaquo; 
+  Payments
 </div>
 <!-- End Navigation  -->
 
