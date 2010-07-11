@@ -186,7 +186,7 @@ var mygrid =  jQuery("#orders").jqGrid({
     });
 
     function reload(rowid, result) {
-      $("#order_d").trigger("reloadGrid"); 
+      //$("#order_d").trigger("reloadGrid"); 
     }
     
     $('.order_d.cancel.ui-button').live('click', function() {

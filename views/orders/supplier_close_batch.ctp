@@ -15,10 +15,9 @@
 </style>
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); 
+    e($html->link('Home', '/supplier')); 
   ?> &rsaquo; 
-  Orders
+  Close Batch
 </div>
 
 <div id="content" class="flex">

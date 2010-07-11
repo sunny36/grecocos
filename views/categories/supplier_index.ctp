@@ -2,9 +2,8 @@
 <?php echo $javascript->link('admin/admin_index.js', false); ?>
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
-  <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-  'action' => 'index'))); ?> &rsaquo; 
+  <?php e($html->link('Home', '/supplier')); ?> 
+   &rsaquo; 
   Product Categories
 </div>
 <!-- End Navigation  -->

@@ -1,10 +1,8 @@
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
-  <?php e($html->link('Home', array('controller' => 'dashboard', 
-  'action' => 'index', 'admin' => true))); ?> 
+  <?php e($html->link('Home', '/supplier')); ?> 
   &rsaquo; 
-  <?php e($html->link('Products', array('controller' => 'categories', 
-  'action' => 'index', 'admin' => true))); ?> 
+  <?php e($html->link('Product Categories', '/supplier/categories')); ?> 
   &rsaquo;                            
   Edit Product Category
 </div>

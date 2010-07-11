@@ -3,9 +3,10 @@
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); ?> &rsaquo; 
-    Products
+    e($html->link('Home', '/supplier'));
+  ?> 
+  &rsaquo; 
+  Products
 </div>
 <!-- End Navigation  -->
 
