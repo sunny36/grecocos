@@ -13,11 +13,9 @@ class UsersController extends AppController {
   }
 
   function coordinator_index() {
-    //Same as admin_index except that use a differnt layout 
     $this->layout = "coordinator/index"; 
     $this->User->recursive = 0;
     $this->set('users', $this->paginate());
-    $this->render('/users/admin_index');
   }
 
   function admin_view($id = null) {
