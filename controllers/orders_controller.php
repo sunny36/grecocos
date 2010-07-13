@@ -369,7 +369,6 @@ class OrdersController extends AppController {
           'Order.id' => $this->params['url']['id']), 
         'recursive' => -1));
       $this->set('status', $order['Order']['status']);
-      $this->log($order, 'activity');
     } 
   }
 
@@ -383,7 +382,6 @@ class OrdersController extends AppController {
           'Order.id' => $this->params['url']['id']), 
         'recursive' => 1));
       $this->set('status', $order['Delivery']['closed']);
-      $this->log($order, 'activity');
     } 
   }
 
