@@ -194,12 +194,22 @@ class DeliveriesController extends AppController {
         $paid = $this->params['form']['paid'];
         $this->Delivery->recursive = -1;
         if(isset($this->params['form']['ids'])) {
+          $ids = null; 
           foreach ($this->params['form']['ids'] as $id) {
+            $ids[] = $id;
             $delivery = $this->Delivery->findById($id);
             if($paid == 'Yes') $delivery['Delivery']['paid'] = true;
             if($paid == 'No') $delivery['Delivery']['paid'] = false;    
             $this->Delivery->save($delivery);
           }
+          list($minDeliveryDate, $maxDeliveryDate) = $this->Delivery->getMinAndMaxDates($ids); 
+          $transaction = array('Transaction' => array(
+            'type' => "Bank Transfer", 'user_id' => $this->currentUser['User']['id'],  
+            'from' => $minDeliveryDate['Delivery']['date'], 'to' => $maxDeliveryDate['Delivery']['date'])); 
+          $Transaction = ClassRegistry::init('Transaction');
+          $Transaction->create(); 
+          $Transaction->save($transaction); 
+            
         } else {
           $delivery = $this->Delivery->findById($this->params['form']['id']);
           if($paid == 'Yes') {
