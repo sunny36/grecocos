@@ -67,7 +67,7 @@ class DeliveriesController extends AppController {
       $start = $limit*$page - $limit;
     
       $params = array('recursive' => 1, 'offset' => $start, 'limit' => $limit, 
-      'conditions' => array('Delivery.closed' => true));
+      'conditions' => array('Delivery.closed' => true), 'order' => array('Delivery.date'));
       $deliveries = $this->Delivery->find('all', $params);
       foreach ($deliveries as &$delivery) {
         $total_received = 0; 
