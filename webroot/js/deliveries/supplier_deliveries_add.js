@@ -3,7 +3,6 @@ $(document).ready(function() {
         beforeShowDay: enableOnlyTuesAndFri,
         dateFormat: 'yy-mm-dd',
         onSelect: function(dateText, inst) {
-            console.log(dateText); 
             var selectedDate = dateText.split("-"); 
             $('#DeliveryDateYear').val(selectedDate[0]); 
             $('#DeliveryDateMonth').val(selectedDate[1]); 
