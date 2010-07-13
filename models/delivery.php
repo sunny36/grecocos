@@ -20,8 +20,7 @@ class Delivery extends AppModel {
   
   function isDatesConsecutive($ids) {
     //Payment for 1 delivery is always guranteed to be consecutive 
-    if (count($ids) == 1) return true; 
-    
+    if (count($ids) == 1) return true;    
     $deliveries = $this->find('all', array('conditions' => array('Delivery.id' => $ids), 
                               'order' => array('Delivery.date'), 'recursive' => 0));
     $valid = false; 
@@ -40,5 +39,10 @@ class Delivery extends AppModel {
     return $valid; 
   }
 
+  function getMinAndMaxDates($ids) {
+    $deliveries = $this->find('all', array('conditions' => array('Delivery.id' => $ids), 
+                              'order' => array('Delivery.date'), 'recursive' => 0));
+    return array($deliveries[0], $deliveries[count($deliveries) -1]);
+  }
 }
 ?>
