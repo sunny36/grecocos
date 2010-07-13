@@ -69,7 +69,8 @@ class CartsController extends AppController{
       'delivery_id' => $delivery['Delivery']['id'],
       'total' => $total,
       'total2' => $total2,
-      'total_supplied' => $total));
+      'total_supplied' => $total, 
+      'refund' => false));
     $this->Order->create();
     $this->Order->save($order);
     $orderId = $this->Order->id;
