@@ -170,9 +170,25 @@ class DeliveriesController extends AppController {
     $this->redirect(array('action' => 'index'));
   }
 
+  function is_dates_consecutive() {
+    if ($this->RequestHandler->isAjax()) {
+      Configure::write('debug', 0);
+      $ids = null; 
+      foreach ($this->params['form']['ids'] as $id) {
+        $ids[] = $id; 
+      }
+      $this->log($ids, 'activity');
+      if ($this->Delivery->isDatesConsecutive($ids)) {
+        $this->set('valid', "yes");
+      } else {
+        $this->set('valid', "no");
+      }
+      $this->render('/elements/is_dates_consecutive');
+    }
+  }
+  
   function coordinator_edit($id = null) {
     if($this->RequestHandler->isAjax()) {
-      $this->log($this->params, 'activity');
       $this->autoRender = false; 
       if($this->params['form']['paid']) {
         $paid = $this->params['form']['paid'];
@@ -243,7 +259,6 @@ class DeliveriesController extends AppController {
     if($this->RequestHandler->isAjax()) {
       Configure::write('debug', 0);
       $this->autoRender = false;
-      $this->log($this->params, 'activity');
       if (isset($this->params['form']['next_delivery'])) {
         if ($this->params['form']['next_delivery'] == "1") {
           $this->Delivery->changeNextDelivery($id); 

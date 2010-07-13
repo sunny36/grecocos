@@ -38,6 +38,7 @@ $(document).ready(function(){
   $("#t_deliveries").append("<input id='mark_as_paid' type='button' value='Mark selected rows as paid'  />");
   
   $('#mark_as_paid').live('click', function () {
+    $.blockUI();
     var ids;
   	ids = jQuery("#deliveries").jqGrid('getGridParam','selarrrow');
   	if (ids.length == 0) {
@@ -45,12 +46,29 @@ $(document).ready(function(){
   	  custom_confirm_ok("No rows have been selected.", function () { return; });
   	  return;
   	}
-  	
-  	$.post('/index.php/coordinator/deliveries/edit', 
-  	       {'ids[]': ids, 'paid': 'Yes'}, function(data) {
-  	          $("#deliveries").trigger("reloadGrid"); 
-  	       });
-  	
+  	for (i = 0; i < ids.length; i++) {
+  	  var paid = $($('tr#' + ids[i]).children()[5]).children().attr("value");
+  	  if (paid == "1") {
+  	    custom_confirm_ok("Some rows are already paid. Please change your selection", function () { return; });
+  	    $.unblockUI();
+  	    return; 
+  	  }
+  	}
+  	$.post('/index.php/deliveries/is_dates_consecutive', {'ids[]': ids}, function(data) {
+  	  console.log(data);
+  	  if (data == "yes") {
+        $.post('/index.php/coordinator/deliveries/edit', {'ids[]': ids, 'paid': 'Yes'}, function(data) {
+          $("#deliveries").trigger("reloadGrid"); 
+          $.unblockUI();
+        });
+  	  }
+  	  if (data == "no") {
+  	    $.unblockUI();
+  	    custom_confirm_ok("Payments dates must be consecutive. No gaps are allowed", function() { 
+  	      return; 
+  	    });
+  	  }
+  	});  	
   });
   
   $('.deliveries.edit.ui-button').live('click', function() {
