@@ -17,7 +17,28 @@ class Delivery extends AppModel {
     $nextDelivery['Delivery']['next_delivery'] = true; 
     $this->save($nextDelivery);
   }
-
+  
+  function isDatesConsecutive($ids) {
+    //Payment for 1 delivery is always guranteed to be consecutive 
+    if (count($ids) == 1) return true; 
+    
+    $deliveries = $this->find('all', array('conditions' => array('Delivery.id' => $ids), 
+                              'order' => array('Delivery.date'), 'recursive' => 0));
+    $valid = false; 
+    if (count($deliveries) >= 2) {
+      $minDelivery = $deliveries[0];
+      $maxDelivery = $deliveries[count($deliveries) -1];
+      $allDeliveries = $this->find('all', array('conditions' => array(
+        'Delivery.date BETWEEN ? AND ?' => array($minDelivery['Delivery']['date'], $maxDelivery['Delivery']['date'])),
+        'recursive' => 0));
+      if (count($deliveries) == count($allDeliveries)) {
+        $valid = true; 
+      } else {
+        $valid = false; 
+      }
+    }  
+    return $valid; 
+  }
 
 }
 ?>
