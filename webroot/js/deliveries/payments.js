@@ -1,6 +1,9 @@
 $(document).ready(function(){
   jQuery('#deliveries').jqGrid({
     url: window.location.pathname, 
+    height: "auto",
+    width: 896,
+    shrinkToFit: false,
     colNames: ['Date', 'Received', 'Refund', 'Due', 'Paid', 'Action'], 
     colModel:[
       {name:'date', index:'date', width:150, align:"left"},
