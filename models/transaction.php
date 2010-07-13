@@ -37,6 +37,9 @@ class Transaction extends AppModel {
         $amountRefund = $transaction['Order']['total'] - $transaction['Order']['total_supplied'];
         $cashOut += $amountRefund; 
       }
+      if ($transaction['Transaction']['type'] == "Bank Transfer") {
+        $cashOut += $transaction['Transaction']['bank_transfer_amount'];
+      }
     }
     return $cashOut;  
   }
