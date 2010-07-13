@@ -29,14 +29,11 @@ class DeliveriesController extends AppController {
   }
 
   function coordinator_notify_arrival_of_shipment() {
-    $this->log($this->params, 'activity'); 
     $this->layout = "coordinator/index"; 
 
     $delivery = $this->Delivery->findByOrderStatus("packed");
     
     if(!empty($this->params['form'])) {
-      $this->log($this->params['form']['send_email'], 'activity'); 
-
       $delivery_id = $this->params['form']['id']; 
       $delivery = $this->Order->find('all', 
                                      array('conditions' => 
@@ -44,7 +41,6 @@ class DeliveriesController extends AppController {
                                                  'Order.status' => "packed")                                                    
                                            )
                                      ); 
-      $this->log($delivery, 'activity'); 
     } else {
       $this->set('deliveries', $this->paginate()); 
     }
@@ -86,7 +82,6 @@ class DeliveriesController extends AppController {
         $delivery['Delivery']['total_refund'] = $total_refund; 
         $delivery['Delivery']['total_due'] = $total_due;
       }
-      $this->log($deliveries, 'activity');
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
