@@ -50,19 +50,6 @@
         </div>    
         <!-- End Date  -->        
 
-        <!-- Begin Date  -->        
-        <div class="form-row date">
-          <div>
-            <?php 
-              e($form->label('next_delivery', "Next Delivery?", 
-                             array('class' => 'required')));
-                             e($form->checkbox('next_delivery', array('class' => 'vCheckBoxField')));
-            ?>        
-          </div>        
-        </div>    
-        <!-- End Date  -->        
-
-        
       </fieldset>
 
       <div class="submit-row" >
