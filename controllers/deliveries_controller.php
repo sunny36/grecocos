@@ -195,9 +195,16 @@ class DeliveriesController extends AppController {
         $this->Delivery->recursive = -1;
         if(isset($this->params['form']['ids'])) {
           $ids = null; 
+          $this->Delivery->recursive = 1;
+          $bank_transfer_amount = 0; 
           foreach ($this->params['form']['ids'] as $id) {
             $ids[] = $id;
             $delivery = $this->Delivery->findById($id);
+            $total_due = 0;
+            foreach($delivery['Order'] as $order) {
+              $total_due += $order['total2'];
+            }
+            $bank_transfer_amount += $total_due;
             if($paid == 'Yes') $delivery['Delivery']['paid'] = true;
             if($paid == 'No') $delivery['Delivery']['paid'] = false;    
             $this->Delivery->save($delivery);
@@ -205,7 +212,8 @@ class DeliveriesController extends AppController {
           list($minDeliveryDate, $maxDeliveryDate) = $this->Delivery->getMinAndMaxDates($ids); 
           $transaction = array('Transaction' => array(
             'type' => "Bank Transfer", 'user_id' => $this->currentUser['User']['id'],  
-            'from' => $minDeliveryDate['Delivery']['date'], 'to' => $maxDeliveryDate['Delivery']['date'])); 
+            'from' => $minDeliveryDate['Delivery']['date'], 'to' => $maxDeliveryDate['Delivery']['date'],
+            'bank_transfer_amount' => $bank_transfer_amount)); 
           $Transaction = ClassRegistry::init('Transaction');
           $Transaction->create(); 
           $Transaction->save($transaction); 
