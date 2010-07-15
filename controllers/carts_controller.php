@@ -60,41 +60,27 @@ class CartsController extends AppController{
     }
     $total = $this->Session->read('cart_total');
     $total2 = $this->Session->read('cart_total2');
-    $delivery = $this->Delivery->find('first', 
-      array('conditions' => array('Delivery.next_delivery' => true)));
-    $order = array('Order' => array('status' => 'entered', 
-      'ordered_date' => date('Y-m-d H:i:s'), 
-      'complete' => false,
-      'user_id' => $this->currentUser['User']['id'],
-      'delivery_id' => $delivery['Delivery']['id'],
-      'total' => $total,
-      'total2' => $total2,
-      'total_supplied' => $total, 
-      'refund' => false));
+    $delivery = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
+    $order = array('Order' => array('status' => 'entered', 'ordered_date' => date('Y-m-d H:i:s'), 'complete' => false,
+                                    'user_id' => $this->currentUser['User']['id'],
+                                    'delivery_id' => $delivery['Delivery']['id'], 'total' => $total,'total2' => $total2,
+                                    'total_supplied' => $total, 'total_supplied2' => $total2, 'refund' => false));
     $this->Order->create();
     $this->Order->save($order);
     $orderId = $this->Order->id;
-
     $cart = $this->Session->read('cart');			
     foreach($cart as $cartItem){
-      $lineItems['Order'][] = array('product_id' => $cartItem['id'], 
-        'order_id' => $orderId, 
-        'quantity' => $cartItem['quantity'],
-        'total_price' =>  $cartItem['subtotal'],
-        'quantity_supplied' => $cartItem['quantity'],
-        'total_price_supplied' => $cartItem['subtotal']);
+      $lineItems['Order'][] = array('product_id' => $cartItem['id'], 'order_id' => $orderId, 
+                                    'quantity' => $cartItem['quantity'], 'total_price' =>  $cartItem['subtotal'],
+                                    'quantity_supplied' => $cartItem['quantity'], 
+                                    'total_price_supplied' => $cartItem['subtotal']);
     }
     $this->LineItem->saveAll($lineItems['Order']);
-    $transaction = array('Transaction' => array(
-      'type' => 'Order', 
-      'user_id' => $this->currentUser['User']['id'], 
-      'order_id' => $orderId,
-      'delivery_id' => $delivery['Delivery']['id'])); 
+    $transaction = array('Transaction' => array('type' => 'Order', 'user_id' => $this->currentUser['User']['id'], 
+                         'order_id' => $orderId, 'delivery_id' => $delivery['Delivery']['id'])); 
     $this->Transaction->create(); 
     $this->Transaction->save($transaction); 
-    
-    $deliveryDate = $this->Delivery->find('first', array(
-      'conditions' => array('Delivery.next_delivery' => 1)));
+        $deliveryDate = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => 1)));
     $this->Session->write('deliveryDate', $deliveryDate);
     $this->Session->write('orderId', $orderId);
     $this->redirect(array('controller' => 'carts', 'action' => 'checkout'));
