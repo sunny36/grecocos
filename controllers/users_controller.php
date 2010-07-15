@@ -49,9 +49,7 @@ class UsersController extends AppController {
     if (!empty($this->data)) {
       if($this->data['User']['status'] == 'accepted'){
         $this->set('firstname', $this->data['User']['firstname']); 
-        $this->_sendMail($this->data['User']['email'], 
-                         "GRECOCOS: Your account has been accepted", 
-                         "accepted"); 
+        $this->_sendMail($this->data['User']['email'], "GRECOCOS: Your account has been accepted", "accepted"); 
       }      
       if ($this->User->save($this->data)) {
         $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
@@ -74,9 +72,7 @@ class UsersController extends AppController {
     if (!empty($this->data)) {
       if($this->data['User']['status'] == 'accepted'){
         $this->set('firstname', $this->data['User']['firstname']); 
-        $this->_sendMail($this->data['User']['email'], 
-                         "GRECOCOS: Your account has been accepted", 
-                         "accepted"); 
+        $this->_sendMail($this->data['User']['email'], "GRECOCOS: Your account has been accepted", "accepted"); 
       }      
       if ($this->User->save($this->data)) {
         $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
@@ -147,20 +143,17 @@ class UsersController extends AppController {
   function signup(){
     $this->set('title_for_layout', 'Customer Signup');
     $this->layout = "users/signup"; 
-    $delivery_addresses = $this->Organization->find('list', 
-      array('fields' => 'Organization.delivery_address'));
+    $delivery_addresses = $this->Organization->find('list', array('fields' => 'Organization.delivery_address'));
     $this->set('delivery_addresses', $delivery_addresses);
     if(!empty($this->data)) {
       $this->data['User']['status'] = 'registered';
       if(isset($this->data['User']['password2'])){
-        $this->data['User']['password2hashed'] =
-          $this->Auth->password($this->data['User']['password2']);
+        $this->data['User']['password2hashed'] = $this->Auth->password($this->data['User']['password2']);
       }
       $this->User->create();
       if($this->User->save($this->data)){
         $this->set('firstname', $this->data['User']['firstname']); 
-        $sendEmail = $this->_sendMail($this->data['User']['email'], 
-                                      'GRECOCOS: Signup', 'signup');
+        $sendEmail = $this->_sendMail($this->data['User']['email'], 'GRECOCOS: Signup', 'signup');
         if($sendEmail){
           $msg = 'Please wait for an confirmation email from the co-ordinator.';
           $this->Session->setFlash($msg);
@@ -218,29 +211,39 @@ class UsersController extends AppController {
     }
     $this->render('/users/admin_login');
   }
+
+  function administrator_login(){ 
+    $this->set('title_for_layout', 'Login | Grecocos Administration');
+    $this->layout = "admin_login"; 
+    if($this->Auth->user()) {
+      $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
+    }
+    $this->render('/users/admin_login');
+  }
   
   function admin_logout() { 
     if($this->Auth->logout()){
-      $this->redirect(array('controller' => 'users', 
-                            'action' => 'login', 'admin' => true));
-      
+      $this->redirect(array('controller' => 'users', 'action' => 'login', 'admin' => true));
     }
   }
 
   function coordinator_logout() { 
     if($this->Auth->logout()){
-      $this->redirect(array('controller' => 'users', 
-                            'action' => 'login', 'admin' => true));
-      
+      $this->redirect(array('controller' => 'users', 'action' => 'login', 'admin' => true));
     }
   }
 
   function supplier_logout() { 
     if($this->Auth->logout()){
-      $this->redirect(array('controller' => 'users', 
-                            'action' => 'login', 'admin' => true));
-      
+      $this->redirect(array('controller' => 'users', 'action' => 'login', 'admin' => true));
     }
   }
+  
+  function administrator_logout() { 
+    if($this->Auth->logout()){
+      $this->redirect(array('controller' => 'users', 'action' => 'login', 'admin' => true));
+    }
+  }
+  
 }
 ?>
