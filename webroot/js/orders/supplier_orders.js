@@ -78,8 +78,6 @@ var mygrid =  jQuery("#orders").jqGrid({
     $.get('/index.php/supplier/deliveries/getalljson', function(data) {
       var delivery_dates = eval('(' + data + ')');
       for(i = 0; i < delivery_dates.length; i++) {
-        console.log(delivery_dates[i]["Delivery"]["id"]);
-        console.log(delivery_dates[i]["Delivery"]["date"]);
         $('#gs_delivery_date').append($("<option></option>").attr("value",delivery_dates[i]["Delivery"]["id"]).text(delivery_dates[i]["Delivery"]["date"]));
       }
     });
@@ -107,11 +105,9 @@ var mygrid =  jQuery("#orders").jqGrid({
        	],
         gridComplete: function(){
             var ids = jQuery("#order_d").jqGrid('getDataIDs');
-            console.log(ids);
             var orderId = $('#order_d').jqGrid('getGridParam', 'orderId'); 
             //Do not show edit button if the order has already been packed
             getOrderDeliveryStatus(orderId, function(data) {
-                console.log(data); 
                 if(data == 0) {
                     for(var i=0;i < ids.length;i++){
                         var cl = ids[i];
@@ -132,11 +128,9 @@ var mygrid =  jQuery("#orders").jqGrid({
     
     $('.orders.edit.ui-button').live('click', function() {
         var $button = $(this);
-        console.log($button.parent().parent().attr('id'));
         orderId = $button.parent().parent().attr('id'); 
         getOrderDeliveryStatus(orderId, function(data) {
             if(data == 1) {
-                console.log("closed"); 
                 custom_confirm_ok("Order has been closed. Cannot edit.", function() {return; })
                 return;
             } else {
