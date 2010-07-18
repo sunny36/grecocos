@@ -29,11 +29,13 @@ class Order extends AppModel {
       //Update total for each line item as well as the order total 
       $total_supplied = 0; 
       foreach($order['LineItem'] as &$line_item) {
-        $line_item['total_price_supplied'] = $line_item['quantity_supplied'] * 
-                                             $line_item['Product']['selling_price'];
+        $line_item['total_price_supplied'] = $line_item['quantity_supplied'] * $line_item['Product']['selling_price'];
+        $line_item['total_price_supplied2'] = $line_item['quantity_supplied'] * $line_item['Product']['buying_price'];
         $total_supplied += $line_item['total_price_supplied'];
+        $total2_supplied += $line_item['total_price_supplied2'];
       }
       $order['Order']['total_supplied'] = $total_supplied;
+      $order['Order']['total2_supplied'] = $total2_supplied;
       $this->log($order, 'activity');   
       $this->save($order);
     }
