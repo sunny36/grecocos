@@ -22,16 +22,12 @@ class OrdersController extends AppController {
           $delivery_id = $this->params['url']['delivery_date'];
           if($delivery_id != "all") {
             if($delivery_id == "current_delivery_date") {
-              $params = array(
-                'conditions' => array('Delivery.next_delivery' => true)); 
+              $params = array('conditions' => array('Delivery.next_delivery' => true)); 
               $next_delivery = $this->Delivery->find('first', $params);              
-              $params = array('conditions' => array(
-                'Delivery.id' => $next_delivery['Delivery']['id'], 
+              $params = array('conditions' => array('Delivery.id' => $next_delivery['Delivery']['id'], 
                 'Order.status <>' => 'entered'));                             
-
             } else {
-              $params = array('conditions' => array(
-                'Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));                             
+              $params = array('conditions' => array('Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));
             }
           } 
         }
@@ -47,23 +43,19 @@ class OrdersController extends AppController {
       $start = $limit*$page - $limit;
       if($start < 0) $start = 0; 
       if($limit < 0) $limit = 0; 
-      $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit,
-        'conditions' => array('Order.status <>' => 'entered'));
+      $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+        'Order.status <>' => 'entered'));
       if(!empty($this->params['url']['delivery_date'])) {
         $delivery_id = $this->params['url']['delivery_date'];
         if($delivery_id != "all") {
           if($delivery_id == "current_delivery_date") {
-            $params = array(
-              'conditions' => array('Delivery.next_delivery' => true)); 
+            $params = array('conditions' => array('Delivery.next_delivery' => true)); 
             $next_delivery = $this->Delivery->find('first', $params);
-            $params = array('recursive' => 0, 'offset' => $start, '
-              limit' => $limit, 'conditions' => array( 
-                'Delivery.id' => $next_delivery['Delivery']['id'], 
-                'Order.status <>' => 'entered'));             
+            $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+              'Delivery.id' => $next_delivery['Delivery']['id'], 'Order.status <>' => 'entered'));             
           } else {
-            $params = array('recursive' => 0, 'offset' => $start, '
-              limit' => $limit, 'conditions' => array( 
-                'Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));
+            $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+              'Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));
           }
         }
         $orders = $this->Order->find('all', $params);
@@ -81,20 +73,13 @@ class OrdersController extends AppController {
     $this->layout = "coordinator/index";
     if(!empty($this->params['url']['id'])){
       $id = $this->params['url']['id'];
-      $this->paginate = array(
-        'conditions' => array('Order.id' => $this->params['url']['id'])
-      );
+      $this->paginate = array('conditions' => array('Order.id' => $this->params['url']['id']));
     }
     if(!empty($this->params['url']['user_name'])){
-      $this->paginate = array(
-        'conditions' => array(
-          'OR' => array(
-            'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
-            'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
-          )
-        );
+      $this->paginate = array('conditions' => array('OR' => array(
+        'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
+        'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')));
     }	  
-
     $this->set('orders', $this->paginate());	  
   }
 
@@ -104,24 +89,15 @@ class OrdersController extends AppController {
     $this->paginate = array('conditions' => array('Order.status' => array('packed', 'delivered')));
     if(!empty($this->params['url']['id'])){
       $id = $this->params['url']['id'];
-      $this->paginate = array(
-        'conditions' => array('AND' => array(
-          'Order.id' => $this->params['url']['id'],
-          'Order.status' => array('packed', 'delivered')))
-        );
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.id' => $this->params['url']['id'],
+        'Order.status' => array('packed', 'delivered'))));
     }
     if(!empty($this->params['url']['user_name'])){
-      $this->paginate = array(
-        'conditions' => array(
-          'AND' => array(
-            'OR' => array(
-              'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
-              'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')
-            ),
-            'Order.status' => array('packed', 'delivered')
-
-          )
-        );
+      $this->paginate = array('conditions' => array('AND' => array('OR' => array(
+        'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
+        'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')), 
+      'Order.status' => array('packed', 'delivered')));
     }	  
     $this->set('orders', $this->paginate());	  
   }
@@ -129,14 +105,11 @@ class OrdersController extends AppController {
   function coordinator_refunds() {
     $this->layout = "coordinator/index"; 
     $this->Order->recursive = 1; 
-    $this->paginate = array('conditions' => array(
-      'AND' =>(
-        array(
-          'Delivery.closed' => true,
-          'Order.status' => 'packed',
-          'Order.total_supplied <> Order.total'))));
+    $this->paginate = array('conditions' => array('AND' =>(array(
+      'Delivery.closed' => true,
+      'Order.status' => 'packed',
+      'Order.total_supplied <> Order.total'))));
     $this->set('orders', $this->paginate());	  
-    
   }
 
 
@@ -178,7 +151,7 @@ class OrdersController extends AppController {
   }
 
   function supplier_edit($id = null) {	  
-     $this->log($this->params, 'activity');
+    $this->log($this->params, 'activity');
     if($this->RequestHandler->isAjax()) {
       $this->autoRender = false;    
       if(isset($this->params['form']['status'])) {
@@ -194,12 +167,11 @@ class OrdersController extends AppController {
         }
         //Create transaction only if the order is packed. 
         if ($this->params['form']['status'] == "Yes") {
-          $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['form']['id']), 
-                                       'recursive' => 2));
-          
+          $order =  $this->Order->find('first', array('conditions' => array(
+            'Order.id' => $this->params['form']['id']), 'recursive' => 2));
           $transaction = array('Transaction' => array(
-            'type' => "Sales", 'user_id' => $this->currentUser['User']['id'], 'order_id' => $this->params['form']['id'], 
-            'delivery_id' => $order['Delivery']['id'])); 
+            'type' => "Sales", 'user_id' => $this->currentUser['User']['id'], 
+            'order_id' => $this->params['form']['id'], 'delivery_id' => $order['Delivery']['id'])); 
           $this->Transaction->create(); 
           $this->Transaction->save($transaction); 
         }
@@ -220,11 +192,8 @@ class OrdersController extends AppController {
       $this->log($this->params, 'activity');
       $orderId = $this->params['url']['order_id'];
       $productId = $this->params['url']['product_id'];
-      $conditions = array( "AND" => array (
-        "LineItem.order_id" => $orderId,
-        "LineItem.product_id >" => $productId));
-      $lineItem = $this->LineItem->find('first', array(
-        'conditions' => array('LineItem.order_id' => $orderId,
+      $conditions = array( "AND" => array ("LineItem.order_id" => $orderId, "LineItem.product_id >" => $productId));
+      $lineItem = $this->LineItem->find('first', array('conditions' => array('LineItem.order_id' => $orderId, 
         'LineItem.product_id' => $productId)));
       $this->LineItem->id = $lineItem['LineItem']['id'];
       $lineItem = json_encode($lineItem);      
@@ -235,6 +204,8 @@ class OrdersController extends AppController {
 
   function supplier_close_batch() {
     $this->layout = 'supplier/index';
+    $nextDelivery = $this->Delivery->getNextDelivery(); 
+    $this->set('next_delivery', $nextDelivery);
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
@@ -251,11 +222,8 @@ class OrdersController extends AppController {
       $start = $limit*$page - $limit;
       $params = array('conditions' => array('Delivery.next_delivery' => true)); 
       $next_delivery = $this->Delivery->find('first', $params);
-
-      $params = array('conditions' => array('Delivery.date <=' => 
-        $next_delivery['Delivery']['date']),
-      'order' => array('Delivery.' . $sidx . ' ' . 
-      strtoupper($sord))); 
+      $params = array('conditions' => array('Delivery.date <=' => $next_delivery['Delivery']['date']), 
+      'order' => array('Delivery.' . $sidx . ' ' . strtoupper($sord))); 
       $delivery_dates = $this->Delivery->find('all', $params); 
       foreach($delivery_dates as &$delivery) {
         $packed = 0; 
@@ -267,6 +235,7 @@ class OrdersController extends AppController {
         $delivery['Delivery']['packed'] = $packed;
         $delivery['Delivery']['ordered'] = $packed + $paid;
       }
+
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
@@ -279,17 +248,14 @@ class OrdersController extends AppController {
     $this->layout = "admin_add";
     if($this->RequestHandler->isAjax()) {
       $this->autoRender = false;
-
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
       $sidx = $this->params['url']['sidx']; 
       $sord = $this->params['url']['sord']; 
       $order_id = $this->params['pass'][0];
-
       if(!$sidx) $sidx =1;
       $products = $this->Order->getProductsByOrderId($order_id);
       $count = count($products);
-
       if( $count >0 ) {
         $total_pages = ceil($count/$limit);
       } else {
@@ -297,16 +263,12 @@ class OrdersController extends AppController {
       }
       if ($page > $total_pages) $page=$total_pages;
       $start = $limit*$page - $limit;
-
       $products = $this->Order->getProductsByOrderId($order_id, $start, $limit); 
       $this->log($products, "activity"); 
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
-      //$this->log($products, "activity"); 
       $this->set('products', $products);
-
-
       $this->render('/elements/order_details_for_coordinator', 'ajax');
 
     }
@@ -316,7 +278,6 @@ class OrdersController extends AppController {
     }
     $products = $this->Order->getProducts($id);
     $this->set('products', $products);
-
     $this->set('order', $this->Order->read(null, $id));
   }
 
@@ -324,18 +285,17 @@ class OrdersController extends AppController {
     Configure::write('debug', 0);
     $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
-      $order =  $this->Order->find('first', 
-        array('conditions' => array('Order.id' => $this->params['form']['id']), 
-              'recursive' => 2));
+      $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['form']['id']), 
+      'recursive' => 2));
       $transactionType = "";
       $this->log($order, 'activity');
       if(!empty($this->params['form']['status'])) {
         $order['Order']['status'] = $this->params['form']['status'];
         if ($order['Order']['status'] == "paid") {
-         $transactionType = "Cash Payment";  
+          $transactionType = "Cash Payment";  
         }
         if ($order['Order']['status'] == "delivered") {
-         $transactionType = "Delivery";  
+          $transactionType = "Delivery";  
         }
       }
       if(!empty($this->params['form']['refund'])) {
@@ -350,10 +310,8 @@ class OrdersController extends AppController {
       $this->Order->save($order);
       //Log to Transaction table
       $transaction = array('Transaction' => array(
-      'type' => $transactionType, 
-      'user_id' => $this->currentUser['User']['id'], 
-      'order_id' => $order['Order']['id'],
-      'delivery_id' => $order['Delivery']['id'])); 
+        'type' => $transactionType, 'user_id' => $this->currentUser['User']['id'], 
+        'order_id' => $order['Order']['id'],'delivery_id' => $order['Delivery']['id'])); 
       $this->Transaction->create(); 
       $this->Transaction->save($transaction); 
     }
@@ -364,10 +322,8 @@ class OrdersController extends AppController {
     // $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
       $this->log($this->params, 'activity');
-      $order =  $this->Order->find('first', 
-        array('conditions' => array(
-          'Order.id' => $this->params['url']['id']), 
-        'recursive' => -1));
+      $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['url']['id']), 
+      'recursive' => -1));
       $this->set('status', $order['Order']['status']);
     } 
   }
@@ -377,15 +333,11 @@ class OrdersController extends AppController {
     // $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
       $this->log($this->params, 'activity');
-      $order =  $this->Order->find('first', 
-        array('conditions' => array(
-          'Order.id' => $this->params['url']['id']), 
-        'recursive' => 1));
+      $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['url']['id']), 
+      'recursive' => 1));
       $this->set('status', $order['Delivery']['closed']);
     } 
   }
-
-
 
 }
 ?>
