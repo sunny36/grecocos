@@ -64,6 +64,10 @@ class TransactionsController extends AppController {
           $transaction['Transaction']['cash_out'] = $amountRefund;
           $transaction['Transaction']['type'] = "Refund Order" . " #" . $transaction['Transaction']['order_id'];
         }
+        if ($transaction['Transaction']['type'] == "Bank Transfer") {
+          
+          $transaction['Transaction']['cash_out'] = $transaction['Transaction']['bank_transfer_amount'];
+        }
       }
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);

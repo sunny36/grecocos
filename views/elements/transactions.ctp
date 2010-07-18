@@ -15,10 +15,27 @@ echo "<userdata name=\"cash_out\">" . $cash_out . "</userdata>";
 for($i=0;$i<sizeof($transactions);$i++){
 echo "<row id='".$transactions[$i]['Transaction']['id']."'>";            
 
-echo "<cell>". $transactions[$i]['User']['name']."</cell>";
+if ($transactions[$i]['Transaction']['type'] == "Bank Transfer") {
+  echo "<cell>". "Swift Co. Ltd." ."</cell>";
+} else {
+  echo "<cell>". $transactions[$i]['User']['name']."</cell>";
+}
+
 echo "<cell>". $transactions[$i]['Transaction']['type']."</cell>";
-echo "<cell>". $transactions[$i]['Order']['ordered_date']."</cell>";
-echo "<cell>". $transactions[$i]['Order']['Delivery']['date']."</cell>";
+
+App::import( 'Helper', 'Time' );
+if ($transactions[$i]['Transaction']['type'] == "Bank Transfer") {
+  echo "<cell>". $time->format($format = 'Y-m-d', $transactions[$i]['Transaction']['created']) ."</cell>";
+} else {
+  echo "<cell>". $transactions[$i]['Order']['ordered_date']."</cell>";
+}
+if ($transactions[$i]['Transaction']['type'] == "Bank Transfer") {
+  echo "<cell>". $time->format($format = 'Y-m-d', $transactions[$i]['Transaction']['from']) . " TO " . 
+       $time->format($format = 'Y-m-d', $transactions[$i]['Transaction']['to']) . "</cell>";
+       
+} else {
+  echo "<cell>". $transactions[$i]['Order']['Delivery']['date']."</cell>";  
+}
 echo "<cell>". $transactions[$i]['Transaction']['cash_in']."</cell>";
 echo "<cell>". $transactions[$i]['Transaction']['cash_out']."</cell>";
 echo "</row>";
