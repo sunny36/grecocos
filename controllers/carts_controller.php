@@ -48,9 +48,7 @@ class CartsController extends AppController{
     foreach ($cart as $cartItem) {
       $conditions['id'][] = $cartItem['id'];
     }
-    $products = $this->Product->find('all',
-      array('conditions' => $conditions, 
-      'recursive' => -1));
+    $products = $this->Product->find('all', array('conditions' => $conditions, 'recursive' => -1));
     foreach ($cart as $cartItem) {
       foreach($products as $product){
         if($cartItem['id'] == $product['Product']['id']){
@@ -64,7 +62,7 @@ class CartsController extends AppController{
     $order = array('Order' => array('status' => 'entered', 'ordered_date' => date('Y-m-d H:i:s'), 'complete' => false,
                                     'user_id' => $this->currentUser['User']['id'],
                                     'delivery_id' => $delivery['Delivery']['id'], 'total' => $total,'total2' => $total2,
-                                    'total_supplied' => $total, 'total_supplied2' => $total2, 'refund' => false));
+                                    'total_supplied' => $total, 'total2_supplied' => $total2, 'refund' => false));
     $this->Order->create();
     $this->Order->save($order);
     $orderId = $this->Order->id;
@@ -80,7 +78,7 @@ class CartsController extends AppController{
                          'order_id' => $orderId, 'delivery_id' => $delivery['Delivery']['id'])); 
     $this->Transaction->create(); 
     $this->Transaction->save($transaction); 
-        $deliveryDate = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => 1)));
+    $deliveryDate = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => 1)));
     $this->Session->write('deliveryDate', $deliveryDate);
     $this->Session->write('orderId', $orderId);
     $this->redirect(array('controller' => 'carts', 'action' => 'checkout'));
