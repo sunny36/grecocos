@@ -55,7 +55,6 @@ $(document).ready(function(){
   	  }
   	}
   	$.post('/index.php/deliveries/is_dates_consecutive', {'ids[]': ids}, function(data) {
-  	  console.log(data);
   	  if (data == "yes") {
         $.post('/index.php/coordinator/deliveries/edit', {'ids[]': ids, 'paid': 'Yes'}, function(data) {
           $("#deliveries").trigger("reloadGrid"); 
