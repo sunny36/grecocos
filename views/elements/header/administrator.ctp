@@ -16,11 +16,21 @@
         <a href="#"><span class="icon"></span>Customers</a>
         <ul>
           <li class="menu-item">
-            <?php e($html->link('View customers information',
-                                '/admin/users/index'))?>
-
+            <?php e($html->link('View customers information', '/admin/users/index'))?>
           </li>
         </ul>
       </li>
+      <li class="menu-item">
+        <a href="#"><span class="icon"></span>Transactions</a>
+        <ul>
+          <li class="menu-item">
+            <?php e($html->link('Cash Report 1', '/administrator/transactions/index'))?>
+          </li>
+          <li class="menu-item">
+            <?php e($html->link('Cash Report 2', '/administrator/transactions/cash_report2'))?>
+          </li>
+        </ul>
+      </li>
+
     </ul>
 </div>
