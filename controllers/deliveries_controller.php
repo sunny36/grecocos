@@ -213,7 +213,7 @@ class DeliveriesController extends AppController {
           $transaction = array('Transaction' => array(
             'type' => "Bank Transfer", 'user_id' => $this->currentUser['User']['id'],  
             'from' => $minDeliveryDate['Delivery']['date'], 'to' => $maxDeliveryDate['Delivery']['date'],
-            'bank_transfer_amount' => $bank_transfer_amount)); 
+            'bank_transfer_amount' => $bank_transfer_amount, 'delivery_id' => $maxDeliveryDate['Delivery']['id'])); 
           $Transaction = ClassRegistry::init('Transaction');
           $Transaction->create(); 
           $Transaction->save($transaction); 
