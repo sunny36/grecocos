@@ -14,10 +14,15 @@ class Transaction extends AppModel {
     return $cashIn;  
   }
 
-  function getCashIn2() {
-    $params = array('conditions' => array('OR' => array(
-      array('Transaction.type' => 'Cash Payment'),
-      array('Transaction.type' => 'Refund'))));
+  function getCashIn2($delivery_id = NULL) {
+    if (isset($delivery_id)) {
+      $params = array('conditions' => array('OR' => array(
+        array('Transaction.type' => 'Cash Payment'), array('Transaction.type' => 'Refund'))));
+    } else {
+      $params = array('conditions' => array('AND' => array('OR' => array(
+        array('Transaction.type' => 'Refund'), array('Transaction.type' => 'Bank Transfer')), 
+      array('Transaction.delivery_id' => $delivery_id))));
+    }
     $transactions = $this->find('all', $params); 
     $cashIn = 0; 
     foreach ($transactions as $transaction) {
@@ -80,11 +85,17 @@ class Transaction extends AppModel {
     return $cashOut;
   }
 
-  function getDueToPay() { 
-    $params = array('conditions' => array('OR' => array(
-      array('Transaction.type' => 'Cash Payment'),
-      array('Transaction.type' => 'Refund'),
-      array('Transaction.type' => 'Bank Transfer'))));
+  function getDueToPay($delivery_id = NULL) { 
+    if (isset($delivery_id)) {
+      $params = array('conditions' => array('OR' => array(
+        array('Transaction.type' => 'Cash Payment'), array('Transaction.type' => 'Refund'), 
+        array('Transaction.type' => 'Bank Transfer')))); 
+    } else {
+      $params = array('conditions' => array('AND' => array('OR' => array(
+        array('Transaction.type' => 'Cash Payment'), array('Transaction.type' => 'Refund'), 
+        array('Transaction.type' => 'Bank Transfer')), 
+      array('Transaction.delivery_id' => $delivery_id))));
+    }
     $transactions = $this->find('all', $params); 
     $dueToPay = 0; 
     foreach ($transactions as $transaction) {
