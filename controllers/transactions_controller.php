@@ -5,7 +5,7 @@ class TransactionsController extends AppController {
   var $helpers = array('Html', 'Form', 'Javascript', 'Time');
 
   function administrator_index() {
-    $this->layout = "admin_index"; 
+    $this->layout = "administrator/index"; 
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
@@ -72,7 +72,7 @@ class TransactionsController extends AppController {
   }
   
   function administrator_cash_report2() {
-    $this->layout = "admin_index"; 
+    $this->layout = "administrator/index"; 
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 

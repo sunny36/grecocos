@@ -20,12 +20,19 @@
       <caption><a href="auth/" class="section">Transactions</a></caption>
         <tr>
           <th scope="row">
-            <?php e($html->link('View Transactions', 
-                                '/administrator/transactions/index'))?>
+            <?php e($html->link('Cash Report 1', '/administrator/transactions/index'))?>
           </th>
           <td></td>
           <td></td>
         </tr>
+        <tr>
+          <th scope="row">
+            <?php e($html->link('Cash Report 2', '/administrator/transactions/cash_report2'))?>
+          </th>
+          <td></td>
+          <td></td>
+        </tr>
+
       </table>
     </div>
 

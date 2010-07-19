@@ -9,9 +9,8 @@
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); ?> &rsaquo; 
-    Products
+    e($html->link('Home', '/administrator')); ?> &rsaquo; 
+    Cash Report 1
 </div>
 <!-- End Navigation  -->
 
