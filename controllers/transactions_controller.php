@@ -20,12 +20,9 @@ class TransactionsController extends AppController {
       $count = 0;
       if (isset($delivery_id)) {
         $count = $this->Transaction->getNumRowsForPaidTransactionByDeliveryDate($delivery_id); 
-    
-        
       } else {
         $count = $this->Transaction->getNumRowsForPaidTransaction(); 
       }
-      
       if( $count >0 ) {
         $total_pages = ceil($count/$limit);
       } else {
@@ -38,7 +35,6 @@ class TransactionsController extends AppController {
       $cashIn = null; 
       $cashOut = null; 
       if (isset($delivery_id)) {
-        $this->log($delivery_id, 'activity');
         $transactions = $this->Transaction->getPaidTransactionByDeliveryDate($recursive, $start, $limit, $delivery_id);
         $cashIn = $this->Transaction->getCashInByDelivery($delivery_id); 
         $cashOut = $this->Transaction->getCashOutByDelivery($delivery_id);
@@ -47,7 +43,6 @@ class TransactionsController extends AppController {
         $cashIn = $this->Transaction->getCashIn(); 
         $cashOut = $this->Transaction->getCashOut();
       }
-      //$this->log($transactions, 'activity');
       App::import( 'Helper', 'Time' );
       $time = new TimeHelper;
       foreach($transactions as &$transaction) {
@@ -65,7 +60,6 @@ class TransactionsController extends AppController {
           $transaction['Transaction']['type'] = "Refund Order" . " #" . $transaction['Transaction']['order_id'];
         }
         if ($transaction['Transaction']['type'] == "Bank Transfer") {
-          
           $transaction['Transaction']['cash_out'] = $transaction['Transaction']['bank_transfer_amount'];
         }
       }
