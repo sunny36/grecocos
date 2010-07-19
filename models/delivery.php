@@ -44,5 +44,13 @@ class Delivery extends AppModel {
                               'order' => array('Delivery.date'), 'recursive' => 0));
     return array($deliveries[0], $deliveries[count($deliveries) -1]);
   }
+  
+  function getNextDelivery() {
+    $currentDelivery = $this->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
+    $nextDelivery = $this->find('all', array('conditions' => array(
+      'Delivery.date >' => $currentDelivery['Delivery']['date']), 
+      'order' => array('Delivery.date')));
+    return $nextDelivery; 
+  }
 }
 ?>
