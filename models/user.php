@@ -85,5 +85,17 @@ class User extends AppModel {
     $user['User']['status'] = ucwords($user['User']['status']);
     return $user;
   }
+
+  function sendAcceptanceEmail($id) {
+    $user = $this->getUser($id); 
+    $to = $user['User']['email']; 
+    $subject = "GRECOCOS: Your account has been accepted"; 
+    $body = "Dear {$user['User']['firstname']}  \n\n" . 
+      "Your account has been accepted. You can now log in at " . 
+      "http://grecocos.co.cc/index.php/login\n\nThank You\n\n";
+    $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
+    $AppengineEmail->sendEmail($to, $subject, $body); 
+  }
+
 }
 ?>

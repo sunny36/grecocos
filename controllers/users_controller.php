@@ -48,8 +48,7 @@ class UsersController extends AppController {
     }
     if (!empty($this->data)) {
       if($this->data['User']['status'] == 'accepted'){
-        $this->set('firstname', $this->data['User']['firstname']); 
-        $this->_sendMail($this->data['User']['email'], "GRECOCOS: Your account has been accepted", "accepted"); 
+        $this->User->sendAcceptanceEmail($this->data['User']['id']); 
       }      
       if ($this->User->save($this->data)) {
         $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
@@ -71,8 +70,7 @@ class UsersController extends AppController {
     }
     if (!empty($this->data)) {
       if($this->data['User']['status'] == 'accepted'){
-        $this->set('firstname', $this->data['User']['firstname']); 
-        $this->_sendMail($this->data['User']['email'], "GRECOCOS: Your account has been accepted", "accepted"); 
+        $this->User->sendAcceptanceEmail($this->data['User']['id']); 
       }      
       if ($this->User->save($this->data)) {
         $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
