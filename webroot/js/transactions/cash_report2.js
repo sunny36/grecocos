@@ -9,10 +9,10 @@ $(document).ready(function(){
       {name:'user_name',index:'user_name', align:"left", search:false, width: 200},
       {name:'type', index:'type', align:"left", search:false},
       {name:'ordered_date', index:'type', align:"left", search:false},
-      {name:'delivery_date', index:'delivery_date',  align:"left", stype:'select', 
-        searchoptions:{value:"all:All"}, width:"180"},
-        {name:'cash_in',index:'cash_in',align:"right", search:false},
-        {name:'due_to_pay',index:'due_to_pay',  align:"right", search:false}
+      {name:'delivery_date', index:'delivery_date',  align:"left", stype:'select', searchoptions: {value:"all:All"}, 
+      width:"180"},
+      {name:'cash_in',index:'cash_in',align:"right", search:false},
+      {name:'due_to_pay',index:'due_to_pay',  align:"right", search:false}
     ],
     sortname: 'product',
     headerrow: true,
@@ -43,9 +43,9 @@ $(document).ready(function(){
     var delivery_dates = eval('(' + data + ')');
     for(i = 0; i < delivery_dates.length; i++) {
       $('#gs_delivery_date').
-        append($("<option></option>").
-               attr("value",delivery_dates[i]["Delivery"]["id"]).
-                 text(delivery_dates[i]["Delivery"]["date"]));
+      append($("<option></option>").
+      attr("value",delivery_dates[i]["Delivery"]["id"]).
+      text(delivery_dates[i]["Delivery"]["date"]));
     }
   });
 
