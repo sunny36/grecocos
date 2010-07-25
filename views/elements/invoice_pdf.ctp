@@ -9,7 +9,9 @@ $pdf->SetY(80);
 $pdf->Cell(100, 15, "Delivery Date");
 $pdf->SetFont('Arial', '');
 
-$pdf->Cell(200, 13, $deliveryDate['Delivery']['date']);
+App::import( 'Helper', 'Time' );
+$timeHelper = new TimeHelper; 
+$pdf->Cell(200, 13, $timeHelper->format($format = 'd-m-Y', $deliveryDate['Delivery']['date']));
 
 $pdf->Ln(80);
 
@@ -54,6 +56,7 @@ $message = "Please pay cash to the co-ordinator.";
 $pdf->MultiCell(0, 15, $message);
 
 $fileName = $orderId . '_' . 'invoice.pdf';
+$pdf->Output($fileName, 'F');
 $pdf->Output($fileName, 'I');
 
 ?>
