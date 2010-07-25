@@ -54,6 +54,20 @@ class Order extends AppModel {
     }
     $order['Order']['total_supplied'] = $total_supplied;
     $this->save($order);
-	}
+  }
+
+  function sendEmailConfirmingEmail($id) {
+	  $this->recursive = 2;
+    $order = $this->findById($id); 
+    $to = $order['User']['email']; 
+    $subject = "GRECOCOS: Payment received for Order #{$order['Order']['id']}"; 
+    $body = "Dear {$order['User']['firstname']} \n\n" . 
+      "Your payment for Order #{$order['Order']['id']} has been received\n\nThank You";
+    $orderId = str_pad($order['Order']['id'], 6, '0', STR_PAD_LEFT);
+    $attachment =  $orderId . "_" . "invoice.pdf"; 
+    $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
+    $AppengineEmail->sendEmail($to, $subject, $body, $attachment); 
+
+  }
 }
 ?>

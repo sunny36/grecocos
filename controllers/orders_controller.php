@@ -292,6 +292,7 @@ class OrdersController extends AppController {
       if(!empty($this->params['form']['status'])) {
         $order['Order']['status'] = $this->params['form']['status'];
         if ($order['Order']['status'] == "paid") {
+          $this->Order->sendEmailConfirmingEmail($order['Order']['id']); 
           $transactionType = "Cash Payment";  
         }
         if ($order['Order']['status'] == "delivered") {
