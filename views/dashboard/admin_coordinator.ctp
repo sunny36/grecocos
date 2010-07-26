@@ -29,7 +29,7 @@
       <tr>
         <th scope="row">
           <?php e($html->link('Send email informing arrival of shipment',
-                              '/coordinator/orders/mark_as_paid'))?>
+                              '/coordinator/deliveries/arrival_of_shipment'))?>
         </th>        
         <td></td>
         <td></td>  
