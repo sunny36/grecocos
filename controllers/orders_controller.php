@@ -71,8 +71,8 @@ class OrdersController extends AppController {
 
   function coordinator_mark_as_paid() {
     $this->layout = "coordinator/index";
+    $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
     if(!empty($this->params['url']['id'])){
-      $id = $this->params['url']['id'];
       $this->paginate = array('conditions' => array('Order.id' => $this->params['url']['id']));
     }
     if(!empty($this->params['url']['user_name'])){
@@ -87,6 +87,7 @@ class OrdersController extends AppController {
     $this->layout = "coordinator/index";
     $this->Order->recursive = 0;
     $this->paginate = array('conditions' => array('Order.status' => array('packed', 'delivered')));
+    $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
     if(!empty($this->params['url']['id'])){
       $id = $this->params['url']['id'];
       $this->paginate = array('conditions' => array('AND' => array(
@@ -99,6 +100,13 @@ class OrdersController extends AppController {
         'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')), 
       'Order.status' => array('packed', 'delivered')));
     }	  
+    if (!empty($this->params['url']['delivery_date'])) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.delivery_id' => $this->params['url']['delivery_date'],
+        'Order.status' => array('packed', 'delivered'))));
+      $this->set('default_delivery_date', $this->params['url']['delivery_date']);
+    }
+    $this->set('delivery_dates', $deliveryDates);
     $this->set('orders', $this->paginate());	  
   }
 

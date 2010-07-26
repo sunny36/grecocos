@@ -27,7 +27,21 @@
       <?php e($form->text('id', array('size' => '10'))); ?>
        &nbsp;&nbsp;
     	<?php e($form->label('customer name')); ?>  
-    	<?php e($form->text('user_name', array('size' => '40'))); ?>
+      <?php e($form->text('user_name', array('size' => '40'))); ?>
+       &nbsp;&nbsp;
+      Delivery Date
+<?php 
+if (isset($default_delivery_date)) {
+        e($form->select('delivery_date', $delivery_dates, array('selected' => $default_delivery_date), array('empty' => false))); 
+
+} else {
+        e($form->select('delivery_date', $delivery_dates, NULL, array('empty' => false))); 
+
+}
+
+?>
+
+    	 &nbsp;&nbsp;
     	<?php e($form->submit('Search', array('div' => false))); ?>
     	 &nbsp;&nbsp;
     	<?php e($html->link('View All',

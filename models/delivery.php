@@ -52,5 +52,12 @@ class Delivery extends AppModel {
       'order' => array('Delivery.date')));
     return $nextDelivery; 
   }
+
+  function getDeliveryDatesList() {
+    $nextDelivery = $this->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
+    $delivery_dates = $this->find('list', array('conditions' => array(
+      'Delivery.date <= ' => $nextDelivery['Delivery']['date']), 'order' => array('Delivery.date DESC'))); 
+    return $delivery_dates; 
+  }
 }
 ?>
