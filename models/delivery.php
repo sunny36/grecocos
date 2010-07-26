@@ -59,5 +59,20 @@ class Delivery extends AppModel {
       'Delivery.date <= ' => $nextDelivery['Delivery']['date']), 'order' => array('Delivery.date DESC'))); 
     return $delivery_dates; 
   }
+  
+  function sendEmailArrivalOfShipment($deliveryId) {
+    $Order = ClassRegistry::init('Order'); 
+    $orders = $Order->find('all', array('conditions' => array('Order.delivery_id' => $deliveryId, 
+    'Order.status' => 'packed'))); 
+    $to = "";
+    foreach ($orders as $order) {
+      $to = $to . $order['User']['email'] . ", ";
+    }
+    $subject = "GRECOCOS: Order has arrived"; 
+    $body = "Dear member,\n\nI am pleased to inform you that your order has arrived.\n\n" . 
+    "You can come to collect it now.\n\nKind regards,\nYour coordinator"; 
+    $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
+    $AppengineEmail->sendEmail($to, $subject, $body); 
+  }
 }
 ?>

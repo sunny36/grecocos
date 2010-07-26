@@ -284,6 +284,31 @@ class DeliveriesController extends AppController {
         }
       }
     }
+  }
+
+  function coordinator_arrival_of_shipment() {
+    $this->layout = "coordinator/index";
+    $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
+    $this->set('delivery_dates', $deliveryDates); 
+    if (!empty($this->data)) {
+      $this->Delivery->sendEmailArrivalOfShipment($this->data['Delivery']['delivery_date']); 
+      $orders = $this->Order->find('all', array('conditions' => array(
+        'Order.delivery_id' => $this->data['Delivery']['delivery_date'], 
+        'Order.status' => 'packed')));
+      $this->set('default_delivery_date', $this->data['Delivery']['delivery_date']);
+      $this->set('orders', $orders);
+      $this->Session->setFlash('Emails has been sent', 'system_message');  
+    }
+    if (isset($this->params['url']['delivery_date'])) {
+      $orders = $this->Order->find('all', array('conditions' => array(
+        'Order.delivery_id' => $this->params['url']['delivery_date'], 
+        'Order.status' => 'packed')));
+      $this->set('default_delivery_date', $this->params['url']['delivery_date']);
+      $this->set('orders', $orders);
+    }
+  }
+  
+  function coordinator_send_email_arrival_of_shipment() {
     
   }
 }
