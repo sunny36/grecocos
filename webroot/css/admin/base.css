@@ -489,8 +489,8 @@ td ul.errorlist li {
 
 div.system-message {
     background: #ffc;
-    margin: 10px;
-    padding: 6px 8px;
+    margin: 0 0 3px 0;
+    padding: 1px 1px;
     font-size: .8em;
 }
 
