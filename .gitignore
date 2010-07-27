@@ -8,8 +8,6 @@ db/*.sqlite3
 *~
 .DS_Store
 webroot/*.pdf
-webroot/attachments/*
-webroot/uploads/*
 .buildpath
 .settings
 .project
