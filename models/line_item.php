@@ -19,16 +19,9 @@ class LineItem extends AppModel {
         $lineItem['LineItem']['total_price_supplied'] = $quantity_supplied * 
                                                         $lineItem['Product']['selling_price'];;
         $this->save($lineItem);
+        ClassRegistry::init('Order')->updateTotalSupplied($order_id);
       }
     }  
-	}
-	
-	function afterSave($created) {
-	  if(!$created) {
-	    $orderId = $this->data['Order']['id'];
-	    ClassRegistry::init('Order')->updateTotalSupplied($orderId);
-	  }
-	  
 	}
 	
 }
