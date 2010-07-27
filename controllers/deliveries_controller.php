@@ -242,11 +242,13 @@ class DeliveriesController extends AppController {
         $delivery = $this->Delivery->findById($this->params['form']['id']);
         if($closed == 'Yes') {
           $delivery['Delivery']['closed'] = true;
+          $this->Delivery->sendConfirmationEmail($delivery['Delivery']['id']);
         }
         if($closed == 'No') {
           $delivery['Delivery']['closed'] = false;    
         }
         $this->Delivery->save($delivery);
+        
       }
     } else {
       //Non-Ajax request 

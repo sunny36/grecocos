@@ -63,14 +63,20 @@ $(document).ready(function(){
         
     });
     $('.delivery_dates.save.ui-button').live('click', function() {
+      $.blockUI();
         var $button = $(this);
         $button.hide(); 
         $button.next().hide();
-        $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'));
+        $("#" + getTableId($button)).saveRow($button.parent().parent().attr('id'), '', '', '', unblock, '');
         $button.prev().show();
         $button.next().remove(); 
         $button.remove();    
     });
+    
+     function unblock(rowid, result) {
+       $.unblockUI();    
+    }
+    
 
     $('.delivery_dates.cancel.ui-button').live('click', function() {
         var $button = $(this);
