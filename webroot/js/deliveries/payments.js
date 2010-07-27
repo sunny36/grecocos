@@ -2,17 +2,17 @@ $(document).ready(function(){
   jQuery('#deliveries').jqGrid({
     url: window.location.pathname, 
     height: "auto",
-    width: 896,
+    width: 752,
     shrinkToFit: false,
-    colNames: ['Date', 'Received', 'Refund', 'Due', 'Paid', 'Action'], 
+    colNames: ['Date', 'Received', 'Refund', 'Due', 'Paid'], 
     colModel:[
       {name:'date', index:'date', width:150, align:"left"},
       {name:'total_received', index:'total_received', width:150, align:"right"},
       {name:'total_refund', index:'total_refund', width:150, align:"right"},
       {name:'total_due', index:'total_due', width:150, align:"right"},
       {name:'paid',index:'paid', width:100, align:'center', 
- 	     formatter:'checkbox', editable: true, edittype:"checkbox"},
-      {name:'act',index:'act', width:140,sortable:false, search: false} 
+ 	     formatter:'checkbox', editable: true, edittype:"checkbox"}
+      
     ],
     sortname: 'date',
    	toolbar: [true,"top"],
@@ -23,15 +23,15 @@ $(document).ready(function(){
    	rowList:[10,20,30],
    	pager: jQuery('#deliveries_pager'),
    	multiselect: true,
-   	gridComplete: function(){
-        var ids = jQuery("#deliveries").jqGrid('getDataIDs');
-        for(var i=0;i < ids.length;i++){
-            var cl = ids[i];
-            be = "<input class='deliveries edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
-            jQuery("#deliveries").jqGrid('setRowData',ids[i],{act:be});
-        } 
-        
-    },       
+    // gridComplete: function(){
+    //         var ids = jQuery("#deliveries").jqGrid('getDataIDs');
+    //         for(var i=0;i < ids.length;i++){
+    //             var cl = ids[i];
+    //             be = "<input class='deliveries edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
+    //             jQuery("#deliveries").jqGrid('setRowData',ids[i],{act:be});
+    //         } 
+    //         
+    //     },       
     editurl: '/index.php/coordinator/deliveries/edit',
   }).navGrid('#deliveries_pager',{edit:false,add:false,del:false});
   

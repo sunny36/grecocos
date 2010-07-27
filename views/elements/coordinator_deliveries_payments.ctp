@@ -20,7 +20,6 @@ if ($deliveries[$i]['Delivery']['paid']) {
 } else {
   echo "<cell>". "0" ."</cell>";
 }
-echo "<cell>"."</cell>"; // for action
 echo "</row>";
 }
 echo "</rows>"; 
