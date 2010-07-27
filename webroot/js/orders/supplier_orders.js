@@ -17,8 +17,7 @@ var mygrid =  jQuery("#orders").jqGrid({
      	     formatter:'checkbox', editable: true, edittype:"checkbox",
      	     editoptions: {value:"Yes:No"}, stype:'select',
      	     searchoptions:{value:"all:All;packed:Packed;not_packed:Not Packed"}},
-     	    {name:'amount',index:'amount', width:80, editable: false, 
-     	     search:false},
+     	    {name:'amount',index:'amount', width:80, editable: false, align:"right", search:false},
      	    {name:'act',index:'act', width:140,sortable:false, search: false},
      	    {name:'print',index:'print', width:140,sortable:false,
      	     search: false, formatter:link_formatter},
@@ -212,6 +211,7 @@ var mygrid =  jQuery("#orders").jqGrid({
     });
      function reload(rowid, result) {
       $("#order_d").trigger("reloadGrid"); 
+      $("#orders").trigger("reloadGrid"); 
     }
    
     
