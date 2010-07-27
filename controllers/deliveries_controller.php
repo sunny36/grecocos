@@ -12,7 +12,7 @@ class DeliveriesController extends AppController {
     $this->set('deliveries', $this->paginate());
   }
   
-  function supplier_getAllJSON() {
+  function supplier_getalljson() {
     Configure::write('debug', 0);
     if($this->RequestHandler->isAjax()) {
       $params = array('conditions' => array('Delivery.next_delivery' => true)); 
