@@ -208,7 +208,6 @@ class OrdersController extends AppController {
     } else {
       //Non-Ajax
       //Show pdf
-      $this->log($this->params, 'activity');
       $this->layout = "fpdf";
       $products = $this->Order->getProducts($id);
       $this->set('products', $products);
