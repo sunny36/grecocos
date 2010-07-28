@@ -81,6 +81,15 @@ class ProductsController extends AppController {
     $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Product'));
     $this->redirect(array('action' => 'index'));
   }
+  
+    function view($id = null) {
+      if (!$id) {
+        $this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
+        $this->redirect(array('action' => 'index'));
+      }
+      $this->set('product', $this->Product->read(null, $id));
+    }
+  
 
 }
 ?>
