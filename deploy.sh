@@ -1,7 +1,13 @@
 #!/bin/sh -v
 
 cd ~/tmp
-cp -r ~/Sites/cake/1.3.0-RC2 grecocos
+
+DIRECTORY="grecocos"
+if [ -d "$DIRECTORY" ]; then
+  rm -rf grecocos
+fi
+
+cp -r ~/Sites/cake/1.3.0-RC2 $DIRECTORY
 cd grecocos
 rm .htaccess
 rm -rf app
