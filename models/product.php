@@ -43,13 +43,7 @@ class Product extends AppModel {
           'rule' => 'notEmpty', 
           'message' => 'Stock must not be blank'
           )
-      ),
-    'image' => array(
-	    'rule' => 'notEmpty',
-	    'message' => 'Image must not be blank'
-	    ),
-  	  
-	    
+      ),  	  
   );
 }
 ?>
