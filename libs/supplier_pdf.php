@@ -3,7 +3,7 @@
 class SupplierPDF {
   function __construct($products, $order, $filename, $save = false) {
     App::import('vendor', 'fpdf/fpdf' );
-    $orientation = 'P'; $unit = 'pt'; $format = 'Letter'; $margin = 40;
+    $orientation = 'P'; $unit = 'pt'; $format = 'A4'; $margin = 40;
     $pdf = new FPDF($orientation, $unit, $format); 
     App::import( 'Helper', 'Time' );
     $timeHelper = new TimeHelper;
