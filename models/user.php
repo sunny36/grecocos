@@ -90,12 +90,29 @@ class User extends AppModel {
     $user = $this->getUser($id); 
     $to = $user['User']['email']; 
     $subject = "GRECOCOS: Your account has been accepted"; 
-    $body = "Dear {$user['User']['firstname']}  \n\n" . 
-      "Your account has been accepted. You can now log in at " . 
+    $body = "Dear {$user['User']['firstname']}  \n\n" . "Your account has been accepted. You can now log in at " . 
       "http://grecocos.co.cc/index.php/login\n\nThank You\n\n";
+    $this->sendEmail($to, $subject, $body);
+  }
+  
+  function sendEmailNewUserSignUp() {
+    $to = "s@sunny.in.th";
+    $subject = "GRECOCOS: New User"; 
+    $body = "A new user has signed up."; 
+    $this->sendEmail($to, $subject, $body);
+  }
+
+  function sendEmailWaitForConfirmation($firstname, $email) {
+    $to = $email; 
+    $subject = "GRECOCOS: Signup" ; 
+    $body = "Dear {$firstname},\n\nThank you for signing up. " . 
+      "Please wait for a confirmation email from the coordinator\n\nThank you\n"; 
+    $this->sendEmail($to, $subject, $body);
+  }
+  
+  function sendEmail($to, $subject, $body) {
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
     $AppengineEmail->sendEmail($to, $subject, $body); 
   }
-
 }
 ?>

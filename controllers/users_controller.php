@@ -145,24 +145,31 @@ class UsersController extends AppController {
     $this->set('delivery_addresses', $delivery_addresses);
     if(!empty($this->data)) {
       $this->data['User']['status'] = 'registered';
+      $this->data['User']['role'] = 'customer';
       if(isset($this->data['User']['password2'])){
         $this->data['User']['password2hashed'] = $this->Auth->password($this->data['User']['password2']);
       }
       $this->User->create();
       if($this->User->save($this->data)){
-        $this->set('firstname', $this->data['User']['firstname']); 
-        $sendEmail = $this->_sendMail($this->data['User']['email'], 'GRECOCOS: Signup', 'signup');
-        if($sendEmail){
-          $msg = 'Please wait for an confirmation email from the co-ordinator.';
-          $this->Session->setFlash($msg);
-          $this->redirect(array('controller' => 'users', 'action' => 'login'));
-        } else {
-          $this->User->delete($this->User->getLastInsertID());
-          $msg = 'There was a problem in sending email. Please try again';
-          $this->Session->setFlash($msg, 'flash_error');
-          $this->data['User']['password'] = null; 
-          $this->data['User']['password2'] = null; 
-        }
+        // $this->set('firstname', $this->data['User']['firstname']); 
+        // $sendEmail = $this->_sendMail($this->data['User']['email'], 'GRECOCOS: Signup', 'signup');
+        $this->User->sendEmailWaitForConfirmation($this->data['User']['firstname'], $this->data['User']['email']); 
+        $this->User->sendEmailNewUserSignUp(); 
+        $msg = 'Please wait for an confirmation email from the co-ordinator.';
+        $this->Session->setFlash($msg);
+        $this->redirect(array('controller' => 'users', 'action' => 'login'));
+        
+        // if($sendEmail){
+        //   $msg = 'Please wait for an confirmation email from the co-ordinator.';
+        //   $this->Session->setFlash($msg);
+        //   $this->redirect(array('controller' => 'users', 'action' => 'login'));
+        // } else {
+        //   $this->User->delete($this->User->getLastInsertID());
+        //   $msg = 'There was a problem in sending email. Please try again';
+        //   $this->Session->setFlash($msg, 'flash_error');
+        //   $this->data['User']['password'] = null; 
+        //   $this->data['User']['password2'] = null; 
+        // }
       } else {
         $msg = 'There was an error signing up. Please try again.';
         $this->Session->setFlash($msg, 'flash_error');
