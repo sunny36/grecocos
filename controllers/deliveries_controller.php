@@ -25,6 +25,7 @@ class DeliveriesController extends AppController {
       $this->Delivery->recursive = $temp ;
       $delivery_dates = json_encode($delivery_dates);      
       $this->set('delivery_dates', $delivery_dates);
+      $this->render('/elements/supplier_getalljson', 'ajax');      
     }
   }
 
