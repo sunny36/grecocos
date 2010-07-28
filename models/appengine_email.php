@@ -22,7 +22,4 @@ class AppengineEmail extends AppModel {
     curl_close($ch);
   }
 }
-
 ?>
-
-
