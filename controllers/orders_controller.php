@@ -6,6 +6,14 @@ class OrdersController extends AppController {
     'Transaction');
   var $helpers = array('Html', 'Form', 'Javascript', 'Number');
   var $components = array('Jqgrid');
+  
+  function beforeFilter(){
+    parent::beforeFilter();
+    if ($this->currentUser['User']['role'] == "customer") {
+      $this->redirect($this->referer());
+    }
+  }
+  
 
   function supplier_index() {
     $this->layout = 'supplier/index';

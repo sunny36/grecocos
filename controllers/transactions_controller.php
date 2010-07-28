@@ -3,6 +3,13 @@ class TransactionsController extends AppController {
 
   var $name = 'Transactions';
   var $helpers = array('Html', 'Form', 'Javascript', 'Time');
+  
+  function beforeFilter(){
+    parent::beforeFilter();
+    if ($this->currentUser['User']['role'] == "customer") {
+      $this->redirect($this->referer());
+    }
+  }
 
   function administrator_index() {
     $this->layout = "administrator/index"; 

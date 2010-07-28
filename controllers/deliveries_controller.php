@@ -5,6 +5,13 @@ class DeliveriesController extends AppController {
   var $helpers = array('Html', 'Form', 'Javascript');
   var $uses = array('Delivery', 'Order');
   
+  function beforeFilter(){
+    parent::beforeFilter();
+    if ($this->currentUser['User']['role'] == "customer") {
+      $this->redirect($this->referer());
+    }
+  }
+  
   function supplier_index() {
     $this->layout = "supplier/index";  
     $this->Delivery->recursive = 3;

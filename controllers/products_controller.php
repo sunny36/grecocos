@@ -5,7 +5,15 @@ class ProductsController extends AppController {
   var $components = array('Attachment');
   var $helpers = array('Html', 'Form', 'Javascript');
   var $uses = array('Product', 'Category'); 
-
+  
+  function beforeFilter(){
+    parent::beforeFilter();
+    if ($this->currentUser['User']['role'] == "customer") {
+      if ($this->params['action'] != "view") {
+        $this->redirect($this->referer());
+      }      
+    }
+  }
 
   function supplier_index() {
     $this->layout = 'supplier/index'; 

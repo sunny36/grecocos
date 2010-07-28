@@ -188,6 +188,9 @@ class UsersController extends AppController {
     $this->set('title_for_layout', 'Login | Grecocos Administration');
     $this->layout = "admin_login"; 
     if($this->Auth->user()) {
+      if ($this->currentUser['User']['role'] == "customer") {
+        $this->redirect('/admin/users/logout');
+      }
       $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
     }
   }
@@ -196,6 +199,9 @@ class UsersController extends AppController {
     $this->set('title_for_layout', 'Login | Grecocos Administration');
     $this->layout = "admin_login"; 
     if($this->Auth->user()) {
+      if ($this->currentUser['User']['role'] == "customer") {
+        $this->redirect('/coordinator/users/logout');
+      }
       $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
     }
     $this->render('/users/admin_login');
@@ -205,6 +211,9 @@ class UsersController extends AppController {
     $this->set('title_for_layout', 'Login | Grecocos Administration');
     $this->layout = "admin_login"; 
     if($this->Auth->user()) {
+      if ($this->currentUser['User']['role'] == "customer") {
+        $this->redirect('/supplier/users/logout');
+      }
       $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
     }
     $this->render('/users/admin_login');
@@ -214,6 +223,9 @@ class UsersController extends AppController {
     $this->set('title_for_layout', 'Login | Grecocos Administration');
     $this->layout = "admin_login"; 
     if($this->Auth->user()) {
+      if ($this->currentUser['User']['role'] == "customer") {
+        $this->redirect('/administrator/users/logout');
+      }
       $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
     }
     $this->render('/users/admin_login');

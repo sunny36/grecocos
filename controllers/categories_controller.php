@@ -3,6 +3,14 @@ class CategoriesController extends AppController {
 
   var $name = 'Categories';
   var $helpers = array('Html', 'Form', 'Javascript');
+  
+  function beforeFilter(){
+    parent::beforeFilter();
+    if ($this->currentUser['User']['role'] == "customer") {
+      $this->redirect($this->referer());
+    }
+  }
+  
 
   function supplier_index() {
     $this->layout = "supplier/index";
