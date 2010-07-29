@@ -130,7 +130,7 @@ var mygrid =  jQuery("#orders").jqGrid({
         orderId = $button.parent().parent().attr('id'); 
         getOrderDeliveryStatus(orderId, function(data) {
             if(data == 1) {
-                custom_confirm_ok("Order has been closed. Cannot edit.", function() {return; })
+                custom_confirm_ok("Batch has been closed. Cannot edit.", function() {return; })
                 return;
             } else {
                 $button.hide();
