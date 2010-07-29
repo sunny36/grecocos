@@ -57,17 +57,17 @@ class Order extends AppModel {
   }
 
   function sendEmailConfirmingEmail($id) {
+    setlocale(LC_MONETARY, 'th_TH');
 	  $this->recursive = 2;
     $order = $this->findById($id); 
     $to = $order['User']['email']; 
     $subject = "GRECOCOS: Payment received for Order #{$order['Order']['id']}"; 
+    $amount = money_format("%i", $order['Order']['total']); 
     $body = "Dear {$order['User']['firstname']} \n\n" . 
-      "Your payment for Order #{$order['Order']['id']} has been received\n\nThank You";
-    $orderId = str_pad($order['Order']['id'], 6, '0', STR_PAD_LEFT);
-    $attachment =  $orderId . "_" . "invoice.pdf"; 
+      "Your payment for Order #{$order['Order']['id']} has been received\n\n" . 
+      "Amount Paid: {$amount} Baht \n\nThank You";
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
-    $AppengineEmail->sendEmail($to, $subject, $body, $attachment); 
-
+    $AppengineEmail->sendEmail($to, $subject, $body); 
   }
 }
 ?>
