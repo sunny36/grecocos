@@ -83,7 +83,7 @@ if (isset($default_delivery_date)) {
     		<td>
     		  <?php 
     		    setlocale(LC_MONETARY, 'th_TH');
-    		    echo money_format("&#3647 %i", $order['Order']['total']);
+    		    echo money_format("&#3647 %i", $order['Order']['total_supplied']);
     		  ?>
     		</td>
     		<td>
