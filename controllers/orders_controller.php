@@ -343,6 +343,7 @@ class OrdersController extends AppController {
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
       $this->set('products', $products);
+      $this->set('order', $this->Order->findById($order_id));
       $this->render('/elements/order_details_for_coordinator', 'ajax');
 
     }

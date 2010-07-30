@@ -20,7 +20,15 @@ echo "<userdata name=\"short_description\">" . "Totals" . "</userdata>";
 echo "<userdata name=\"quantity_ordered\">" . $quantity_ordered . "</userdata>";
 echo "<userdata name=\"quantity_supplied\">" . $quantity_supplied . "</userdata>";
 echo "<userdata name=\"price\">" . "N.A." . "</userdata>";
-echo "<userdata name=\"sub_total\">" . $products[0]['Order']['total'] . "</userdata>";
+if ($order['Order']['status'] == "entered" || $order['Order']['status'] == "paid") {
+  echo "<userdata name=\"sub_total\">" . $products[0]['Order']['total'] . "</userdata>";
+} 
+
+if ($order['Order']['status'] == "packed" || $order['Order']['status'] == "delivered") {
+  echo "<userdata name=\"sub_total\">" . $products[0]['Order']['total_supplied'] . "</userdata>";
+} 
+
+
 
 for($i=0;$i<sizeof($products);$i++){
 echo "<row id='".$products[$i]['Product']['id']."'>"; 
@@ -34,7 +42,16 @@ echo "<cell>". $products[$i]['LineItem']['quantity_supplied'] . "</cell>";
      
 echo "<cell>" . $products[$i]['Product']['selling_price'] . "</cell>"; 
 
-echo "<cell>" . $products[$i]['LineItem']['total_price'] . "</cell>"; 
+if ($order['Order']['status'] == "entered" || $order['Order']['status'] == "paid") {
+  echo "<cell>" . $products[$i]['LineItem']['total_price'] . "</cell>"; 
+} 
+
+if ($order['Order']['status'] == "packed" || $order['Order']['status'] == "delivered") {
+  echo "<cell>" . $products[$i]['LineItem']['total_price_supplied'] . "</cell>"; 
+} 
+
+
+
 
 echo "</row>";
 }
