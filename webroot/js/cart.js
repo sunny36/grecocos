@@ -102,7 +102,14 @@ $(document).ready(function(){
     return;
   }
   
-  
+  $('#ProductConfirmForm').submit(function() {
+    if (!confirm("Are you sure you want to checkout?")) {
+      return false;
+    } else {
+      return true;
+    }
+  });  
+
   function validateInteger(strValue) {
     var objRegExp  = /(^\d\d*$)/;
     return objRegExp.test(strValue);
