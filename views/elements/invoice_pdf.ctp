@@ -39,7 +39,7 @@ $pdf->Cell(200, 13, $currentUser['User']['firstname'] . ' ' . $currentUser['User
 $pdf->SetFont('Arial', 'B');
 $pdf->Cell(50, 13, "Date:");
 $pdf->SetFont('Arial', '');
-$pdf->Cell(100, 13, date('F j, Y'), 0, 1);
+$pdf->Cell(100, 13, date('d-m-Y'), 0, 1);
 
 $pdf->SetFont('Arial', '');
 $pdf->SetX(140);
@@ -51,6 +51,7 @@ $pdf->PriceTable($cart, $total);
 
 $pdf->Ln(30);
 
+$pdf->SetFont('Arial', '', 14);
 $message = "Please pay cash to the co-ordinator.";
 
 $pdf->MultiCell(0, 15, $message);

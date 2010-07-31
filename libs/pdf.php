@@ -3,7 +3,7 @@
 App::import('vendor', 'fpdf/fpdf' );
 class PDF_reciept extends FPDF {
 	var $uses = array('Product', 'Order', 'LineItem');
-	function __construct ($orientation = 'P', $unit = 'pt', $format = 'Letter', $margin = 40) {
+	function __construct ($orientation = 'P', $unit = 'pt', $format = 'A4', $margin = 40) {
 		$this->FPDF($orientation, $unit, $format);
 		$this->SetTopMargin($margin);
 		$this->SetLeftMargin($margin);
@@ -27,14 +27,15 @@ class PDF_reciept extends FPDF {
 	}
 	
 function PriceTable($cart, $total) {
-	$this->SetFont('Arial', 'B', 12);
+  setlocale(LC_MONETARY, 'th_TH');
+	$this->SetFont('Arial', 'B', 10);
 	$this->SetTextColor(0);
 	$this->SetFillColor(36, 140, 129);
 	$this->SetLineWidth(1);
-	$this->Cell(80, 25, "Quantity", 'LTR', 0, 'C', true);
-	$this->Cell(277, 25, "Item Description", 'LTR', 0, 'C', true);
-	$this->Cell(100, 25, "Price", 'LTR', 0, 'C', true);
-	$this->Cell(100, 25, "Sub-Toal", 'LTR', 1, 'C', true);
+	$this->Cell(45, 25, "Quantity", 'LTR', 0, 'C', true);
+	$this->Cell(260, 25, "Item Description", 'LTR', 0, 'C', true);
+	$this->Cell(85, 25, "Price", 'LTR', 0, 'C', true);
+	$this->Cell(85, 25, "Sub-Total", 'LTR', 1, 'C', true);
 	 
 	$this->SetFont('Arial', '');
 	$this->SetFillColor(238);
@@ -42,15 +43,15 @@ function PriceTable($cart, $total) {
 	$fill = false;
 	
 	 foreach($cart as $cartItem){
-		$this->Cell(80, 20, $cartItem['quantity'], 1, 0, 'L', $fill);
-		$this->Cell(277, 20, $cartItem['name'], 1, 0, 'L', $fill);
-		$this->Cell(100, 20,  $cartItem['price'], 1, 0, 'R', $fill);
-		$this->Cell(100, 20,  $cartItem['subtotal'], 1, 1, 'R', $fill);
+		$this->Cell(45, 20, $cartItem['quantity'], 1, 0, 'L', $fill);
+		$this->Cell(260, 20, $cartItem['name'], 1, 0, 'L', $fill);
+		$this->Cell(85, 20,  money_format("%i", $cartItem['price']), 1, 0, 'R', $fill);
+		$this->Cell(85, 20,  money_format("%i", $cartItem['subtotal']), 1, 1, 'R', $fill);
 		$fill = !$fill;
 	}
-	$this->SetX(397);
-	$this->Cell(100, 20, "Total", 1);
-	$this->Cell(100, 20,  $total . ' Baht', 1, 1, 'R');
+	$this->SetX(305+40);
+	$this->Cell(85, 20, "Total", 1);
+	$this->Cell(85, 20,  money_format("%i", $total) . ' Baht', 1, 1, 'R');
 }
 	
 	
