@@ -25,7 +25,7 @@
         <div class="form-row date">
           <div>
             <?php 
-              e($form->label('closed', "Closed", array('class' => 'required')));
+              e($form->label('closed', "System Closed", array('class' => 'required')));
               $options=array('yes'=>'Yes','no'=>'No');
               echo $form->select('closed', $options, array('selected' => $closed), array('empty' => false));
               ?>        
