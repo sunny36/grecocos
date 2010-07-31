@@ -32,6 +32,25 @@ class CartsController extends AppController{
   }
 
   function confirm() {
+    $notEmpty = false; 
+    $isIntegerOnly = true; 
+    for ($i = 1; $i <= count($this->data); $i++) {
+     if (ctype_digit($this->data[$i]['quantity']) == false) {
+       $isIntegerOnly = false; 
+     } else {
+       if ($this->data[$i]['quantity'] > 0) {
+         $notEmpty = true; 
+       }
+     }
+    }
+    if ($isIntegerOnly == false) {
+      $this->Session->setFlash('Quantity must be integer only.', 'system_message');
+      $this->redirect(array('controller' => 'carts', 'action' => 'index'));       
+    }
+    if ($notEmpty == false) {
+      $this->Session->setFlash('Nothing to check out - thank you', 'system_message');
+      $this->redirect(array('controller' => 'carts', 'action' => 'index'));      
+    }
     $cart = $this->Cart->update($this->data);
     if($cart){
       $this->Session->write('cart', $cart);

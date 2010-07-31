@@ -3,6 +3,7 @@
 </div>
 
 <div id="wrap">
+  <?php echo $this->Session->flash(); ?>
   <div class="cart_list">
     <h3>Your shopping cart</h3>
     <div id="cart_content">
@@ -25,9 +26,6 @@
               <span id = "<?php echo "category{$categoryNum}"; ?>" class="category ui-state-default ui-corner-all ui-icon ui-icon-minus" style="float:left;margin-right:0.5em;">  
               </span>
               <strong><?php e($productCategory['Category']['name']); ?></strong>
-             
-
-              
           </td>
           <td></td>
           <td></td>
@@ -38,12 +36,8 @@
       
       <tr <?php if($i&1){ echo 'class="alt"'; }?> >
       <td>
-        <?php e($form->hidden('.'. $j .'.id', 
-        array('value' => $product['id'])))?>
-        <?php e($form->text('.'. $j .'.quantity', 
-          array('value' => "0", 
-                'maxlength' => '3', 
-        'size' => '5')))?>
+        <?php e($form->hidden('.'. $j .'.id', array('value' => $product['id'])))?>
+        <?php e($form->text('.'. $j .'.quantity', array('value' => "0", 'maxlength' => '3', 'size' => '5')))?>
       </td>
       <td>
         <a class="short_description" href="javascript:void(0);">
@@ -67,18 +61,18 @@
   
 </table>
 <p>
-  <?php e($html->link('Hide zero\'s quantity items', 
-    array('controller' => 'carts', 
-          'action' => 'empty_cart'), 
-  array('id' => 'toggle_zero', 'class' => 'empty')))?>
+  <?php 
+    e($html->link('Hide zero\'s quantity items', 
+                  array('controller' => 'carts', 'action' => 'empty_cart'), 
+                  array('id' => 'toggle_zero', 'class' => 'empty')));
+  ?>
 </p>
 <p>
-  <?php e($form->submit('Checkout', 
-  array('div' => false, 'id' => "update"))); ?>
-  <?php e($html->link('Reset', 
-    array('controller' => 'carts', 
-          'action' => 'empty_cart'), 
-  array('id' => 'empty_cart', 'class' => 'empty')))?>
+  <?php e($form->submit('Checkout', array('div' => false, 'id' => "update"))); ?>
+  <?php 
+    e($html->link('Reset', array('controller' => 'carts', 'action' => 'empty_cart'), 
+                           array('id' => 'empty_cart', 'class' => 'empty')));
+  ?>
   
 </p>
 <?php 

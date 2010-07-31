@@ -25,6 +25,10 @@ $(document).ready(function(){
   );
   
   $('input[type="text"]').blur(function(){
+    if (validateInteger($(this).val()) == false) {
+      custom_confirm_ok("Quantity must be an integer only.", function() {});
+       $(this).val("0");
+    }
     var quantity = $(this).val();
     var row = $(this).parent().parent();
     var children = row.children();
@@ -97,4 +101,11 @@ $(document).ready(function(){
                                                                total;
     return;
   }
+  
+  
+  function validateInteger(strValue) {
+    var objRegExp  = /(^\d\d*$)/;
+    return objRegExp.test(strValue);
+  }
+
 });

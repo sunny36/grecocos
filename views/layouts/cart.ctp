@@ -9,6 +9,7 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js'); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js'); ?>
 <?php echo $this->Html->css('jquery-ui/smoothness/jquery-ui-1.8.custom.css'); ?>
+<?php echo $javascript->link('util.js'); ?>
 <?php echo $javascript->link('cart.js'); ?>
 <?php echo $this->Html->css('facybox.css'); ?>
 <?php echo $this->Html->css('faceplant.css'); ?>
@@ -21,7 +22,6 @@
     <!-- Header -->
     <?php e($this->element('header')); ?>
     <!-- END Header -->
-    <?php echo $this->Session->flash(); ?>
     <!-- Content -->
       <?php echo $content_for_layout; ?>
     <!-- END Content -->
