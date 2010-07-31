@@ -1,8 +1,12 @@
 <?php
 class AppController extends Controller {
   var $components = array('Auth', 'Session', 'RequestHandler');
+  var $uses = array('Configuration');
 
   function beforeFilter(){
+    if (isset($this->Configuration) && !empty($this->Configuration->table))  {  
+      $this->Configuration->load();  
+    }
     $this->Auth->fields = array('username' => 'email', 
                                 'password' => 'password');
     if($this->action == 'login' && !empty($this->data['User']['email'])) {
