@@ -67,6 +67,20 @@
         
       </table>
     </div>
+    
+    <div class="module">
+      <table>
+      <caption><a href="auth/" class="section">Configurations</a></caption>
+        <tr>
+          <th scope="row">
+            <?php e($html->link('Configurations', '/coordinator/configurations'))?>
+          </th>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    
 
   <br class="clear" />
 </div>
