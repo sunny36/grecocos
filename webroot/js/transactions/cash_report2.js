@@ -4,7 +4,7 @@ $(document).ready(function(){
     width: "1015",
     height: "auto",
     url: window.location.pathname, 
-    colNames: ['From/To', 'Description', 'Date', 'Batch', 'Cash In', 'Due to pay'], 
+    colNames: ['From/To', 'Description', 'Date', 'Batch', 'Cash In', 'Due to Supplier'], 
     colModel:[
       {name:'user_name',index:'user_name', align:"left", search:false, width: 200},
       {name:'type', index:'type', align:"left", search:false},
