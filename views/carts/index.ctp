@@ -4,6 +4,7 @@
 
 <div id="wrap">
   <?php echo $this->Session->flash(); ?>
+  <?php if (!$closed): ?>
   <div class="cart_list">
     <h3>Your shopping cart</h3>
     <div id="cart_content">
@@ -80,4 +81,9 @@ e($form->end());
 ?>
 </div>
 </div>
+<?php else: ?>
+  <h1>
+    The order system is currently closed because we are preparing your orders for <?php echo $nextDeliveryDate; ?>.
+  </h1>
+<?php endif; ?>
 </div>

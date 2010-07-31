@@ -12,12 +12,20 @@ class CartsController extends AppController{
   function index(){
     $this->layout = 'cart'; 
     $this->Category->Behaviors->attach('Containable'); 
-    $products = $this->Category->find('all', array(
-      'contain' => array('Product' => array(
-        'conditions' => array('AND' => array(
-          'Product.display = ' => '1', 
-          'Product.stock > ' => '0'))))));
+    $products = $this->Category->find('all', array('contain' => array('Product' => array(
+        'conditions' => array('AND' => array('Product.display = ' => '1', 'Product.stock > ' => '0'))))));
     $this->set('products', $products);
+    if (Configure::read('Grecocos.closed') == "yes") {
+      $closed = true;
+      $nextDelivery = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
+      App::import( 'Helper', 'Time' );
+      $time = new TimeHelper;
+      $nextDeliveryDate = $time->format($format = 'd-m-Y', $nextDelivery['Delivery']['date']);
+      $this->set('nextDeliveryDate', $nextDeliveryDate);
+    } else {
+      $closed = false;
+    }
+    $this->set('closed', $closed);
   }
 
   function getCartTotalPrice(){
