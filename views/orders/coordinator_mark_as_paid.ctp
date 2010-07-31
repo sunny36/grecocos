@@ -74,8 +74,12 @@ if (isset($default_delivery_date)) {
   	?>
     	<tr<?php echo $class;?>>
     		<td><?php echo $order['Order']['id']; ?>&nbsp;</td>
-    		<td><?php echo $order['Order']['ordered_date']; ?>&nbsp;</td>
-    		<td><?php echo $order['Delivery']['date']; ?>&nbsp;</td>
+    		<?php 
+    		  App::import( 'Helper', 'Time' );
+          $time = new TimeHelper;
+        ?>
+        <td><?php echo $time->format($format = 'd-m-Y H:i:s', $order['Order']['ordered_date']); ?>&nbsp;</td>
+    		<td><?php echo $time->format($format = 'd-m-Y', $order['Delivery']['date']); ?>&nbsp;</td>
     		<td>
     			<?php echo $this->Html->link($order['User']['name'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
     		</td>
