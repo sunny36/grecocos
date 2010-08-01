@@ -8,12 +8,12 @@
    e($html->link('Home', '/coordinator')); 
   ?>
   &rsaquo;
-  Mark orders as paid
+  Send emails to confirm arrival of orders
 </div>
 
 <div id="confirmation_dialog"></div>
 <div id="content" class="flex">
-  <h1>Orders</h1> 
+  <h1>Send emails to confirm arrival of orders</h1> 
         <?php echo $session->flash(); ?>
   <div id="content-main" style="width: auto !important">
     <div class="module" id="changelist">
@@ -38,7 +38,7 @@
         }
       ?>
        &nbsp;&nbsp;
-    	<?php e($form->submit('Search', array('div' => false))); ?>
+    	<?php e($form->submit('View Customers', array('div' => false))); ?>
     	 &nbsp;&nbsp;
     	                                      
     </div>

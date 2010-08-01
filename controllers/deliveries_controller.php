@@ -307,7 +307,7 @@ class DeliveriesController extends AppController {
         'Order.status' => 'packed')));
       $this->set('default_delivery_date', $this->data['Delivery']['delivery_date']);
       $this->set('orders', $orders);
-      $this->Session->setFlash('Emails has been sent', 'system_message');  
+      $this->Session->setFlash('Emails have been sent', 'system_message');  
     }
     if (isset($this->params['url']['delivery_date'])) {
       $orders = $this->Order->find('all', array('conditions' => array(
