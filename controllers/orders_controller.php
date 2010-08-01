@@ -225,7 +225,6 @@ class OrdersController extends AppController {
   }
 
   function supplier_edit($id = null) {	  
-    $this->log($this->params, 'activity');
     if($this->RequestHandler->isAjax()) {
       $this->autoRender = false;    
       if(isset($this->params['form']['status'])) {
@@ -251,7 +250,6 @@ class OrdersController extends AppController {
         }
       }
       if(isset($this->params['form']['quantity_supplied'])) {
-        $this->log($this->params, 'activity');
         $order_id = $this->params['pass'][0];
         $product_id = $this->params['form']['id'];
         $this->LineItem->updateQuantitySupplied($order_id, $product_id,
@@ -263,7 +261,6 @@ class OrdersController extends AppController {
   function supplier_lineitem() {
     Configure::write('debug', 0);
     if($this->RequestHandler->isAjax()) {
-      $this->log($this->params, 'activity');
       $orderId = $this->params['url']['order_id'];
       $productId = $this->params['url']['product_id'];
       $conditions = array( "AND" => array ("LineItem.order_id" => $orderId, "LineItem.product_id >" => $productId));
@@ -338,7 +335,6 @@ class OrdersController extends AppController {
       if ($page > $total_pages) $page=$total_pages;
       $start = $limit*$page - $limit;
       $products = $this->Order->getProductsByOrderId($order_id, $start, $limit); 
-      $this->log($products, "activity"); 
       $this->set('page',$page);
       $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
@@ -363,7 +359,6 @@ class OrdersController extends AppController {
       $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['form']['id']), 
       'recursive' => 2));
       $transactionType = "";
-      $this->log($order, 'activity');
       if(!empty($this->params['form']['status'])) {
         $order['Order']['status'] = $this->params['form']['status'];
         if ($order['Order']['status'] == "paid") {
@@ -397,7 +392,6 @@ class OrdersController extends AppController {
     Configure::write('debug', 0);
     // $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
-      $this->log($this->params, 'activity');
       $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['url']['id']), 
       'recursive' => -1));
       $this->set('status', $order['Order']['status']);
@@ -408,7 +402,6 @@ class OrdersController extends AppController {
     Configure::write('debug', 0);
     // $this->autoRender = false;
     if($this->RequestHandler->isAjax()) {
-      $this->log($this->params, 'activity');
       $order =  $this->Order->find('first', array('conditions' => array('Order.id' => $this->params['url']['id']), 
       'recursive' => 1));
       $this->set('status', $order['Delivery']['closed']);

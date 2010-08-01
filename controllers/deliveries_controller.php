@@ -187,7 +187,6 @@ class DeliveriesController extends AppController {
       foreach ($this->params['form']['ids'] as $id) {
         $ids[] = $id; 
       }
-      $this->log($ids, 'activity');
       if ($this->Delivery->isDatesConsecutive($ids)) {
         $this->set('valid', "yes");
       } else {

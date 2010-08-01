@@ -36,7 +36,6 @@ class Order extends AppModel {
       }
       $order['Order']['total_supplied'] = $total_supplied;
       $order['Order']['total2_supplied'] = $total2_supplied;
-      $this->log($order, 'activity');   
       $this->save($order);
     }
     if($status == 'No') {
