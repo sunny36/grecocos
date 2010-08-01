@@ -82,9 +82,11 @@ class DeliveriesController extends AppController {
         $total_refund = 0; 
         $total_due = 0; 
         foreach($delivery['Order'] as $order) {
-          $total_received += $order['total'];
-          $total_refund += ($order['total'] - $order['total_supplied']);
-          $total_due += $order['total2_supplied'];
+          if ($order['status'] == "packed") {
+            $total_received += $order['total'];
+            $total_refund += ($order['total'] - $order['total_supplied']);
+            $total_due += $order['total2_supplied'];
+          }
         }
         $delivery['Delivery']['total_received'] = $total_received; 
         $delivery['Delivery']['total_refund'] = $total_refund; 
