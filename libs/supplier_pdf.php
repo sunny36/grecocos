@@ -16,6 +16,7 @@ class SupplierPDF {
     $pdf->SetRightMargin($margin);
     $pdf->SetAutoPageBreak(true, $margin);
 
+    $pdf->SetY($pdf->GetY() + 60);
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->SetTextColor(0);
     $pdf->SetFillColor(255);
@@ -27,43 +28,43 @@ class SupplierPDF {
     $pdf->SetFont('Arial', 'B');
     $pdf->Cell(100, 25, 'Customer Name: ', 'T', 0, 'L'); 
     $pdf->SetFont('Arial', '');
-    $pdf->Cell(290, 25, $order['User']['name'], 'TR', 1, 'L'); 
+    $pdf->Cell(316, 25, $order['User']['name'], 'TR', 1, 'L'); 
 
     $pdf->SetFont('Arial', 'B');
     $pdf->Cell(100, 25, "Delivery Date: ", 'LT', 0, 'L'); 
     $pdf->SetFont('Arial', '');
-    $pdf->Cell(390, 25, $timeHelper->format($format = 'd-m-Y', $order['Delivery']['date']), 'TR', 1, 'L'); 
+    $pdf->Cell(416, 25, $timeHelper->format($format = 'd-m-Y', $order['Delivery']['date']), 'TR', 1, 'L'); 
 
-    $pdf->SetFont('Arial', 'B');
+    $pdf->SetFont('Arial', 'B', '10');
     $current_y = $pdf->GetY();
     $current_x = $pdf->GetX();
     $cell_width = 30;
     $pdf->MultiCell($cell_width, 25, "No.\n ", 'LTR',  'C');
     $pdf->SetXY($current_x + $cell_width, $current_y);
 
-    $pdf->Cell(200, 25, "Description", 'LTR', 0, 'C');
+    $pdf->Cell(250, 25, "Description", 'LTR', 0, 'C');
 
     $current_y = $pdf->GetY();
     $current_x = $pdf->GetX();
-    $cell_width = 50;
+    $cell_width = 48;
     $pdf->MultiCell($cell_width, 25, "Number Ordered", 'LTR', 'C');
     $pdf->SetXY($current_x + $cell_width, $current_y);
 
     $current_y = $pdf->GetY();
     $current_x = $pdf->GetX();
-    $cell_width = 50;
+    $cell_width = 48;
     $pdf->MultiCell($cell_width, 25, "Number Supplied", 'LTR', 'C');
     $pdf->SetXY($current_x + $cell_width, $current_y);
 
     $current_y = $pdf->GetY();
     $current_x = $pdf->GetX();
-    $cell_width = 80;
+    $cell_width = 70;
     $pdf->MultiCell($cell_width, 25, "Amount per Unit", 'LTR', 'C');
     $pdf->SetXY($current_x + $cell_width, $current_y);
 
     $current_y = $pdf->GetY();
     $current_x = $pdf->GetX();
-    $cell_width = 80;
+    $cell_width = 70;
     $pdf->MultiCell($cell_width, 25, "Amount\n ", 'LTR','C');
     $pdf->SetY($pdf->GetY() -25);
 
@@ -77,24 +78,24 @@ class SupplierPDF {
     $number_supplied = 0;
     foreach($products as $product){
      $pdf->Cell(30, 20, $num++, 1, 0, 'L'); 
-     $pdf->Cell(200, 20, $product['Product']['short_description'], 1, 0, 'L');
-     $pdf->Cell(50, 20, $product['LineItem']['quantity'], 1, 0, 'L');
+     $pdf->Cell(250, 20, $product['Product']['short_description'], 1, 0, 'L');
+     $pdf->Cell(48, 20, $product['LineItem']['quantity'], 1, 0, 'R');
      $number_ordered += $product['LineItem']['quantity'];
-     $pdf->Cell(50, 20, $product['LineItem']['quantity_supplied'], 1, 0, 'L');
+     $pdf->Cell(48, 20, $product['LineItem']['quantity_supplied'], 1, 0, 'R');
      $number_supplied += $product['LineItem']['quantity_supplied'];
-     $pdf->Cell(80, 20, money_format("%i", $product['Product']['selling_price']), 1, 0, 'R');
-     $pdf->Cell(80, 20, money_format("%i", $product['LineItem']['total_price_supplied']) , 1, 1, 'R');
+     $pdf->Cell(70, 20, money_format("%i", $product['Product']['selling_price']), 1, 0, 'R');
+     $pdf->Cell(70, 20, money_format("%i", $product['LineItem']['total_price_supplied']) , 1, 1, 'R');
 
     }
 
     $pdf->SetX($pdf->GetX() + 30);
     $pdf->SetFont('Arial', 'B');
-    $pdf->Cell(200, 20, "TOTALS", 1);
+    $pdf->Cell(250, 20, "TOTALS", 1);
     $pdf->SetFont('Arial', '');
-    $pdf->Cell(50, 20,  $number_ordered, 1, 0, 'L');
-    $pdf->Cell(50, 20,  $number_supplied, 1, 0, 'L');
-    $pdf->Cell(80, 20,  "N.A.", 1, 0, 'R');
-    $pdf->Cell(80, 20,  money_format("%i", $order['Order']['total_supplied']), 1, 1, 'R');
+    $pdf->Cell(48, 20,  $number_ordered, 1, 0, 'R');
+    $pdf->Cell(48, 20,  $number_supplied, 1, 0, 'R');
+    $pdf->Cell(70, 20,  "N.A.", 1, 0, 'R');
+    $pdf->Cell(70, 20,  money_format("%i", $order['Order']['total_supplied']), 1, 1, 'R');
 
 
     $pdf->SetY($pdf->GetY() + 25);
