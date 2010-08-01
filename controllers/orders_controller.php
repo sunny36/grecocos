@@ -407,6 +407,14 @@ class OrdersController extends AppController {
       $this->set('status', $order['Delivery']['closed']);
     } 
   }
+  
+  function coordinator_print_refund_receipt($id) {
+    $this->layout = "fpdf";
+    $order = $this->Order->findById($id); 
+    $this->set('order', $order);
+    $this->render('/elements/refund_receipt_pdf');
+    
+  }
 
 }
 ?>

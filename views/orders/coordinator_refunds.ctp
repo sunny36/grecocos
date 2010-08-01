@@ -111,6 +111,8 @@
     		</td>
 
     		<td>
+    		  <?php echo $this->Html->link('Print Receipt', 
+    		                               '/coordinator/orders/print_refund_receipt/' . $order['Order']['id'])?> |
     			<?php echo $this->Html->link(__('View Details', true), array('action' => 'view', $order['Order']['id'])); ?>
     		</td>
     	</tr>
