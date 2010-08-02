@@ -96,7 +96,7 @@ class User extends AppModel {
   }
   
   function sendEmailNewUserSignUp() {
-    $to = "s@sunny.in.th";
+    $to = "Ralph.Houtman@fao.org";
     $subject = "GRECOCOS: New User"; 
     $body = "A new user has signed up."; 
     $this->sendEmail($to, $subject, $body);
