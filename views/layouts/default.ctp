@@ -19,15 +19,6 @@
 			  
 		</div>
 		<div id="content">
-		  <?php if($loggedIn): ?>
-			  <?php e($html->link('Logout', array('controller' => 'users', 
-			                                      'action' => 'logout'))); ?>
-			<?php else: ?>
-			  <?php e($html->link('Sign Up', array('controller' => 'users', 
-			                                       'action' => 'signup'))); ?>|
-        <?php e($html->link('Login', array('controller' => 'users', 
-                                           'action' => 'login'))); ?>|
-      <?php endif; ?>
 
 			<?php echo $this->Session->flash(); ?>
 
