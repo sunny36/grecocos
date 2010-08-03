@@ -25,7 +25,8 @@ class DeliveriesController extends AppController {
       $params = array('conditions' => array('Delivery.next_delivery' => true)); 
       $next_delivery = $this->Delivery->find('first', $params);
       $params = array('conditions' => array(
-        'Delivery.date <=' => $next_delivery['Delivery']['date'])); 
+        'Delivery.date <=' => $next_delivery['Delivery']['date']),
+        'order' => 'Delivery.date DESC'); 
       $temp = $this->Delivery->recursive;
       $this->Delivery->recursive = 0; 
       $delivery_dates = $this->Delivery->find('all', $params); 
@@ -318,9 +319,6 @@ class DeliveriesController extends AppController {
       $this->set('orders', $orders);
     }
   }
-  
-  function coordinator_send_email_arrival_of_shipment() {
     
-  }
 }
 ?>
