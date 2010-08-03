@@ -70,7 +70,7 @@ class Delivery extends AppModel {
     }
     $subject = "GRECOCOS: Order has arrived"; 
     $body = "Dear member,\n\nI am pleased to inform you that your order has arrived.\n\n" . 
-    "You can come to collect it now.\n\nKind regards,\nYour coordinator"; 
+    "You can come to collect it now from the coordinator.\n\nKind regards,\nYour coordinator"; 
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
     $AppengineEmail->sendEmail($to, $subject, $body); 
   }
