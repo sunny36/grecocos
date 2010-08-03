@@ -1,4 +1,4 @@
-<div id="box" style="border: solid; width: 400px;">
+left<div id="box" style="border: solid; width: 400px;">
   My content is copied into the facybox!
 </div>
 
@@ -62,23 +62,20 @@
   
 </table>
 <p>
+
   <?php 
-    e($html->link('Hide zero\'s quantity items', 
-                  array('controller' => 'carts', 'action' => 'empty_cart'), 
-                  array('id' => 'toggle_zero', 'class' => 'empty')));
+    e($form->button('View your order', array('div' => false, 'id' => 'toggle_zero', 'class' => 'empty')));
   ?>
 </p>
 <p>
   <?php e($form->submit('Checkout', array('div' => false, 'id' => "update"))); ?>
+  <?php e($form->end());?>
   <?php 
-    e($html->link('Reset', array('controller' => 'carts', 'action' => 'empty_cart'), 
-                           array('id' => 'empty_cart', 'class' => 'empty')));
+    e($form->submit('Reset', array('div' => false, 'id' => 'empty_cart', 'class' => 'empty')));
   ?>
   
 </p>
-<?php 
-e($form->end());
-?>
+
 </div>
 </div>
 <?php else: ?>
