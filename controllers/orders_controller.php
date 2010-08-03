@@ -137,15 +137,56 @@ class OrdersController extends AppController {
   function coordinator_mark_as_paid() {
     $this->layout = "coordinator/index";
     $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
-    if(!empty($this->params['url']['id'])){
-      $this->paginate = array('conditions' => array('Order.id' => $this->params['url']['id']));
+    $deliveryDates = array(-1 => 'All') + $deliveryDates;
+    if (!empty($this->params['url']['id'])) {
+      $orderId = $this->params['url']['id']; 
+      $this->set('default_order_id', $orderId); 
     }
-    if(!empty($this->params['url']['user_name'])){
+    if (!empty($this->params['url']['user_name'])) {
+      $customerName = $this->params['url']['user_name']; 
+      $this->set('default_customer_name', $customerName); 
+    }
+    if (!empty($this->params['url']['delivery_date'])) {
+      if ($this->params['url']['delivery_date'] != -1) {
+        $deliveryId = $this->params['url']['delivery_date'];
+        $this->set('default_delivery_id', $deliveryId);          
+      }
+    }
+    if(!empty($orderId)){
+      $this->paginate = array('conditions' => array('Order.id' => $orderId));
+    }
+    if(!empty($customerName)){
       $this->paginate = array('conditions' => array('OR' => array(
-        'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
-        'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')));
-        $this->set('default_delivery_date', $this->params['url']['delivery_date']);
+        'User.firstname LIKE' => '%' . $customerName. '%',
+        'User.lastname LIKE' => '%' . $customerName. '%')));
     }	  
+    if (!empty($deliveryId)) {
+      $this->paginate = array('conditions' => array(
+        'Order.delivery_id' => $deliveryId));
+    }
+    if (!empty($deliveryId) && !empty($customerName)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.delivery_id' => $deliveryId, 'OR' => array(
+          'User.firstname LIKE' => '%' . $customerName. '%',
+          'User.lastname LIKE' => '%' . $customerName. '%'))));
+    }
+    if (!empty($deliveryId) && !empty($orderId)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.delivery_id' => $deliveryId, 'Order.id' => $orderId)));
+    }
+    if (!empty($orderId) && !empty($customerName)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.id' => $orderId, 'OR' => array(
+          'User.firstname LIKE' => '%' . $customerName. '%',
+          'User.lastname LIKE' => '%' . $customerName. '%'))));
+    }
+    if (!empty($orderId) && !empty($deliveryId) && !empty($customerName)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.id' => $orderId, 'Order.delivery_id' => $deliveryId, 
+        'OR' => array(
+          'User.firstname LIKE' => '%' . $customerName. '%',
+          'User.lastname LIKE' => '%' . $customerName. '%'))));
+    }
     $this->set('delivery_dates', $deliveryDates);
     $this->set('orders', $this->paginate());	  
   }
@@ -153,26 +194,67 @@ class OrdersController extends AppController {
   function coordinator_mark_as_delivered() {
     $this->layout = "coordinator/index";
     $this->Order->recursive = 0;
-    $this->paginate = array('conditions' => array('Order.status' => array('packed', 'delivered')));
-    $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
-    if(!empty($this->params['url']['id'])){
-      $id = $this->params['url']['id'];
-      $this->paginate = array('conditions' => array('AND' => array(
-        'Order.id' => $this->params['url']['id'],
-        'Order.status' => array('packed', 'delivered'))));
-    }
-    if(!empty($this->params['url']['user_name'])){
-      $this->paginate = array('conditions' => array('AND' => array('OR' => array(
-        'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%',
-        'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%')), 
+    $this->paginate = array('conditions' => array(
       'Order.status' => array('packed', 'delivered')));
-    }	  
-    if (!empty($this->params['url']['delivery_date'])) {
-      $this->paginate = array('conditions' => array('AND' => array(
-        'Order.delivery_id' => $this->params['url']['delivery_date'],
-        'Order.status' => array('packed', 'delivered'))));
-      $this->set('default_delivery_date', $this->params['url']['delivery_date']);
+    $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
+    $deliveryDates = array(-1 => 'All') + $deliveryDates;
+    if (!empty($this->params['url']['id'])) {
+      $orderId = $this->params['url']['id']; 
+      $this->set('default_order_id', $orderId); 
     }
+    if (!empty($this->params['url']['user_name'])) {
+      $customerName = $this->params['url']['user_name']; 
+      $this->set('default_customer_name', $customerName); 
+    }
+    if (!empty($this->params['url']['delivery_date'])) {
+      if ($this->params['url']['delivery_date'] != -1) {
+        $deliveryId = $this->params['url']['delivery_date'];
+        $this->set('default_delivery_id', $deliveryId);          
+      }
+    }
+    if(!empty($orderId)){
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.id' => $orderId,
+        'Order.status' => array('packed', 'delivered'))));
+    }
+    if(!empty($customerName)){
+      $this->paginate = array('conditions' => array('AND' => array('OR' => array(
+        'User.firstname LIKE' => '%' . $customerName. '%',
+        'User.lastname LIKE' => '%' . $customerName. '%')), 
+        'Order.status' => array('packed', 'delivered')));
+    }	  
+    if (!empty($deliveryId)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.delivery_id' => $deliveryId,
+        'Order.status' => array('packed', 'delivered'))));
+    }
+    if (!empty($deliveryId) && !empty($customerName)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.status' => array('packed', 'delivered'), 
+        'Order.delivery_id' => $deliveryId, 'OR' => array(
+          'User.firstname LIKE' => '%' . $customerName. '%',
+          'User.lastname LIKE' => '%' . $customerName. '%'))));
+    }
+    if (!empty($deliveryId) && !empty($orderId)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.status' => array('packed', 'delivered'), 
+        'Order.delivery_id' => $deliveryId, 'Order.id' => $orderId)));
+    }
+    if (!empty($orderId) && !empty($customerName)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.status' => array('packed', 'delivered'), 
+        'Order.id' => $orderId, 'OR' => array(
+          'User.firstname LIKE' => '%' . $customerName. '%',
+          'User.lastname LIKE' => '%' . $customerName. '%'))));
+    }
+    if (!empty($orderId) && !empty($deliveryId) && !empty($customerName)) {
+      $this->paginate = array('conditions' => array('AND' => array(
+        'Order.status' => array('packed', 'delivered'), 
+        'Order.id' => $orderId, 'Order.delivery_id' => $deliveryId, 
+        'OR' => array(
+          'User.firstname LIKE' => '%' . $customerName. '%',
+          'User.lastname LIKE' => '%' . $customerName. '%'))));
+    }    
     $this->set('delivery_dates', $deliveryDates);
     $this->set('orders', $this->paginate());	  
   }

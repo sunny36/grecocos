@@ -24,29 +24,42 @@
         <?php echo $html->image('admin/icon_searchbox.png')?>
       </label>
       <?php e($form->label('orderId')); ?> 
-      <?php e($form->text('id', array('size' => '10'))); ?>
+      <?php 
+        if (isset($default_order_id)) {
+          e($form->text('id', array('value' => $default_order_id, 
+                                    'size' => '10')));
+        } else {
+          e($form->text('id', array('size' => '10')));
+        }
+      ?>
        &nbsp;&nbsp;
     	<?php e($form->label('customer name')); ?>  
-      <?php e($form->text('user_name', array('size' => '40'))); ?>
+    	<?php
+    	  if (isset($default_customer_name)) {
+    	    e($form->text('user_name', array('value' => $default_customer_name, 
+    	                                      'size' => '40')));
+    	  } else {
+    	    e($form->text('user_name', array('size' => '40')));
+    	  }
+    	?>
        &nbsp;&nbsp;
       Delivery Date
-<?php 
-if (isset($default_delivery_date)) {
-        e($form->select('delivery_date', $delivery_dates, array('selected' => $default_delivery_date), array('empty' => false))); 
+      <?php 
+        if (isset($default_delivery_id)) {
+          e($form->select('delivery_date', $delivery_dates, 
+                          array('selected' => $default_delivery_id), 
+                          array('empty' => false))); 
+        } else {
+          e($form->select('delivery_date', $delivery_dates, NULL, 
+                          array('empty' => false))); 
 
-} else {
-        e($form->select('delivery_date', $delivery_dates, NULL, array('empty' => false))); 
-
-}
-
-?>
-
-    	 &nbsp;&nbsp;
+        }
+      ?>
+       &nbsp;&nbsp;
     	<?php e($form->submit('Search', array('div' => false))); ?>
     	 &nbsp;&nbsp;
     	<?php e($html->link('View All',
-    	                    '/coordinator/orders/mark_as_delivered'))?>
-    	                                      
+    	                    '/coordinator/orders/mark_as_delivered'))?>    	                                      
     </div>
     </form>
     </div>          
