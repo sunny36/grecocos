@@ -75,7 +75,7 @@ $(document).ready(function(){
       
     },
     function (){
-      $(this).text("Hide zero\'s quantity items");
+      $(this).text("View your order");
       var products = $('#products tr');
       for(var i = 1; i < products.length - 1; i++) {
         $(products[i]).show();
