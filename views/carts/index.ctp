@@ -1,4 +1,4 @@
-left<div id="box" style="border: solid; width: 400px;">
+<div id="box" style="border: solid; width: 400px;">
   My content is copied into the facybox!
 </div>
 
