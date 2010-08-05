@@ -30,39 +30,49 @@ class OrdersController extends AppController {
           $delivery_id = $this->params['url']['delivery_date'];
           if($delivery_id != "all") {
             if($delivery_id == "current_delivery_date") {
-              $params = array('conditions' => array('Delivery.next_delivery' => true)); 
+              $params = array('conditions' => array(
+                'Delivery.next_delivery' => true)); 
               $next_delivery = $this->Delivery->find('first', $params);
               if (!empty($this->params['url']['status'])) {
                 if ($this->params['url']['status'] == "packed") {
-                  $params = array('conditions' => array('Delivery.id' => $next_delivery['Delivery']['id'],
+                  $params = array('conditions' => array(
+                    'Delivery.id' => $next_delivery['Delivery']['id'],
                     'Order.status' => 'packed'));
                 }
                 if ($this->params['url']['status'] == "not_packed") {
-                  $params = array('conditions' => array('Delivery.id' => $next_delivery['Delivery']['id'], 
+                  $params = array('conditions' => array(
+                    'Delivery.id' => $next_delivery['Delivery']['id'], 
                     'Order.status' => 'not_packed'));
                 }
                 if ($this->params['url']['status'] == "all") {
-                  $params = array('conditions' => array('Delivery.id' => $next_delivery['Delivery']['id'],
+                  $params = array('conditions' => array(
+                    'Delivery.id' => $next_delivery['Delivery']['id'],
                     'Order.status <>' => 'entered'));
                 }
               } else {
-                $params = array('conditions' => array('Delivery.id' => $next_delivery['Delivery']['id'], 
+                $params = array('conditions' => array(
+                  'Delivery.id' => $next_delivery['Delivery']['id'], 
                   'Order.status <>' => 'entered'));                             
               }
             } else {
               if (!empty($this->params['url']['status'])) {
                 if ($this->params['url']['status'] == "packed") {
-                  $params = array('conditions' => array('Delivery.id' => $delivery_id, 'Order.status' => 'packed'));
+                  $params = array('conditions' => array(
+                    'Delivery.id' => $delivery_id, 'Order.status' => 'packed'));
                 }
                 if ($this->params['url']['status'] == "not_packed") {
-                  $params = array('conditions' => array('Delivery.id' => $delivery_id, 
+                  $params = array('conditions' => array(
+                    'Delivery.id' => $delivery_id, 
                     'Order.status' => 'not_packed'));
                 }
                 if ($this->params['url']['status'] == "all") {
-                  $params = array('conditions' => array('Delivery.id' => $delivery_id, 'Order.status' => 'all'));
+                  $params = array('conditions' => array(
+                    'Delivery.id' => $delivery_id, 'Order.status' => 'all'));
                 }
               } else {
-                $params = array('conditions' => array('Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));
+                $params = array('conditions' => array(
+                  'Delivery.id' => $delivery_id, 
+                  'Order.status <>' => 'entered'));
               }
             }
           } 
@@ -78,47 +88,60 @@ class OrdersController extends AppController {
       $start = $limit*$page - $limit;
       if($start < 0) $start = 0; 
       if($limit < 0) $limit = 0; 
-      $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
-        'Order.status <>' => 'entered'));
+      $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 
+      'conditions' => array('Order.status <>' => 'entered'));
       if(!empty($this->params['url']['delivery_date'])) {
         $delivery_id = $this->params['url']['delivery_date'];
         if($delivery_id != "all") {
           if($delivery_id == "current_delivery_date") {
-            $params = array('conditions' => array('Delivery.next_delivery' => true)); 
+            $params = array('conditions' => array(
+              'Delivery.next_delivery' => true)); 
             $next_delivery = $this->Delivery->find('first', $params);
             if (!empty($this->params['url']['status'])) {
               if ($this->params['url']['status'] == "packed") {
-                $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
-                  'Delivery.id' => $next_delivery['Delivery']['id'], 'Order.status' => 'packed'));
+                $params = array('recursive' => 0, 'offset' => $start, 
+                'limit' => $limit, 'conditions' => array(
+                  'Delivery.id' => $next_delivery['Delivery']['id'], 
+                  'Order.status' => 'packed'));
               }
               if ($this->params['url']['status'] == "not_packed") {
-                $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
-                  'Delivery.id' => $next_delivery['Delivery']['id'], 'Order.status' => 'paid'));
+                $params = array('recursive' => 0, 'offset' => $start, 
+                'limit' => $limit, 'conditions' => array(
+                  'Delivery.id' => $next_delivery['Delivery']['id'], 
+                  'Order.status' => 'paid'));
               }
               if ($this->params['url']['status'] == "all") {
-                $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
-                  'Delivery.id' => $next_delivery['Delivery']['id'], 'Order.status <>' => 'entered'));
+                $params = array('recursive' => 0, 'offset' => $start, 
+                'limit' => $limit, 'conditions' => array(
+                  'Delivery.id' => $next_delivery['Delivery']['id'], 
+                  'Order.status <>' => 'entered'));
               }
             } else {
-              $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
-                'Delivery.id' => $next_delivery['Delivery']['id'], 'Order.status <>' => 'entered'));
+              $params = array('recursive' => 0, 'offset' => $start, 
+              'limit' => $limit, 'conditions' => array(
+                'Delivery.id' => $next_delivery['Delivery']['id'], 
+                'Order.status <>' => 'entered'));
             }
           } else {
             if (!empty($this->params['url']['status'])) {
               if ($this->params['url']['status'] == "packed") {
-                $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+                $params = array('recursive' => 0, 'offset' => $start, 
+                'limit' => $limit, 'conditions' => array(
                   'Delivery.id' => $delivery_id, 'Order.status' => 'packed'));
               }
               if ($this->params['url']['status'] == "not_packed") {
-                $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+                $params = array('recursive' => 0, 'offset' => $start, 
+                'limit' => $limit, 'conditions' => array(
                   'Delivery.id' => $delivery_id, 'Order.status' => 'paid'));
               }
               if ($this->params['url']['status'] == "all") {
-                $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+                $params = array('recursive' => 0, 'offset' => $start, 
+                'limit' => $limit, 'conditions' => array(
                   'Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));
               }
             } else {
-              $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+              $params = array('recursive' => 0, 'offset' => $start, 
+              'limit' => $limit, 'conditions' => array(
                 'Delivery.id' => $delivery_id, 'Order.status <>' => 'entered'));
             }
           }
