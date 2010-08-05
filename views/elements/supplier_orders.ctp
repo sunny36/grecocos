@@ -21,10 +21,11 @@ echo "<cell>". $orders[$i]['Order']['id']."</cell>";
 echo "<cell>". $timeHelper->format($format = 'd-m-Y', $orders[$i]['Delivery']['date']) . "</cell>";
 echo "<cell>". $orders[$i]['User']['firstname'] ." " . $orders[$i]['User']['lastname'] ."</cell>";
 
-if ($orders[$i]['Order']['status'] != "packed") {
-  echo "<cell>". "0" ."</cell>";
-} else {
+if ($orders[$i]['Order']['status'] == "packed" || 
+    $orders[$i]['Order']['status'] == "delivered") {
   echo "<cell>". "1" ."</cell>";
+} else {
+  echo "<cell>". "0" ."</cell>";
 }
 
 echo "<cell>".money_format("%i", $orders[$i]['Order']['total_supplied']) ."</cell>";
