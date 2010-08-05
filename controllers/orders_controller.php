@@ -24,7 +24,11 @@ class OrdersController extends AppController {
       $sord = $this->params['url']['sord']; 
       if(!$sidx) $sidx =1;
       $search = $this->params['url']['_search']; 
-      $params = array('conditions' => array('Order.status <>' => 'entered'));
+      $nextDelivery = $this->Delivery->find('first', array(
+        'conditions' => array('Delivery.next_delivery' => true))); 
+      $params = array('conditions' => array(
+        'Order.status <>' => 'entered', 
+        'Order.delivery_id' => $nextDelivery['Delivery']['id']));
       if($search == "true") {
         if(!empty($this->params['url']['delivery_date'])) {
           $delivery_id = $this->params['url']['delivery_date'];
@@ -88,8 +92,12 @@ class OrdersController extends AppController {
       $start = $limit*$page - $limit;
       if($start < 0) $start = 0; 
       if($limit < 0) $limit = 0; 
+      $nextDelivery = $this->Delivery->find('first', array(
+        'conditions' => array('Delivery.next_delivery' => true))); 
       $params = array('recursive' => 0, 'offset' => $start, 'limit' => $limit, 
-      'conditions' => array('Order.status <>' => 'entered'));
+      'conditions' => array(
+        'Order.status <>' => 'entered', 
+        'Order.delivery_id' => $nextDelivery['Delivery']['id']));
       if(!empty($this->params['url']['delivery_date'])) {
         $delivery_id = $this->params['url']['delivery_date'];
         if($delivery_id != "all") {
