@@ -406,13 +406,17 @@ class OrdersController extends AppController {
       $start = $limit*$page - $limit;
       $params = array('conditions' => array('Delivery.next_delivery' => true)); 
       $next_delivery = $this->Delivery->find('first', $params);
-      $params = array('conditions' => array('Delivery.date <=' => $next_delivery['Delivery']['date']), 
-      'order' => array('Delivery.' . $sidx . ' ' . strtoupper($sord))); 
+      $params = array('conditions' => array(
+        'Delivery.date <=' => $next_delivery['Delivery']['date']), 
+        'order' => array('Delivery.' . $sidx . ' ' . strtoupper($sord))); 
       $delivery_dates = $this->Delivery->find('all', $params); 
       foreach($delivery_dates as &$delivery) {
         $packed = 0; 
         $paid = 0;
         foreach($delivery['Order'] as $order) {
+          if($order['status'] == "delivered") {
+           $packed = $packed + 1;
+          }
           if($order['status'] == "packed") $packed = $packed + 1;
           if($order['status'] == "paid") $paid = $paid + 1;
         }         
