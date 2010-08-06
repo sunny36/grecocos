@@ -63,16 +63,16 @@ var mygrid =  jQuery("#orders").jqGrid({
     });	
 
     jQuery("#orders").jqGrid('navGrid','#orders_pager',{edit:false,add:false,del:false,search:false,refresh:false});
-    jQuery("#orders").jqGrid('navButtonAdd',"#orders_pager",{caption:"Toggle",title:"Toggle Search Toolbar", buttonicon :'ui-icon-pin-s',
-    	onClickButton:function(){
-    		mygrid[0].toggleToolbar();
-    	} 
-    });
-    jQuery("#orders").jqGrid('navButtonAdd',"#orders_pager",{caption:"Clear",title:"Clear Search",buttonicon :'ui-icon-refresh',
-    	onClickButton:function(){
-    	  mygrid[0].clearToolbar();
-    	} 
-    });
+    // jQuery("#orders").jqGrid('navButtonAdd',"#orders_pager",{caption:"Toggle",title:"Toggle Search Toolbar", buttonicon :'ui-icon-pin-s',
+    //  onClickButton:function(){
+    //    mygrid[0].toggleToolbar();
+    //  } 
+    // });
+    // jQuery("#orders").jqGrid('navButtonAdd',"#orders_pager",{caption:"Clear",title:"Clear Search",buttonicon :'ui-icon-refresh',
+    //  onClickButton:function(){
+    //    mygrid[0].clearToolbar();
+    //  } 
+    // });
     jQuery("#orders").jqGrid('filterToolbar');
     $.get('/index.php/supplier/deliveries/getalljson', function(data) {
       var delivery_dates = eval('(' + data + ')');
