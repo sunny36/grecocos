@@ -10,7 +10,6 @@ if ( stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml") ) {
 echo "<?xml version='1.0' encoding='utf-8'?>";
 echo "<rows>";
 echo "<page>".$page."</page>";
-echo "<total>".$total_pages."</total>";
 echo "<records>".$count."</records>";
 for($i=0;$i<sizeof($orders);$i++){
 echo "<row id='".$orders[$i]['Order']['id']."'>";            
@@ -31,6 +30,7 @@ if ($orders[$i]['Order']['status'] == "packed" ||
 echo "<cell>".money_format("%i", $orders[$i]['Order']['total_supplied']) ."</cell>";
 echo "<cell>"."</cell>"; // for action
 echo "<cell>" . "Print". "</cell>"; // for pdf
+echo "<cell>"."</cell>"; // for order details
 echo "</row>";
 }
 echo "</rows>"; 
