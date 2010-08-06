@@ -2,10 +2,10 @@
   <div id="content-main">  
     <div class="module">
       <table>
-      <caption><a href="sites/" class="section">Orders</a></caption>
+      <caption><a href="sites/" class="section">1. Orders</a></caption>
       <tr>
         <th scope="row">
-          <?php e($html->link('View Orders / Modify Order',
+          <?php e($html->link('1.1 View/modify orders',
                               '/supplier/orders/index'))?>
         </th>        
         <td></td>
@@ -13,7 +13,7 @@
       </tr>
       <tr>
         <th scope="row">
-          <?php e($html->link('Close Batch',
+          <?php e($html->link('1.2 Close batch of orders',
                               '/supplier/orders/close_batch'))?>
         </th>        
         <td></td>
@@ -22,35 +22,13 @@
       
       </table>
     </div>
-    
-    <div class="module">
-      <table>
-      <caption>Products</caption>
-      <tr>
-        <th scope="row">
-          <?php e($html->link('View Products',
-                              '/supplier/products/index'))?>
-        </th>        
-        <td></td>
-        <td></td>  
-      </tr>
-      <tr>
-        <th scope="row">
-          <?php e($html->link('View Product Categories',
-                              '/supplier/categories/index'))?>
-        </th>        
-        <td></td>
-        <td></td>  
-      </tr>
-      </table>
-    </div> 
 
     <div class="module">
       <table>
-      <caption>Delivery date</caption>
+      <caption>2. Delivery dates</caption>
       <tr>
         <th scope="row">
-          <?php e($html->link('Add / Modify next delivery',
+          <?php e($html->link('2.1 View/maintain delivery dates',
                               '/supplier/deliveries/index'))?>
         </th>        
         <td></td>
@@ -58,6 +36,38 @@
       </tr>
       </table>
     </div> 
+    
+    <div class="module">
+      <table>
+      <caption>3. Products</caption>
+      <tr>
+        <th scope="row">
+          <?php e($html->link('3.2 View/maintain products',
+                              '/supplier/products/index'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>
+      <tr>
+        <th scope="row">
+          <?php e($html->link('3.1 View/maintain categories',
+                              '/supplier/categories/index'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>
+      <tr>
+        <th scope="row">
+          <?php e($html->link('3.3 Mark products as (un)available',
+                              '#'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>
+      
+      </table>
+    </div> 
+
    
   </div>
 
