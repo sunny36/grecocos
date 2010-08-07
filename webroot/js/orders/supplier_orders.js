@@ -63,6 +63,7 @@ $(document).ready(function(){
   $('.orders.view_details.ui-button').live('click', function() {
     var $button = $(this);
     var orderId = $button.parent().parent().attr('id'); 
+    jQuery("#orders").setSelection(orderId, true);
     jQuery("#order_d").jqGrid('setGridParam',{
       url:"/index.php/supplier/orders/view/"+orderId,
       editurl:"/index.php/supplier/orders/edit/"+orderId,
@@ -137,6 +138,8 @@ $(document).ready(function(){
   $('.orders.edit.ui-button').live('click', function() {
     var $button = $(this);
     orderId = $button.parent().parent().attr('id'); 
+    jQuery("#orders").setSelection(orderId, true);
+    
     getOrderDeliveryStatus(orderId, function(data) {
       if(data == 1) {
         custom_confirm_ok("Batch has been closed. Cannot edit.", 
