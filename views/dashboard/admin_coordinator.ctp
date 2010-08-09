@@ -1,5 +1,6 @@
 <div id="content" class="colMS">
   <div id="content-main">
+
     <div class="module">
       <table>
       <caption><a href="auth/" class="section">Customers</a></caption>
@@ -44,7 +45,7 @@
       </tr>      
       </table>
     </div>
-  </div>
+
     <div class="module">
       <table>
       <caption><a href="auth/" class="section">Payments</a></caption>
@@ -64,7 +65,6 @@
           <td></td>
           <td></td>
         </tr>
-        
       </table>
     </div>
     
