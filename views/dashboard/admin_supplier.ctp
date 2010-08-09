@@ -68,6 +68,20 @@
       </table>
     </div> 
 
+    <div class="module">
+      <table>
+      <caption>4. Reports</caption>
+      <tr>
+        <th scope="row">
+          <?php e($html->link('4.2 View Batch Reports',
+                              '/supplier/batch_reports'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>      
+      </table>
+    </div> 
+
    
   </div>
 
