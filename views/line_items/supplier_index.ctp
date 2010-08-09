@@ -18,7 +18,7 @@
 </div>
 <div id="confirmation_dialog"></div>
 <div id="content" class="flex">
-  <h1>Orders</h1> 
+  <h1>Batch Reports</h1> 
   <div id="content-main">
     <div class="module" id="changelist">
       <div id="toolbar">
@@ -42,11 +42,24 @@
         ?>
          &nbsp;&nbsp;
       	<?php e($form->submit('Search', array('div' => false))); ?>
+      	&nbsp;&nbsp;
+      	<?php
+          if (isset($default_delivery_id) && count($lineItems) != 0) {
+               	  e($html->link('Print Report',       	        
+                                "/supplier/line_items/index?" .
+                                "delivery_date={$default_delivery_id}&" .
+                                "print=yes"));
+        } 
+      ?>
     </div>
     </form>
     </div> 
     
-<?php if(isset($default_delivery_id)): ?>         
+<?php if(isset($default_delivery_id)): ?>   
+  
+  <?php if(count($lineItems) == 0): ?>      
+    <h3>There are no orders for this batch.</h3>
+  <?php else: ?>
   <?php
   $this->Paginator->options(array('url'=>array_merge(array('delivery_date'=>$default_delivery_id),$this->passedArgs)));
   ?>
@@ -129,6 +142,7 @@
   </tr>
 </tbody>
 </table>
+<?php endif; ?>
 <?php else: ?>
   <h3>Select a delivery date to view the batch report</h3>
 <?php endif; ?>

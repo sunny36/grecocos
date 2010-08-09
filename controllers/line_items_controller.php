@@ -5,6 +5,7 @@ class LineItemsController extends AppController {
 	var $helpers = array('Html', 'Form', 'Javascript', 'Number');
 
 	function supplier_index() {
+    $this->set('title_for_layout', 'Supplier | Batch Reports');
 	  $this->layout = "supplier/index"; 
 	  $Delivery = ClassRegistry::init('Delivery');
 	  $deliveryDates = $Delivery->getDeliveryDatesList(); 
@@ -15,6 +16,11 @@ class LineItemsController extends AppController {
 		} elseif (!empty($this->params['named']['delivery_date'])) {
 		  $deliveryId = $this->params['named']['delivery_date'];
 		}
+		if (!empty($this->params['url']['print'])) {
+		  $isPrint = true; 
+		}  else {
+		  $isPrint = false; 
+		}
     if (!empty($deliveryId)) {
       $Order = ClassRegistry::init('Order');
       $orders = $Order->find('all', array('conditions' => array(
@@ -24,9 +30,7 @@ class LineItemsController extends AppController {
         $orderIds[] = $order['Order']['id'];
         $orderIds2['id'][] = $order['Order']['id'];
       }
-      $this->log($orderIds, 'activity');
-      $virtualFields = array(
-        'ordered' => 'SUM(LineItem.quantity)', 
+      $virtualFields = array('ordered' => 'SUM(LineItem.quantity)', 
         'supplied' => 'SUM(LineItem.quantity_supplied)', 
         'amount_retail' => 'SUM(LineItem.total_price_supplied)',
         'amount_wholesale' => 'SUM(LineItem.total2_price_supplied)'
@@ -34,14 +38,16 @@ class LineItemsController extends AppController {
       $this->LineItem->createVirtualFields($virtualFields);
       /* TODO Fix limit not to be hardcode.  */       
       $this->paginate = array('conditions' => array(
-        'LineItem.order_id' => $orderIds),
-        'group' => array('LineItem.product_id'),
-        'limit' => 100000);      
+        'LineItem.order_id' => $orderIds), 
+      'group' => array('LineItem.product_id'), 'limit' => 100000);      
       $lineItemTotals = $this->LineItem->find('first', array('conditions' => array(
         'LineItem.order_id' => $orderIds)));
       $this->set('lineItemTotals', $lineItemTotals);
       $this->set('default_delivery_id', $deliveryId);
       $this->set('lineItems', $this->paginate());
+      if ($isPrint) {
+        $this->render('/elements/supplier_batch_report_pdf');
+      }
     } 
 	}
 
