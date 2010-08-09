@@ -3,6 +3,10 @@ class LineItem extends AppModel {
 	var $name = 'LineItem';
 	var $belongsTo = array('Product', 'Order');
 
+  function createVirtualFields($virtualFields) {
+    $this->virtualFields = $virtualFields;
+    
+  }
 	function getProductsByOrderId($id, $offset = null, $limit = null) {
     $params = array('conditions' => array('LineItem.order_id' => $id)); 
     if($offset) $params['offset'] = $offset;
@@ -18,6 +22,9 @@ class LineItem extends AppModel {
         $lineItem['LineItem']['quantity_supplied'] = $quantity_supplied;
         $lineItem['LineItem']['total_price_supplied'] = $quantity_supplied * 
                                                         $lineItem['Product']['selling_price'];;
+        $lineItem['LineItem']['total2_price_supplied'] = $quantity_supplied * 
+                                                        $lineItem['Product']['buying_price'];;
+
         $this->save($lineItem);
         ClassRegistry::init('Order')->updateTotalSupplied($order_id);
       }
