@@ -36,6 +36,7 @@ class TransactionsController extends AppController {
       }
       if ($page > $total_pages) $page=$total_pages;
       $start = $limit*$page - $limit;
+      if ($start < 0) $start = 0; 
       $recursive = 2;
       $cashIn = null; 
       $cashOut = null; 
