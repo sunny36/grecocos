@@ -23,5 +23,12 @@
   Router::connect('/administrator', array('controller' => 'dashboard', 
                                           'action' => 'administrator', 
                                           'admin' => true));
-                                  
-  ?>
+
+  Router::connect('/line_items/index/:delivery_date',
+                  array('controller' => 'line_item', 'action' => 'index'),
+                  array('delivery_date' => '[0-9]+'));                                  
+  Router::connect('/supplier/batch_reports', array('controller' => 'line_items', 
+                                            'action' => 'index', 
+                                            'supplier' => true));
+  
+?>
