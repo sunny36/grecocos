@@ -58,13 +58,13 @@
   			<th><?php echo $this->Paginator->sort('# Ordered', 'ordered');?></th>
   			<th><?php echo $this->Paginator->sort('# Supplied', 'supplied');?></th>
   			<th>
-  			  <?php echo $this->Paginator->sort('Amount Retail', 
-  			                                    'retail_amount');?>
-  			</th>
-  			<th>
   			  <?php echo $this->Paginator->sort('Amount Wholesale', 
   			                                    'wholesale_amount'); ?>
   		  </th>
+  		  <th>
+  			  <?php echo $this->Paginator->sort('Amount Retail', 
+  			                                    'retail_amount');?>
+  			</th>
   	</tr>
   </thead>
 <tbody>
@@ -90,12 +90,12 @@
     		</td>
     		<td class="numbers">
     		  <?php 
-    		    echo money_format("%i", $lineItem['LineItem']['amount_retail']); 
+    		    echo money_format("%i", $lineItem['LineItem']['amount_wholesale']); 
     		  ?>&nbsp;
     		</td>
     		<td class="numbers">
     		  <?php 
-    		    echo money_format("%i", $lineItem['LineItem']['amount_wholesale']); 
+    		    echo money_format("%i", $lineItem['LineItem']['amount_retail']); 
     		  ?>&nbsp;
     		</td>
     	</tr>
@@ -114,15 +114,15 @@
 	  <td class="numbers">
 	    <strong>
 	      <?php 
-	        echo money_format("%i", $lineItemTotals['LineItem']['amount_retail']); 
+	        echo money_format("%i", 
+	                          $lineItemTotals['LineItem']['amount_wholesale']); 
 	      ?>
 	    </strong>
 	  </td>
 	  <td class="numbers">
 	    <strong>
 	      <?php 
-	        echo money_format("%i", 
-	                          $lineItemTotals['LineItem']['amount_wholesale']); 
+	        echo money_format("%i", $lineItemTotals['LineItem']['amount_retail']); 
 	      ?>
 	    </strong>
 	  </td>
