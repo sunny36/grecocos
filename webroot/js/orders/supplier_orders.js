@@ -30,7 +30,7 @@ $(document).ready(function(){
       {name:'print',index:'print', width:50,sortable:false, align:'center',
        search: false, formatter:link_formatter},
       {name:'order_details',index:'order_details', width:110,sortable:false,
-       search: false},
+       search: false}
     ],
     gridview : true,
     height: 200,
@@ -57,7 +57,7 @@ $(document).ready(function(){
       
     },       
     editurl: '/index.php/supplier/orders/edit',
-    caption:"Orders",
+    caption:"Orders"
   });	
   
   $('.orders.view_details.ui-button').live('click', function() {
@@ -200,9 +200,6 @@ $(document).ready(function(){
     $button.after(c).after(s);
   });
 
-  function reload(rowid, result) {
-    //$("#order_d").trigger("reloadGrid"); 
-  }
   
   $('.order_d.cancel.ui-button').live('click', function() {
     var $button = $(this);
@@ -223,7 +220,7 @@ $(document).ready(function(){
     if(parseInt(quantity_supplied, 10) > parseInt(quantity_ordered, 10)) { 
       var msg = "Quantity supplied must be LESS THAN or EQUAL to quantity " + 
                 "ordered";
-      custom_confirm_ok(msg, function() { return }); 
+      custom_confirm_ok(msg, function() { return; }); 
     } else { 
       $button.hide(); 
       $button.next().hide();

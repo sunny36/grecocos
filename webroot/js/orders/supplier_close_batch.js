@@ -31,20 +31,19 @@ $(document).ready(function(){
                 be = "<input class='delivery_dates edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
                 jQuery("#delivery_dates").jqGrid('setRowData',ids[i],{act:be});
             } 
-        },       
-        
+        }               
     }).navGrid('#delivery_dates_pager',{edit:false,add:false,del:false});	
     
     //confirm if total orders != packed orders
     $('input').live('click', function() {
       if(this.id.match(/\d_closed/)){
         $closed_checkbox = $(this);
-        total_orders = parseInt($(this).parent().parent().children()[3].innerHTML, 10)
-        total_packed = parseInt($(this).parent().parent().children()[4].innerHTML, 10)
+        total_orders = parseInt($(this).parent().parent().children()[3].innerHTML, 10);
+        total_packed = parseInt($(this).parent().parent().children()[4].innerHTML, 10);
          if($closed_checkbox.is(':checked')) {
            if (total_orders != total_packed) {
                msg = 'All orders have not been packed. ' +
-                     'Batch cannot be closed.'
+                     'Batch cannot be closed.';
                custom_confirm_ok(msg, function() {
                  $closed_checkbox.attr("checked", false);
                 });
