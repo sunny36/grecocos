@@ -95,10 +95,14 @@ class CartsController extends AppController{
     $orderId = $this->Order->id;
     $cart = $this->Session->read('cart');			
     foreach($cart as $cartItem){
-      $lineItems['Order'][] = array('product_id' => $cartItem['id'], 'order_id' => $orderId, 
-                                    'quantity' => $cartItem['quantity'], 'total_price' =>  $cartItem['subtotal'],
+      $lineItems['Order'][] = array('product_id' => $cartItem['id'], 
+                                    'order_id' => $orderId, 
+                                    'quantity' => $cartItem['quantity'], 
+                                    'total_price' =>  $cartItem['subtotal'],
                                     'quantity_supplied' => $cartItem['quantity'], 
-                                    'total_price_supplied' => $cartItem['subtotal']);
+                                    'total_price_supplied' => $cartItem['subtotal'], 
+                                    'total2_price' => $cartItem['subtotal2'],
+                                    'total2_price_supplied' => $cartItem['subtotal2']);
     }
     $this->LineItem->saveAll($lineItems['Order']);
     $transaction = array('Transaction' => array('type' => 'Order', 'user_id' => $this->currentUser['User']['id'], 
