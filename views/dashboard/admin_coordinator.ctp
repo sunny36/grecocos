@@ -3,11 +3,13 @@
 
     <div class="module">
       <table>
-      <caption><a href="auth/" class="section">Customers</a></caption>
+      <caption><a href="auth/" class="section">1. Customers</a></caption>
         <tr>
           <th scope="row">
-            <?php e($html->link('View Customers information', 
-                                '/coordinator/users'))?>            
+            <?php 
+              e($html->link('1.1 View/accept/edit customers', 
+                            '/coordinator/users')); 
+            ?>            
           </th>
           <!-- Two empty <td> so that the table doesn't break -->
           <td></td>
@@ -18,27 +20,33 @@
   
     <div class="module">
       <table>
-      <caption><a href="sites/" class="section">Orders</a></caption>
+      <caption><a href="sites/" class="section">2. Orders</a></caption>
       <tr>
         <th scope="row">
-          <?php e($html->link('View Orders and mark as paid',
-                              '/coordinator/orders/mark_as_paid'))?>
+          <?php 
+            e($html->link('2.1 View Orders and mark as paid',
+                          '/coordinator/orders/mark_as_paid'));
+          ?>
         </th>        
         <td></td>
         <td></td>  
       </tr>
       <tr>
         <th scope="row">
-          <?php e($html->link('Send email informing arrival of shipment',
-                              '/coordinator/deliveries/arrival_of_shipment'))?>
+          <?php 
+            e($html->link('2.2 Send email informing arrival of shipment',
+                          '/coordinator/deliveries/arrival_of_shipment'));
+          ?>
         </th>        
         <td></td>
         <td></td>  
       </tr>
       <tr>
         <th scope="row">
-          <?php e($html->link('View Orders and mark as delivered',
-                              '/coordinator/orders/mark_as_delivered'))?>
+          <?php 
+            e($html->link('2.3 View Orders and mark as delivered',
+                          '/coordinator/orders/mark_as_delivered'));
+          ?>
         </th>        
         <td></td>
         <td></td>  
@@ -48,32 +56,50 @@
 
     <div class="module">
       <table>
-      <caption><a href="auth/" class="section">Payments</a></caption>
+      <caption><a href="auth/" class="section">3. Payments</a></caption>
         <tr>
           <th scope="row">
-            <?php e($html->link('View Refunds', 
-                                '/coordinator/orders/refunds'))?>
+            <?php
+              e($html->link('3.1 View/make refunds', 
+                            '/coordinator/orders/refunds'));
+            ?>
           </th>
           <td></td>
           <td></td>
         </tr>
         <tr>
           <th scope="row">
-            <?php e($html->link('View Payments', 
-                                '/coordinator/deliveries/payments'))?>
+            <?php 
+              e($html->link('3.2 View/make payment to supplier', 
+                            '/coordinator/deliveries/payments'));
+            ?>
           </th>
           <td></td>
           <td></td>
         </tr>
       </table>
     </div>
+
+    <div class="module">
+      <table>
+      <caption><a href="auth/" class="section">4. Reports</a></caption>
+      <th scope="row">
+      </th>
+      <td></td>
+      <td></td>
+      
+      </table>
+    </div>
     
     <div class="module">
       <table>
-      <caption><a href="auth/" class="section">Configurations</a></caption>
+      <caption><a href="auth/" class="section">5. Configuration</a></caption>
         <tr>
           <th scope="row">
-            <?php e($html->link('Configurations', '/coordinator/configurations'))?>
+            <?php
+              e($html->link('5.1 Open/close website', 
+                            '/coordinator/configurations')); 
+            ?>
           </th>
           <td></td>
           <td></td>
