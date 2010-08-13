@@ -3,7 +3,7 @@
 
     <div class="module">
       <table>
-      <caption><a href="auth/" class="section">1. Customers</a></caption>
+      <caption>1. Customers</caption>
         <tr>
           <th scope="row">
             <?php 
@@ -20,7 +20,7 @@
   
     <div class="module">
       <table>
-      <caption><a href="sites/" class="section">2. Orders</a></caption>
+      <caption>2. Orders</caption>
       <tr>
         <th scope="row">
           <?php 
@@ -56,7 +56,7 @@
 
     <div class="module">
       <table>
-      <caption><a href="auth/" class="section">3. Payments</a></caption>
+      <caption>3. Payments</caption>
         <tr>
           <th scope="row">
             <?php
@@ -82,7 +82,7 @@
 
     <div class="module">
       <table>
-      <caption><a href="auth/" class="section">4. Reports</a></caption>
+      <caption>4. Reports</caption>
       <th scope="row">
       </th>
       <td></td>
@@ -93,7 +93,7 @@
     
     <div class="module">
       <table>
-      <caption><a href="auth/" class="section">5. Configuration</a></caption>
+      <caption>5. Configuration</caption>
         <tr>
           <th scope="row">
             <?php
