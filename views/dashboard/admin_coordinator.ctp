@@ -104,6 +104,14 @@
           <td></td>
           <td></td>
         </tr>
+        <tr>
+          <th scope="row">
+            <?php e($html->link('5.2 View/maintain delivery dates',
+                                '/coordinator/deliveries/index'))?>
+          </th>        
+          <td></td>
+          <td></td>  
+        </tr>        
       </table>
     </div>
     
