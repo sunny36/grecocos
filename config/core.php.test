@@ -304,5 +304,5 @@
  */
 	Cache::config('default', array('engine' => 'File'));
 	
-	Configure::write('Grecocos.send_email', 'yes');
+	Configure::write('Grecocos.send_email', 'no');
 ?>
