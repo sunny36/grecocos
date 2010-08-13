@@ -1,0 +1,1 @@
+<div class="system-message"><p class="description"><?php echo $message; ?></p></div>
