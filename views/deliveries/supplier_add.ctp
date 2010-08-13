@@ -7,12 +7,10 @@
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', array('controller' => 'dashboard', 
-                                'action' => 'index'))); 
+    e($html->link('Home', '/supplier')); 
   ?> &rsaquo; 
   <?php 
-    e($html->link('Delivery Date', array('controller' => 'deliveries', 
-                                         'action' => 'index'))); 
+    e($html->link('Delivery Date', array('controller' => 'deliveries', 'action' => 'index'))); 
   ?> &rsaquo;                            
   Add Delivery Date
 </div>
