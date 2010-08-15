@@ -7,7 +7,7 @@ class DATABASE_CONFIG {
 		'host' => '127.0.0.1',
 		'login' => 'root',
 		'password' => 'root',
-		'database' => 'grecocos',
+		'database' => 'frames_grecocos',
 	);
 	
 	var $test = array(
