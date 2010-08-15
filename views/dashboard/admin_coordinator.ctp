@@ -83,11 +83,14 @@
     <div class="module">
       <table>
       <caption>4. Reports</caption>
-      <th scope="row">
-      </th>
-      <td></td>
-      <td></td>
-      
+      <tr>
+        <th scope="row">
+          <?php e($html->link('4.1 View Batch Reports',
+                              '/coordinator/batch_reports'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>            
       </table>
     </div>
     
