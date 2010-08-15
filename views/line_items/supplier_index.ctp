@@ -44,12 +44,12 @@
       	<?php e($form->submit('Search', array('div' => false))); ?>
       	&nbsp;&nbsp;
       	<?php
-          if (isset($default_delivery_id) && count($lineItems) != 0) {
-               	  e($html->link('Print Report',       	        
-                                "/supplier/line_items/index?" .
-                                "delivery_date={$default_delivery_id}&" .
-                                "print=yes"));
-        } 
+        //   if (isset($default_delivery_id) && count($lineItems) != 0) {
+        //            e($html->link('Print Report',                 
+        //                         "/supplier/line_items/index?" .
+        //                         "delivery_date={$default_delivery_id}&" .
+        //                         "print=yes"));
+        // } 
       ?>
     </div>
     </form>
