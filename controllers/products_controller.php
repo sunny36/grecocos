@@ -20,10 +20,12 @@ class ProductsController extends AppController {
     $this->Product->recursive = 0;
     if(!empty($this->params['url']['short_description'])) {
       $short_description = $this->params['url']['short_description'];
-      $this->paginate = (array('conditions' => 
-                               array('Product.short_description LIKE' => '%' . $short_description . '%'))); 
+      $this->paginate = (array('conditions' => array(
+        'Product.short_description LIKE' => '%' . $short_description . '%'), 'limit' => 100000)); 
+      #TODO Remove hard coded limit. 
       $this->set('products', $this->paginate());    
     } else {
+      $this->paginate = (array('limit' => 100000));
       $this->set('products', $this->paginate());    
     }
   }
