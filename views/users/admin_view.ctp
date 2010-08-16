@@ -61,6 +61,17 @@
     </div>
     <!-- End Last Name  -->
 
+    <!-- Begin Phone  -->
+    <div class="form-row email">
+      <div>
+        <div>
+          <?php e($form->label('phone', "Phone")); ?>        
+          <strong> <?php e($user['User']['phone']); ?></strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Phone  -->
+
     <!-- Begin Email  -->
     <div class="form-row email">
       <div>
