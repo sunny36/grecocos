@@ -53,7 +53,7 @@ class OrdersController extends AppController {
       $this->render('/elements/supplier_orders', 'ajax');
     }    
   }
-
+  #TODO Refactor to remove common code from mark_as_paid and mark_as_delivered. 
   function coordinator_mark_as_paid() {
     $this->layout = "coordinator/index";
     $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
@@ -61,16 +61,18 @@ class OrdersController extends AppController {
     if (!empty($this->params['url']['id'])) {
       $orderId = $this->params['url']['id']; 
       $this->set('default_order_id', $orderId); 
-    }
-    if (!empty($this->params['url']['user_name'])) {
+    } elseif (!empty($this->params['url']['user_name'])) {
       $customerName = $this->params['url']['user_name']; 
       $this->set('default_customer_name', $customerName); 
-    }
-    if (!empty($this->params['url']['delivery_date'])) {
+    } elseif (!empty($this->params['url']['delivery_date'])) {
       if ($this->params['url']['delivery_date'] != -1) {
         $deliveryId = $this->params['url']['delivery_date'];
         $this->set('default_delivery_id', $deliveryId);          
       }
+    } else {
+      $nextDelivery = $this->Delivery->getNextDelivery(); 
+      $deliveryId = $nextDelivery['Delivery']['id'];
+      $this->set('default_delivery_id', $nextDelivery['Delivery']['id']);                
     }
     if(!empty($orderId)){
       $this->paginate = array('conditions' => array('Order.id' => $orderId));
@@ -114,24 +116,25 @@ class OrdersController extends AppController {
   function coordinator_mark_as_delivered() {
     $this->layout = "coordinator/index";
     $this->Order->recursive = 0;
-    $this->paginate = array('conditions' => array(
-      'Order.status' => array('packed', 'delivered')));
+    $this->paginate = array('conditions' => array('Order.status' => array('packed', 'delivered')));
     $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
-    $deliveryDates = array(-1 => 'All') + $deliveryDates;
+    $deliveryDates = array(-1 => 'All') + $deliveryDates;    
     if (!empty($this->params['url']['id'])) {
       $orderId = $this->params['url']['id']; 
       $this->set('default_order_id', $orderId); 
-    }
-    if (!empty($this->params['url']['user_name'])) {
+    } elseif (!empty($this->params['url']['user_name'])) {
       $customerName = $this->params['url']['user_name']; 
       $this->set('default_customer_name', $customerName); 
-    }
-    if (!empty($this->params['url']['delivery_date'])) {
+    } elseif (!empty($this->params['url']['delivery_date'])) {
       if ($this->params['url']['delivery_date'] != -1) {
         $deliveryId = $this->params['url']['delivery_date'];
         $this->set('default_delivery_id', $deliveryId);          
       }
-    }
+    } else {
+      $nextDelivery = $this->Delivery->getNextDelivery(); 
+      $deliveryId = $nextDelivery['Delivery']['id'];
+      $this->set('default_delivery_id', $nextDelivery['Delivery']['id']);                
+    }    
     if(!empty($orderId)){
       $this->paginate = array('conditions' => array('AND' => array(
         'Order.id' => $orderId,
@@ -277,7 +280,7 @@ class OrdersController extends AppController {
 
   function supplier_close_batch() {
     $this->layout = 'supplier/index';
-    $nextDelivery = $this->Delivery->getNextDelivery(); 
+    $nextDelivery = $this->Delivery->getAllDeliveriesAfterNextDelivery(); 
     $this->set('next_delivery', $nextDelivery);
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
