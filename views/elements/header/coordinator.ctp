@@ -1,6 +1,6 @@
 <div id="header">
     <div id="branding">
-      <h1 id="site-name">Grecocos administration</h1>
+      <h1 id="site-name">Grecocos Coordinator Interface</h1>
     </div>
     <div id="user-tools">
         Welcome, 
