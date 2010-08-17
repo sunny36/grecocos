@@ -23,19 +23,10 @@ $(document).ready(function(){
    	rowList:[10,20,30],
    	pager: jQuery('#deliveries_pager'),
    	multiselect: true,
-    // gridComplete: function(){
-    //         var ids = jQuery("#deliveries").jqGrid('getDataIDs');
-    //         for(var i=0;i < ids.length;i++){
-    //             var cl = ids[i];
-    //             be = "<input class='deliveries edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all' type='button' value='Edit'  />"; 
-    //             jQuery("#deliveries").jqGrid('setRowData',ids[i],{act:be});
-    //         } 
-    //         
-    //     },       
     editurl: '/index.php/coordinator/deliveries/edit',
   }).navGrid('#deliveries_pager',{edit:false,add:false,del:false});
   
-  $("#t_deliveries").append("<input id='mark_as_paid' type='button' value='Mark selected rows as paid'  />");
+  $("#gbox_deliveries").before("<input id='mark_as_paid' type='button' value='Mark selected rows as paid'  />");
   
   $('#mark_as_paid').live('click', function () {
     $.blockUI();
@@ -56,10 +47,16 @@ $(document).ready(function(){
   	}
   	$.post('/index.php/deliveries/is_dates_consecutive', {'ids[]': ids}, function(data) {
   	  if (data == "yes") {
-        $.post('/index.php/coordinator/deliveries/edit', {'ids[]': ids, 'paid': 'Yes'}, function(data) {
-          $("#deliveries").trigger("reloadGrid"); 
-          $.unblockUI();
-        });
+  	    var msg = "Are you sure you want to mark the selected rows as paid?"; 
+  	    custom_confirm_yes_no(msg, 
+  	      function() {
+  	        $.post('/index.php/coordinator/deliveries/edit', {'ids[]': ids, 'paid': 'Yes'}, function(data) {
+              $("#deliveries").trigger("reloadGrid"); 
+              $.unblockUI();
+            });}, 
+            function() {
+              $.unblockUI();
+            });
   	  }
   	  if (data == "no") {
   	    $.unblockUI();

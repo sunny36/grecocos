@@ -80,17 +80,16 @@ class DeliveriesController extends AppController {
         $total_pages = 0;
       }
       if ($page > $total_pages) $page=$total_pages;
-      $start = $limit*$page - $limit;
-    
-      $params = array('recursive' => 1, 'offset' => $start, 'limit' => $limit, 
-      'conditions' => array('Delivery.closed' => true), 'order' => array('Delivery.date'));
+      $start = $limit*$page - $limit;    
+      $params = array('recursive' => 1, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
+        'Delivery.closed' => true), 'order' => array('Delivery.date DESC'));
       $deliveries = $this->Delivery->find('all', $params);
       foreach ($deliveries as &$delivery) {
         $total_received = 0; 
         $total_refund = 0; 
         $total_due = 0; 
         foreach($delivery['Order'] as $order) {
-          if ($order['status'] == "packed") {
+          if (($order['status'] == "packed") || ($order['status'] == "delivered")) {
             $total_received += $order['total'];
             $total_refund += ($order['total'] - $order['total_supplied']);
             $total_due += $order['total2_supplied'];
