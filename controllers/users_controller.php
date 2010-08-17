@@ -98,6 +98,19 @@ class UsersController extends AppController {
     $this->redirect(array('action' => 'index'));
   }
 
+  function coordinator_delete($id = null) {
+    if (!$id) {
+      $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'user'));
+      $this->redirect(array('action'=>'index'));
+    }
+    if ($this->User->delete($id)) {
+      $this->Session->setFlash(sprintf(__('%s deleted', true), 'User'), 'flash_notice');
+      $this->redirect(array('action'=>'index'));
+    }
+    $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'User'), 'flash_notice');
+    $this->redirect(array('action' => 'index'));
+  }
+  
   function view($id = null) {
     if (!$id) {
       $this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
