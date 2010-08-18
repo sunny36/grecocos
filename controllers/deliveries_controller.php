@@ -89,7 +89,7 @@ class DeliveriesController extends AppController {
         $total_refund = 0; 
         $total_due = 0; 
         foreach($delivery['Order'] as $order) {
-          if (($order['status'] == "packed") || ($order['status'] == "delivered")) {
+          if (($order['status'] == "packed") || ($order['status'] == "delivered") || ($order['status'] == "paid")) {
             $total_received += $order['total'];
             $total_refund += ($order['total'] - $order['total_supplied']);
             $total_due += $order['total2_supplied'];
