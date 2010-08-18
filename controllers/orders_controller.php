@@ -225,7 +225,7 @@ class OrdersController extends AppController {
       $products = $this->Order->getProducts($id);
       $this->set('products', $products);
       $this->set('order', $this->Order->read(null, $id));     
-      $this->render('/elements/supplier_order_pdf');
+      $this->render('/elements/supplier_order_pdf_no_amounts');
     }
   }
 
