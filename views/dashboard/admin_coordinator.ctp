@@ -91,6 +91,22 @@
         <td></td>
         <td></td>  
       </tr>            
+      <tr>
+        <th scope="row">
+          <?php e($html->link('4.2 View Cash Report 1',
+                              '/coordinator/transactions'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>            
+      <tr>
+        <th scope="row">
+          <?php e($html->link('4.3 View Cash Report 2',
+                              '/coordinator/transactions/cash_report2'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>            
       </table>
     </div>
     

@@ -11,8 +11,8 @@ class TransactionsController extends AppController {
     }
   }
 
-  function administrator_index() {
-    $this->layout = "administrator/index"; 
+  function coordinator_index() {
+    $this->layout = "coordinator/index"; 
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
@@ -79,8 +79,8 @@ class TransactionsController extends AppController {
     }
   }
   
-  function administrator_cash_report2() {
-    $this->layout = "administrator/index"; 
+  function coordinator_cash_report2() {
+    $this->layout = "coordinator/index"; 
     if($this->RequestHandler->isAjax()) {
       $page = $this->params['url']['page']; 
       $limit = $this->params['url']['rows']; 
