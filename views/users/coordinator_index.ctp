@@ -10,18 +10,30 @@
     <?php echo $session->flash(); ?>     
     <div class="module" id="changelist">
       <div id="toolbar">
-        <form id="changelist-search" action="" method="get">
+        <?php 
+    	    e($form->create(null, array('type' => 'get', 
+    	                                'action' => 'index'))); 
+    	  ?>
+        
       <div><!-- DIV needed for valid HTML -->
-      <label for="searchbar">
-        <?php echo $html->image('admin/icon_searchbox.png')?>
-
-      </label>
-      <input type="text" size="40" name="q" value="" id="searchbar" />
-      <input type="submit" value="Search" />
-    </div>
-    </form>
-    </div>
-          
+        <label for="searchbar">
+          <?php echo $html->image('admin/icon_searchbox.png')?>
+        </label>
+      	<?php e($form->label('customer name')); ?>  
+      	<?php
+      	  if (isset($default_customer_name)) {
+      	    e($form->text('user_name', array('value' => $default_customer_name, 
+      	                                      'size' => '40')));
+      	  } else {
+      	    e($form->text('user_name', array('size' => '40')));
+      	  }
+      	?>
+      	<?php e($form->submit('Search', array('div' => false))); ?>
+      	 &nbsp;&nbsp;
+      	<?php e($html->link('View All', '/coordinator/users/index'))?>
+      	</div>
+        
+        </div>          
 <table cellspacing="0">
   <thead>
   	<tr>

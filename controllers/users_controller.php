@@ -2,7 +2,7 @@
 class UsersController extends AppController {
 
   var $name = 'Users';
-  var $components = array('Email');
+  var $components = array('Email', 'SearchPagination.SearchPagination');
   var $helpers = array('Html', 'Form', 'Javascript');
   var $uses = array('User', 'Organization');
   
@@ -13,9 +13,26 @@ class UsersController extends AppController {
   }
 
   function coordinator_index() {
+    $this->SearchPagination->setup();
     $this->layout = "coordinator/index"; 
     $this->User->recursive = 0;
+    if (!empty($this->params['url']['user_name'])) {
+      $customerName = $this->params['url']['user_name']; 
+      $this->set('default_customer_name', $customerName); 
+    }
+    if(!empty($customerName)){
+      $this->paginate = array('conditions' => array('OR' => array(
+        'User.firstname LIKE' => '%' . $customerName. '%',
+        'User.lastname LIKE' => '%' . $customerName. '%')));
+    }	  
     $this->set('users', $this->paginate());
+  }
+  
+  function coordinator_index_proxy() {
+    if (!empty($this->params['url']['user_name'])) { 
+      $customerName = $this->params['url']['user_name']; 
+      $this->redirect(array('action' => 'index'.'?user_name='. $customerName));
+    }
   }
 
   function admin_view($id = null) {
