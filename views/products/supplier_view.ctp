@@ -105,7 +105,7 @@
     <div class="form-row display">
       <div>
         <div>
-          <?php e($form->label('display', "Display")); ?>        
+          <?php e($form->label('display', "Available")); ?>        
           <strong> <?php e($product['Product']['display']); ?></strong>
         </div>                
       </div>

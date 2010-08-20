@@ -154,7 +154,7 @@
           </ul>      
           <div>
             <?php 
-              e($form->label('display', "Display", 
+              e($form->label('display', "Available", 
                              array('class' => 'required'))); 
                              e($form->checkbox('display', array('class' => 'vCheckBoxField')));
             ?>        

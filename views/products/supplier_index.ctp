@@ -45,7 +45,7 @@
        <th><?php echo $this->Paginator->sort('buying_price');?></th>
        <th><?php echo $this->Paginator->sort('quantity');?></th>
        <th><?php echo $this->Paginator->sort('stock');?></th>
-       <th><?php echo $this->Paginator->sort('display');?></th>
+       <th><?php echo $this->Paginator->sort('Available', 'display');?></th>
        
        <th><?php __('Actions');?></th>
    </tr>
