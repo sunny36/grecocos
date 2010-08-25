@@ -1,5 +1,4 @@
 <?php
-setlocale(LC_MONETARY, 'th_TH');
 if ( stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml") ) {
               header("Content-type: application/xhtml+xml;charset=utf-8"); 
 } else {
@@ -19,7 +18,7 @@ echo "<row id='".$transactions[$i]['Transaction']['id']."'>";
 if ($transactions[$i]['Transaction']['type'] == "Bank Transfer") {
   echo "<cell>". "Swift Co. Ltd." ."</cell>";
 } else {
-  echo "<cell>". $transactions[$i]['User']['firstname'] . " " . $transactions[$i]['User']['lastname']."</cell>";
+  echo "<cell>". $transactions[$i]['Order']['User']['firstname'] . " " . $transactions[$i]['Order']['User']['lastname']."</cell>";
 }
 
 echo "<cell>". $transactions[$i]['Transaction']['type']."</cell>";
@@ -37,8 +36,8 @@ if ($transactions[$i]['Transaction']['type'] == "Bank Transfer") {
 } else {
   echo "<cell>". $time->format($format = 'd-m-Y', $transactions[$i]['Order']['Delivery']['date']) . "</cell>";  
 }
-echo "<cell>". money_format("%i", $transactions[$i]['Transaction']['cash_in'])."</cell>";
-echo "<cell>". money_format("%i", $transactions[$i]['Transaction']['cash_out'])."</cell>";
+echo "<cell>". money_format("%i",(double)$transactions[$i]['Transaction']['cash_in'])."</cell>";
+echo "<cell>". money_format("%i", (double)$transactions[$i]['Transaction']['cash_out'])."</cell>";
 echo "</row>";
 }
 echo "</rows>"; 
