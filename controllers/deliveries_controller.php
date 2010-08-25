@@ -219,7 +219,9 @@ class DeliveriesController extends AppController {
             $delivery = $this->Delivery->findById($id);
             $total_due = 0;
             foreach($delivery['Order'] as $order) {
-              $total_due += $order['total2_supplied'];
+              if (($order['status'] == "packed") || ($order['status'] == "delivered") || ($order['status'] == "paid")) {
+                $total_due += $order['total2_supplied'];
+              }
             }
             $bank_transfer_amount += $total_due;
             if($paid == 'Yes') $delivery['Delivery']['paid'] = true;
