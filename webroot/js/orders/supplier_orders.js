@@ -99,7 +99,7 @@ $(document).ready(function(){
   jQuery('#order_d').jqGrid({
     height: 'auto', 
     rownumbers: true, 
-    url: '/index.php/supplier/orders/view/0', 
+    url: '/index.php/supplier/orders/view/', 
     colNames: ['Item Description', 'Quantity Ordered', 'Quantity Supplied', 
                'Action'], 
     colModel:[
