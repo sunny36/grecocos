@@ -17,7 +17,7 @@
     <!-- Header -->
     <div id="header">
         <div id="branding">
-          <h1 id="site-name">Login</h1>
+          <h1 id="site-name"><?php echo $title_for_branding ?></h1>
         </div>
     </div>
     <!-- END Header -->
