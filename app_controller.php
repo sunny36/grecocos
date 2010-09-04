@@ -25,7 +25,7 @@ class AppController extends Controller {
     $this->Auth->logoutRedirect = array('controller' => 'users',
                                         'action' => 'login');
     $this->Auth->authError = "Please login.";
-    $this->Auth->allow('signup');
+    $this->Auth->allow('signup', 'forgot_password', 'reset_password');
     $this->set('loggedIn', $this->Auth->user('id'));
     $this->Auth->authorize = 'controller';
     $this->currentUser = $this->Auth->user();

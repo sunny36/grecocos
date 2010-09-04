@@ -114,5 +114,27 @@ class User extends AppModel {
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
     $AppengineEmail->sendEmail($to, $subject, $body); 
   }
+  
+  function resetPassword($email) {
+    $user = $this->findByEmail($email);
+    $this->read(null, $user['User']['id']); 
+    $two_hours_from_now = time() + (120 * 60);
+    $this->set(array('token' => uniqid(), 
+    'token_expiry' => date('Y-m-d H:m:s', $two_hours_from_now)));
+    $this->save();
+    $this->sendResetPasswordEmail($user['User']['id']); 
+  }
+
+  function sendResetPasswordEmail($user_id) {
+    $user = $this->findById($user_id); 
+    $to = $user['User']['email']; 
+    $subject = "GRECOCOS: Reset Password"; 
+    $body = "Dear {$user['User']['firstname']},\n\n" . 
+      "Please use the following link to reset your password.\n\n" . 
+      "http://grecocos.co.cc/index.php/users/forgot_password?" .
+      "email={$user['User']['email']}&token={$user['User']['token']}"; 
+    $this->sendEmail($to, $subject, $body); 
+
+  }
 }
 ?>

@@ -210,9 +210,22 @@ class UsersController extends AppController {
       }
     }
   }
+  function reset_password() {
+    $this->set('title_for_layout', 'Forgot Password');
+    $this->set('title_for_branding', 'Forgot Password');    
+    $this->layout = "users/login";    
+    $this->User->resetPassword($this->data['User']['email']);
+  }
+  
+  function forgot_password() {
+    $this->set('title_for_layout', 'Forgot Password');
+    $this->set('title_for_branding', 'Forgot Password');
+    $this->layout = "users/login";    
+  }
   
   function login(){
     $this->set('title_for_layout', 'Login');
+    $this->set('title_for_branding', 'Login');
     $this->layout = "users/login";
     if( $this->Auth->user( )){
       $this->redirect( array('controller' => 'carts' , 'action' => 'index'));
