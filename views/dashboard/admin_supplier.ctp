@@ -59,7 +59,7 @@
       <tr>
         <th scope="row">
           <?php e($html->link('3.3 Mark products as (un)available',
-                              '#'))?>
+                              '/supplier/products/index2'))?>
         </th>        
         <td></td>
         <td></td>  
