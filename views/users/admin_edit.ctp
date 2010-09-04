@@ -88,16 +88,24 @@
         </div>
         <!-- End Middle Name  -->
 
-        <!-- Begin Delivery Address -->
-        <div class="form-row delivery_address">
-          <?php 
-              $options=array('FAO RAP Bangkok' => 'FAO RAP Bangkok'); 
-              e($form->label('delivery_address', 'Delivery Address', 
+        <!-- Begin Delivery Address  -->    
+        <div class="form-row organization_id">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('User.organization_id')) 
+                e($form->error ('User.organization_id', null, 
+                                array('wrap' => 'li'))); 
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('organization_id', "Delivery Address",
                              array('class' => 'required')));
-              e($this->Form->select('delivery_address', $options, NULL, 
-                                    array('empty' => false))); 
-          ?>
-        </div>
+              e($form->select('organization_id', $delivery_addresses, NULL, 
+                              array('empty' => false)));
+            ?>        
+          </div>        
+        </div>        
         <!-- End Delivery Address -->
 
         <!-- Begin City  -->

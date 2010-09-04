@@ -81,6 +81,7 @@ class UsersController extends AppController {
 
   function coordinator_edit($id = null) {
     $this->layout = "coordinator/add";
+    $delivery_addresses = $this->Organization->find('list', array('fields' => 'Organization.delivery_address'));
     if (!$id && empty($this->data)) {
       $this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
       $this->redirect(array('action' => 'index'));
@@ -99,6 +100,7 @@ class UsersController extends AppController {
     if (empty($this->data)) {
       $this->data = $this->User->read(null, $id);
     }
+    $this->set('delivery_addresses', $delivery_addresses);
     $this->render("admin_edit");
   }
   
