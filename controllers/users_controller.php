@@ -229,7 +229,7 @@ class UsersController extends AppController {
         $this->User->set(array('token' => null, 'token_expiry' => null)); 
         $this->User->save();
         $this->Session->setFlash('Password has been changed', 'flash_notice');
-        $this->redirect(array('controller' => 'users', 'action' => 'login'));
+        $this->redirect('/users/login');
       } else {
         $email = $this->Session->read('ForgotPassword.email');
         $token = $this->Session->read('ForgotPassword.token');
