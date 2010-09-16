@@ -118,7 +118,7 @@ class User extends AppModel {
   function resetPassword($email) {
     $user = $this->findByEmail($email);
     $this->read(null, $user['User']['id']); 
-    $two_hours_from_now = time() + (120 * 60);
+    $two_hours_from_now = time() + (180 * 60);
     $this->set(array('token' => uniqid(), 
     'token_expiry' => date('Y-m-d H:m:s', $two_hours_from_now)));
     $this->save();
