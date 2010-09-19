@@ -12,6 +12,16 @@ class OrdersController extends AppController {
     if ($this->currentUser['User']['role'] == "customer") {
       $this->redirect($this->referer());
     }
+    $coordinatorActions = array('coordinator_mark_as_paid', 'coordinator_mark_as_delivered', 'coordinator_refunds', 
+                                'coordinator_view', 'coordinator_print_refund_receipt');
+    $supplierActions = array('supplier_index', 'supplier_view', 'supplier_edit', 'supplier_lineitem', 
+                             'supplier_close_batch');
+    if (in_array($this->params['action'], $coordinatorActions)) {
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }
+    if (in_array($this->params['action'], $supplierActions)) {
+      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+    }    
   }
   
 
@@ -421,8 +431,7 @@ class OrdersController extends AppController {
     $this->layout = "fpdf";
     $order = $this->Order->findById($id); 
     $this->set('order', $order);
-    $this->render('/elements/refund_receipt_pdf');
-    
+    $this->render('/elements/refund_receipt_pdf');    
   }
 
 }

@@ -6,6 +6,15 @@ class UsersController extends AppController {
   var $helpers = array('Html', 'Form', 'Javascript');
   var $uses = array('User', 'Organization');
 
+  function beforeFilter(){
+    parent::beforeFilter();
+    $coordinatorActions = array('coordinator_index', 'coordinator_index_proxy', 'coordinator_view', 
+                                'coordinator_edit', 'coordinator_delete');
+    if (in_array($this->params['action'], $coordinatorActions)) {
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }
+  }
+
   function admin_index() {
     $this->layout = "admin_index"; 
     $this->User->recursive = 0;
@@ -257,8 +266,16 @@ class UsersController extends AppController {
     $this->set('title_for_layout', 'Login');
     $this->set('title_for_branding', 'Login');
     $this->layout = "users/login";
-    if( $this->Auth->user( )){
-      $this->redirect( array('controller' => 'carts' , 'action' => 'index'));
+    
+    if($this->Auth->user()){
+      if ($this->currentUser['User']['role'] == "customer") {
+         $this->redirect( array('controller' => 'carts' , 'action' => 'index'));
+      }      
+      if ($this->currentUser['User']['role'] == "supplier") {
+        $this->redirect('/supplier');
+      }
+      // Coordinator or Administrator
+      $this->redirect('/admin/dashboard');      
     }
   }
 
@@ -273,7 +290,11 @@ class UsersController extends AppController {
       if ($this->currentUser['User']['role'] == "customer") {
         $this->redirect('/admin/users/logout');
       }
-      $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
+      if ($this->currentUser['User']['role'] == "supplier") {
+        $this->redirect('/supplier');
+      }      
+      // Coordinator or Administrator
+      $this->redirect('/admin/dashboard');
     }
   }
 
@@ -296,6 +317,9 @@ class UsersController extends AppController {
       if ($this->currentUser['User']['role'] == "customer") {
         $this->redirect('/supplier/users/logout');
       }
+      if ($this->currentUser['User']['role'] == "supplier") {
+        $this->redirect('/supplier');
+      }
       $this->redirect(array('controller' => 'dashboard', 'action' => 'index'));
     }
     $this->render('/users/admin_login');
@@ -315,15 +339,13 @@ class UsersController extends AppController {
 
   function admin_logout() { 
     if($this->Auth->logout()){
-      $this->redirect(array('controller' => 'users', 'action' => 'login', 
-        'admin' => true));
+      $this->redirect(array('controller' => 'users', 'action' => 'login', 'admin' => true));
     }
   }
 
   function coordinator_logout() { 
     if($this->Auth->logout()){
-      $this->redirect(array('controller' => 'users', 'action' => 'login', 
-        'admin' => true));
+      $this->redirect(array('controller' => 'users', 'action' => 'login', 'admin' => true));
     }
   }
 

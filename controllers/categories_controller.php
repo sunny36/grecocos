@@ -9,6 +9,10 @@ class CategoriesController extends AppController {
     if ($this->currentUser['User']['role'] == "customer") {
       $this->redirect($this->referer());
     }
+    $supplierActions = array('supplier_index', 'supplier_add', 'supplier_delete', 'supplier_edit');
+    if (in_array($this->params['action'], $supplierActions)) {
+      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+    }            
   }
   
 

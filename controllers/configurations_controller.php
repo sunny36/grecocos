@@ -3,6 +3,15 @@ class ConfigurationsController extends AppController {
 
 	var $name = 'Configurations';
   var $helpers = array('Html', 'Form', 'Javascript');
+
+  function beforeFilter(){
+    parent::beforeFilter();
+    $coordinatorActions = array('coordinator_index', 'coordinator_view', 'coordinator_add', 'coordinator_edit',
+                                'coordinator_delete');
+    if (in_array($this->params['action'], $coordinatorActions)) {
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }
+  }
   
 	function coordinator_index() {
 	  $this->layout = "coordinator/add";

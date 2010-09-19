@@ -9,6 +9,10 @@ class TransactionsController extends AppController {
     if ($this->currentUser['User']['role'] == "customer") {
       $this->redirect($this->referer());
     }
+    $coordinatorActions = array('coordinator_index', 'coordinator_cash_report2');
+    if (in_array($this->params['action'], $coordinatorActions)) {
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }
   }
 
   function coordinator_index() {

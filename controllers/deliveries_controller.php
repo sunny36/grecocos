@@ -10,6 +10,16 @@ class DeliveriesController extends AppController {
     if ($this->currentUser['User']['role'] == "customer") {
       $this->redirect($this->referer());
     }
+    $coordinatorActions = array('coordinator_index', 'coordinator_notify_arrival_of_shipment', 'coordinator_payments', 
+                                'coordinator_add', 'coordinator_delete', 'coordinator_edit', 
+                                'coordinator_arrival_of_shipment');
+    $supplierActions = array('supplier_index', 'supplier_add', 'supplier_delete', 'supplier_edit');
+    if (in_array($this->params['action'], $coordinatorActions)) {
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }
+    if (in_array($this->params['action'], $supplierActions)) {
+      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+    }        
   }
   
   function supplier_index() {

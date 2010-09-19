@@ -3,6 +3,21 @@ class LineItemsController extends AppController {
 
 	var $name = 'LineItems';
 	var $helpers = array('Html', 'Form', 'Javascript', 'Number');
+	
+  function beforeFilter(){
+    parent::beforeFilter();
+    if ($this->currentUser['User']['role'] == "customer") {
+      $this->redirect($this->referer());
+    }
+    $coordinatorActions = array('coordinator_index');
+    $supplierActions = array('supplier_index');
+    if (in_array($this->params['action'], $coordinatorActions)) {
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }
+    if (in_array($this->params['action'], $supplierActions)) {
+      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+    }    
+  }
 
 	function supplier_index() {
     $this->set('title_for_layout', 'Supplier | Batch Reports');

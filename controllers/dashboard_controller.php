@@ -8,6 +8,16 @@ class DashboardController extends AppController{
     if ($this->currentUser['User']['role'] == "customer") {
       $this->redirect($this->referer());
     }
+    if ($this->params['action'] == "admin_coordinator") {
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }
+    if ($this->params['action'] == "admin_supplier") {
+      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+    }
+    if ($this->params['action'] == "admin_administrator") {
+      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+    }    
   }
   
   function admin_index() { 
@@ -21,6 +31,7 @@ class DashboardController extends AppController{
   }
 
   function admin_supplier() { 
+    $this->log($this->params, 'activity');
     $this->set('title_for_layout', 'Grecocos | Supplier');
     $this->layout = "supplier/dashboard"; 
   }
