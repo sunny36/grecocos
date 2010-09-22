@@ -15,7 +15,7 @@ class ProductsController extends AppController {
     }
     $coordinatorActions = array('coordinator_mark_as_paid', 'coordinator_mark_as_delivered', 'coordinator_refunds', 
                                 'coordinator_view', 'coordinator_print_refund_receipt');
-    $supplierActions = array('supplier_index', 'supplier_index2', 'supplier_view', 'supplier_add', 'supplier_edit'
+    $supplierActions = array('supplier_index', 'supplier_index2', 'supplier_view', 'supplier_add', 'supplier_edit',
                              'supplier_delete');
     if (in_array($this->params['action'], $supplierActions)) {
       if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
