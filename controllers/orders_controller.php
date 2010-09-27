@@ -433,6 +433,12 @@ class OrdersController extends AppController {
     $this->set('order', $order);
     $this->render('/elements/refund_receipt_pdf');    
   }
+  
+  function index() {    
+    $this->layout = 'customer_index';
+    $this->paginate = array('conditions' => array('Order.user_id' => 17));
+    $this->set('orders', $this->paginate()); 
+  }
 
 }
 ?>
