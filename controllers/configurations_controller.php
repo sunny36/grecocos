@@ -8,9 +8,13 @@ class ConfigurationsController extends AppController {
     parent::beforeFilter();
     $coordinatorActions = array('coordinator_index', 'coordinator_view', 'coordinator_add', 'coordinator_edit',
                                 'coordinator_delete');
+    $supplierActions = array('supplier_index');
     if (in_array($this->params['action'], $coordinatorActions)) {
       if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
     }
+    if (in_array($this->params['action'], $supplierActions)) {
+      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+    }        
   }
   
 	function coordinator_index() {
@@ -25,7 +29,20 @@ class ConfigurationsController extends AppController {
 		  $this->redirect(array('action' => 'index'));
 		}
 	}
-
+  
+  function supplier_index() {
+	  $this->layout = "supplier/add";
+		$this->Configuration->recursive = 0;
+		$this->set('closed', Configure::read('Grecocos.closed'));
+		if (!empty($this->data)) {
+		  $closed = $this->Configuration->findByKey('closed');
+		  $closed['Configuration']['value'] = $this->data['Configuration']['closed']; 
+		  $this->Configuration->save($closed);
+		  $this->Session->setFlash("Configurations has been saved.", 'system_message');
+		  $this->redirect(array('action' => 'index'));
+		}
+	}
+	
 	function coordinator_view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'configuration'));

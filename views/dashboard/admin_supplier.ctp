@@ -81,7 +81,23 @@
       </tr>      
       </table>
     </div> 
-
+    
+    <div class="module">
+      <table>
+      <caption>5. Configuration</caption>
+        <tr>
+          <th scope="row">
+            <?php
+              e($html->link('5.1 Open/close website', 
+                            '/supplier/configurations')); 
+            ?>
+          </th>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    
    
   </div>
 
