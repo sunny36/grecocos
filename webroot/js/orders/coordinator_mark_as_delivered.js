@@ -91,6 +91,13 @@ $(document).ready(function(){
             }
     		});
     $dialog.dialog('open');
-  }   
+  }
+  
+  setInterval(function(){
+    $("body:not(:animated)").hide("fast", function(){
+        $("body").load("mark_as_delivered").show("slow");
+    });//show callback
+  } ,600000);//set interval
+     
   
 });
