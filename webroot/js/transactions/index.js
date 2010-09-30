@@ -6,18 +6,18 @@ Number.prototype.formatMoney = function(c, d, t){
 $(document).ready(function(){
   jQuery('#transactions').jqGrid({
     shrinkToFit: false,
-    width: "1015",
+    width: "721",
     height: "auto",
     url: window.location.pathname, 
     colNames: ['From/To', 'Description', 'Date', 'Batch', 'Cash In', 'Cash Out'], 
     colModel:[
-      {name:'user_name',index:'user_name', align:"left", search:false, width: 200},
-      {name:'type', index:'type', align:"left", search:false},
+      {name:'user_name',index:'user_name', align:"left", search:false, width: 150},
+      {name:'type', index:'type', align:"left", search:false, width:110},
       {name:'ordered_date', index:'type', align:"left", search:false},
       {name:'delivery_date', index:'delivery_date',  align:"left", stype:'select', 
-        searchoptions:{value:"all:All"}, width:"180"},
-        {name:'cash_in',index:'cash_in',align:"right", search:false},
-        {name:'cash_out',index:'created',  align:"right", search:false}
+        searchoptions:{value:"all:All"}, width:100},
+        {name:'cash_in',index:'cash_in',align:"right", search:false, width:90},
+        {name:'cash_out',index:'created',  align:"right", search:false, width:90}
     ],
     sortname: 'product',
     headerrow: true,

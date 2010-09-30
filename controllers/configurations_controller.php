@@ -2,7 +2,7 @@
 class ConfigurationsController extends AppController {
 
 	var $name = 'Configurations';
-  var $helpers = array('Html', 'Form', 'Javascript');
+  var $helpers = array('Html', 'Form', 'Javascript', 'Time');
 
   function beforeFilter(){
     parent::beforeFilter();
@@ -29,6 +29,41 @@ class ConfigurationsController extends AppController {
 		  $this->redirect(array('action' => 'index'));
 		}
 	}
+  
+  function isNextDeliveryDateInFuture() {    
+    sleep(3);
+    if($this->RequestHandler->isAjax()) {
+      Configure::write('debug', 0);
+      $Delivery = ClassRegistry::init('Delivery'); 
+      if ($Delivery->isNextDeliveryDateInFuture()) {
+        $this->set("next_delivery_in_future", "yes");
+      } else {
+        $this->set("next_delivery_in_future", "no");
+      }      
+    }
+  }
+  
+  function sendEmailSiteReopen() {
+    $User = ClassRegistry::init('User'); 
+    $users = $User->find('all', array('conditions' => array(
+      'User.status' => 'accepted'))); 
+    $to = "";
+    foreach ($users as $user) {
+      $to = $to . $user['User']['email'] . ", ";
+    }
+    $subject = "GRECOCOS website is now open"; 
+    $Delivery = ClassRegistry::init('Delivery'); 
+    $nextDelivery = $Delivery->findByNextDelivery(true);
+    App::import( 'Helper', 'Time' );
+    $timeHelper = new TimeHelper;    
+    $deliveryDate = $timeHelper->format($format = 'd-m-Y', 
+                                        $nextDelivery['Delivery']['date']);
+    $body = "Dear member,\n\nThe GRECOCOS website is opened. " . 
+            "You can place your orders now for delivery on " . 
+             "{$deliveryDate}." ."\n\n"; 
+    $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
+    $AppengineEmail->sendEmail($to, $subject, $body);     
+  }
   
   function supplier_index() {
 	  $this->layout = "supplier/add";

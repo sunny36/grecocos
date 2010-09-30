@@ -6,7 +6,8 @@ class Configuration extends AppModel {
 	 function load()  {  
 	   $settings = $this->find('all');  
      foreach ($settings as $variable)  {  
-       Configure::write('Grecocos.' . $variable['Configuration']['key'],  $variable['Configuration']['value']);  
+       Configure::write('Grecocos.' . $variable['Configuration']['key'],  
+                        $variable['Configuration']['value']);  
       }  
     }  
   

@@ -1,0 +1,1 @@
+<?php echo $next_delivery_in_future; ?>

@@ -97,5 +97,18 @@ class Delivery extends AppModel {
   function getNextDelivery() {
     return $this->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
   }
+  
+  function isNextDeliveryDateInFuture() {
+    $nextDelivery = $this->findByNextDelivery(true);
+    $this->log($nextDelivery);
+    if (strtotime($nextDelivery['Delivery']['date']) < time()) {
+      $this->log("in past");
+      return false;
+    }
+    if (strtotime($nextDelivery['Delivery']['date']) > time()) {
+      $this->log("in future");
+      return true;
+    }    
+  }
 }
 ?>
