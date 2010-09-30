@@ -24,7 +24,6 @@ $(document).ready(function(){
     viewrecords: true,
     sortorder: "asc",
     userDataOnFooter: true,
-    caption:"Products",
     gridComplete: function(){
       var ids = jQuery("#products").jqGrid('getDataIDs');
       for(var i=0;i < ids.length;i++){
@@ -34,7 +33,8 @@ $(document).ready(function(){
           "ui-corner-all' type='button' value='Edit'  />"; 
         jQuery("#products").jqGrid('setRowData',ids[i],{act:be});
       }    
-    },           
+    },
+    caption:"Products"
   });
   
   $('.products.edit.ui-button').live('click', function() {
@@ -79,4 +79,3 @@ $(document).ready(function(){
   });
   
 });
-
