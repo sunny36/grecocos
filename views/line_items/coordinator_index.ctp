@@ -1,6 +1,5 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
-<?php echo $javascript->link('orders/coordinator_mark_as_paid.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 <?php echo $javascript->link('admin/admin_index.js', false); ?>
 <style>
@@ -119,24 +118,19 @@
     <td></td>
 	  <td><strong>TOTALS</strong></td>
 	  <td class="numbers">
-	    <strong><?php echo $lineItemTotals['LineItem']['ordered']; ?></strong>
+	    <strong><?php echo $ordered; ?></strong>
 	  </td>
 	  <td class="numbers">
-	    <strong><?php echo $lineItemTotals['LineItem']['supplied']; ?></strong>
+	    <strong><?php echo $supplied; ?></strong>
 	  </td>
 	  <td class="numbers">
 	    <strong>
-	      <?php 
-	        echo money_format("%i", 
-	                          $lineItemTotals['LineItem']['amount_wholesale']); 
-	      ?>
+	      <?php echo money_format("%i", $amount_wholesale); ?>
 	    </strong>
 	  </td>
 	  <td class="numbers">
 	    <strong>
-	      <?php 
-	        echo money_format("%i", $lineItemTotals['LineItem']['amount_retail']); 
-	      ?>
+	      <?php echo money_format("%i", $amount_retail); ?>
 	    </strong>
 	  </td>
   </tr>

@@ -4,9 +4,13 @@ class LineItem extends AppModel {
 	var $belongsTo = array('Product', 'Order');
 
   function createVirtualFields($virtualFields) {
-    $this->virtualFields = $virtualFields;
-    
+    $this->virtualFields = $virtualFields;    
   }
+  
+  function removeVirtualFields() {
+  	$this->virtualFields = NULL; 
+  }
+  
 	function getProductsByOrderId($id, $offset = null, $limit = null) {
     $params = array('conditions' => array('LineItem.order_id' => $id)); 
     if($offset) $params['offset'] = $offset;
