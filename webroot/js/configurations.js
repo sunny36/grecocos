@@ -11,11 +11,11 @@ $(document).ready(function(){
                 $('form').before("<p class='errornote'>" + 
                                  "There is no delivery date set, " + 
                                   "please update next delivery date</p>");
-                $('#ConfigurationClosed').val("yes")
+                $('#ConfigurationClosed').val("yes");
                 return false;
               }
               if (data == "yes") {
-                var msg = "Do you want to inform customers by email?"
+                var msg = "Do you want to inform customers by email?";
                 custom_confirm_yes_no(msg, 
                                       function() { sendEmailSiteReOpen();  },
                                       function() { $('form').submit(); });
@@ -26,6 +26,7 @@ $(document).ready(function(){
     } else {
       $('form').submit();
     }
+    return false;
   });
 });
 

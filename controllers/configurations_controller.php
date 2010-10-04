@@ -19,19 +19,38 @@ class ConfigurationsController extends AppController {
   
 	function coordinator_index() {
 	  $this->layout = "coordinator/add";
-		$this->Configuration->recursive = 0;
+	  $this->__index();
+	}
+  
+  function supplier_index() {
+	  $this->layout = "supplier/add";
+	  $this->__index();
+	}
+  
+  function __index() {
+    $this->Configuration->recursive = 0;
 		$this->set('closed', Configure::read('Grecocos.closed'));
 		if (!empty($this->data)) {
 		  $closed = $this->Configuration->findByKey('closed');
 		  $closed['Configuration']['value'] = $this->data['Configuration']['closed']; 
 		  $this->Configuration->save($closed);
-		  $this->Session->setFlash("Configurations has been saved.", 'system_message');
+		  if ($closed['Configuration']['value'] == "no") {
+		    $flashMessage = "The website has been opened. ";
+		  } else { // $closed['Configuration']['value'] == "yes"
+		    $flashMessage = "The website has been closed. ";
+		  }
+		  if ($this->Session->check('sendEmailReOpenSite')) {
+		    if ($this->Session->read('sendEmailReOpenSite')) {
+		      $flashMessage = $flashMessage . 
+		                      "Emails have been sent to all customers.";
+		      $this->Session->delete('sendEmailReOpenSite');
+		    }
+		  }
+		  $this->Session->setFlash($flashMessage, 'system_message');
 		  $this->redirect(array('action' => 'index'));
-		}
-	}
-  
+		}		
+  }
   function isNextDeliveryDateInFuture() {    
-    sleep(3);
     if($this->RequestHandler->isAjax()) {
       Configure::write('debug', 0);
       $Delivery = ClassRegistry::init('Delivery'); 
@@ -42,7 +61,7 @@ class ConfigurationsController extends AppController {
       }      
     }
   }
-  
+    
   function sendEmailSiteReopen() {
     $User = ClassRegistry::init('User'); 
     $users = $User->find('all', array('conditions' => array(
@@ -62,22 +81,10 @@ class ConfigurationsController extends AppController {
             "You can place your orders now for delivery on " . 
              "{$deliveryDate}." ."\n\n"; 
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
-    $AppengineEmail->sendEmail($to, $subject, $body);     
+    $AppengineEmail->sendEmail($to, $subject, $body);   
+    $this->Session->write('sendEmailReOpenSite', true);
   }
-  
-  function supplier_index() {
-	  $this->layout = "supplier/add";
-		$this->Configuration->recursive = 0;
-		$this->set('closed', Configure::read('Grecocos.closed'));
-		if (!empty($this->data)) {
-		  $closed = $this->Configuration->findByKey('closed');
-		  $closed['Configuration']['value'] = $this->data['Configuration']['closed']; 
-		  $this->Configuration->save($closed);
-		  $this->Session->setFlash("Configurations has been saved.", 'system_message');
-		  $this->redirect(array('action' => 'index'));
-		}
-	}
-	
+  	
 	function coordinator_view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'configuration'));
