@@ -10,7 +10,10 @@ class OrdersController extends AppController {
   function beforeFilter(){
     parent::beforeFilter();
     if ($this->currentUser['User']['role'] == "customer") {
-      $this->redirect($this->referer());
+      // Allow the customer to only access the index action
+      if (!($this->params['action'] == "index")) {
+        $this->redirect($this->referer());
+      }      
     }
     $coordinatorActions = array('coordinator_mark_as_paid', 'coordinator_mark_as_delivered', 'coordinator_refunds', 
                                 'coordinator_view', 'coordinator_print_refund_receipt');
@@ -41,12 +44,11 @@ class OrdersController extends AppController {
       if ($search == "true") {
         if ($this->params['url']['status'] == "all") {
           $params = array('conditions' => array(
-            'Order.status <>' => 'entered',
-            'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+            'Order.status <>' => 'entered', 'Order.delivery_id' => $this->params['url']['delivery_date'])); 
         } 
         if ($this->params['url']['status'] == "packed") {
           $params = array('conditions' => array(
-            'Order.status' => array('packed', 'delivered'),
+            'Order.status' => array('packed', 'delivered'), 
             'Order.delivery_id' => $this->params['url']['delivery_date'])); 
         } 
         if ($this->params['url']['status'] == "paid") {
@@ -436,9 +438,10 @@ class OrdersController extends AppController {
   
   function index() {    
     $this->layout = 'customer_index';
-    $this->paginate = array('conditions' => array('Order.user_id' => 17));
+    $this->paginate = array(
+      'conditions' => array('Order.user_id' => $this->currentUser['User']['id']), 
+      'order' => 'ordered_date DESC');    
     $this->set('orders', $this->paginate()); 
   }
-
 }
 ?>

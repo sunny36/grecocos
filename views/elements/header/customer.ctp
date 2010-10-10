@@ -8,5 +8,10 @@
         echo $html->link('Logout', array('controller' => 'users', 
                                          'action' => 'logout')); 
       ?>
+      <br/>
+      <?php 
+        echo $html->link('View Orders History', array('controller' => 'orders', 
+                                                      'action' => 'index'));
+      ?>
   </div>
 </div>

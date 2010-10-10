@@ -18,7 +18,7 @@
 <!-- Container -->
 <div id="container">
     <!-- Header -->
-    <?php e($this->element('header')); ?>
+    <?php e($this->element('header/customer')); ?>
     <!-- END Header -->
     <!-- Content -->
       <?php echo $content_for_layout; ?>

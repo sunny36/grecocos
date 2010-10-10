@@ -5,10 +5,10 @@
 
 <div class="breadcrumbs">
   <?php 
-   e($html->link('Home', '/coordinator')); 
+   e($html->link('Home', '/carts')); 
   ?>
   &rsaquo;
-  Mark orders as paid
+  View Orders History
 </div>
 <div id="confirmation_dialog"></div>
 <div id="content" class="flex">
@@ -56,7 +56,10 @@
     		</td>
 
     		<td>
-    			<?php echo $this->Html->link(__('View Details', true), array('action' => 'view', $order['Order']['id'])); ?>
+    			<?php 
+    			  echo $this->Html->link(__('View Invoice', true), 
+    			                        '../../' . str_pad($order['Order']['id'], 6, '0', STR_PAD_LEFT) . '_invoice.pdf');
+    			?>
     		</td>
     	</tr>
     <?php endforeach; ?>

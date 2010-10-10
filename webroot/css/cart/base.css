@@ -194,8 +194,8 @@ div.breadcrumbs {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 1.2em 10px;
-    font-size: 11px;
+    padding: 0.25em 15px;
+    font-size: 12px;
     text-align: right;
 }
 
