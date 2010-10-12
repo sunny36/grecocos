@@ -133,6 +133,17 @@
         </tr>        
       </table>
     </div>
+
+    <div class="module">
+      <table>
+      <caption>6. Emails</caption>
+        <tr>
+          <th scope="row"><?php e($html->link('6.1 Send emails to customers', '/coordinator/emails')); ?></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </table>
+    </div>
     
 
   <br class="clear" />

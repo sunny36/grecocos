@@ -218,6 +218,10 @@ fieldset.monospace textarea {
     width: 20em;
 }
 
+.vMediumTextField {
+    width: 42em;
+}
+
 .vIntegerField {
     width: 5em;
 }
