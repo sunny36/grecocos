@@ -15,10 +15,10 @@
   <div id="content-main">
     <ul class="object-tools">
       <li>
-        <?php echo $html->link('Add Product', 
-                          array('controller' => 'products',                                               
-                                'action' => 'add'), 
-                          array('class' => 'addlink'))?>
+        <?php 
+          echo $html->link('Add Product', array('controller' => 'products', 'action' => 'add'), 
+                            array('class' => 'addlink'));
+        ?>
       </li>
     </ul>    
     <div class="module" id="changelist">
@@ -74,8 +74,7 @@
   		</td>
   		<td class="actions">
   			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $product['Product']['id'])); ?> |
-  			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $product['Product']['id'])); ?> |
-  			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $product['Product']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $product['Product']['id'])); ?>
+  			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $product['Product']['id'])); ?>
   		</td>
   	</tr>
   <?php endforeach; ?>
