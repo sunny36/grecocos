@@ -6,14 +6,14 @@ Number.prototype.formatMoney = function(c, d, t){
 $(document).ready(function(){
   jQuery('#transactions').jqGrid({
     shrinkToFit: false,
-    width: "721",
+    width: "661",
     height: "auto",
     url: window.location.pathname, 
     colNames: ['From/To', 'Description', 'Date', 'Batch', 'Cash In', 'Cash Out'], 
     colModel:[
       {name:'user_name',index:'user_name', align:"left", search:false, width: 150},
       {name:'type', index:'type', align:"left", search:false, width:110},
-      {name:'ordered_date', index:'type', align:"left", search:false},
+      {name:'ordered_date', index:'type', align:"left", search:false, width:90},
       {name:'delivery_date', index:'delivery_date',  align:"left", stype:'select', 
         searchoptions:{value:"all:All"}, width:100},
         {name:'cash_in',index:'cash_in',align:"right", search:false, width:90},
@@ -46,6 +46,7 @@ $(document).ready(function(){
   jQuery("#transactions").jqGrid('filterToolbar');
   $.get('/index.php/supplier/deliveries/getalljson', function(data) {
     var delivery_dates = eval('(' + data + ')');
+    $("#gs_delivery_date option[value='all']").remove();
     for(i = 0; i < delivery_dates.length; i++) {
       $('#gs_delivery_date').
         append($("<option></option>").

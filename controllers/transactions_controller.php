@@ -22,14 +22,17 @@ class TransactionsController extends AppController {
       $limit = $this->params['url']['rows']; 
       $sidx = $this->params['url']['sidx']; 
       $sord = $this->params['url']['sord']; 
-      $delivery_id = null; 
+      $Delivery = ClassRegistry::init('Delivery');
+      $nextDelivery = $Delivery->findByNextDelivery(true);
+      $delivery_id = $nextDelivery['Delivery']['id']; 
       if (isset($this->params['url']['delivery_date'])) {
         $delivery_id = $this->params['url']['delivery_date'];
       }
       if(!$sidx) $sidx =1;
       $count = 0;
       if (isset($delivery_id)) {
-        $count = $this->Transaction->getNumRowsForPaidTransactionByDeliveryDate($delivery_id); 
+        $count = $this->Transaction->getNumRowsForPaidTransactionByDeliveryDate(
+          $delivery_id); 
       } else {
         $count = $this->Transaction->getNumRowsForPaidTransaction(); 
       }
@@ -45,11 +48,14 @@ class TransactionsController extends AppController {
       $cashIn = null; 
       $cashOut = null; 
       if (isset($delivery_id)) {
-        $transactions = $this->Transaction->getPaidTransactionByDeliveryDate($recursive, $start, $limit, $delivery_id);
+        $transactions = $this->Transaction->getPaidTransactionByDeliveryDate(
+          $recursive, $start, $limit, $delivery_id);
         $cashIn = $this->Transaction->getCashInByDelivery($delivery_id); 
         $cashOut = $this->Transaction->getCashOutByDelivery($delivery_id);
       } else {
-        $transactions = $this->Transaction->getPaidTransaction($recursive, $start, $limit);
+        $transactions = $this->Transaction->getPaidTransaction($recursive, 
+                                                               $start, 
+                                                               $limit);
         $cashIn = $this->Transaction->getCashIn(); 
         $cashOut = $this->Transaction->getCashOut();
       }
@@ -57,20 +63,26 @@ class TransactionsController extends AppController {
       $time = new TimeHelper;
       foreach($transactions as &$transaction) {
         $transaction['Order']['ordered_date'] = 
-          $time->format($format = 'm-d-Y', $transaction['Order']['ordered_date']);
+          $time->format($format = 'd-m-Y', 
+                        $transaction['Order']['ordered_date']);
         $transaction['Transaction']['cash_in'] = "";
         $transaction['Transaction']['cash_out'] = "";
         if ($transaction['Transaction']['type'] == 'Cash Payment') {
-          $transaction['Transaction']['cash_in'] = $transaction['Order']['total'];
-          $transaction['Transaction']['type'] = "Order" . " #" . $transaction['Transaction']['order_id'];
+          $transaction['Transaction']['cash_in'] = 
+            $transaction['Order']['total'];
+          $transaction['Transaction']['type'] = 
+            "Order" . " #" . $transaction['Transaction']['order_id'];
         }
         if ($transaction['Transaction']['type'] == "Refund") {
-          $amountRefund = $transaction['Order']['total'] - $transaction['Order']['total_supplied'];
+          $amountRefund = $transaction['Order']['total'] - 
+                          $transaction['Order']['total_supplied'];
           $transaction['Transaction']['cash_out'] = $amountRefund;
-          $transaction['Transaction']['type'] = "Refund Order" . " #" . $transaction['Transaction']['order_id'];
+          $transaction['Transaction']['type'] = 
+            "Refund Order" . " #" . $transaction['Transaction']['order_id'];
         }
         if ($transaction['Transaction']['type'] == "Bank Transfer") {
-          $transaction['Transaction']['cash_out'] = $transaction['Transaction']['bank_transfer_amount'];
+          $transaction['Transaction']['cash_out'] = 
+            $transaction['Transaction']['bank_transfer_amount'];
         }
       }
       $this->set('page',$page);

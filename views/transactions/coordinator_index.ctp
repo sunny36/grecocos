@@ -9,7 +9,7 @@
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 
-    e($html->link('Home', '/administrator')); ?> &rsaquo; 
+    e($html->link('Home', '/coordinator')); ?> &rsaquo; 
     Cash Report 1
 </div>
 <!-- End Navigation  -->
