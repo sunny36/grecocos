@@ -46,7 +46,13 @@ class DeliveriesController extends AppController {
         'order' => 'Delivery.date DESC'); 
       $temp = $this->Delivery->recursive;
       $this->Delivery->recursive = 0; 
-      $delivery_dates = $this->Delivery->find('all', $params); 
+      $delivery_dates = $this->Delivery->find('all', $params);
+      App::import( 'Helper', 'Time' );
+      $time = new TimeHelper;      
+      foreach ($delivery_dates as &$delivery_date) {
+        $delivery_date['Delivery']['date'] = 
+          $time->format($format = 'd-m-Y', $delivery_date['Delivery']['date']);        
+      } 
       $this->Delivery->recursive = $temp ;
       $delivery_dates = json_encode($delivery_dates);      
       $this->set('delivery_dates', $delivery_dates);
