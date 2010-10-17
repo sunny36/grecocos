@@ -25,13 +25,17 @@ class EmailsController extends AppController{
      $this->Email->set($this->data);
      if ($this->Email->validates()) {
        $User = ClassRegistry::init('User'); 
-       $users = $User->find('all', array('conditions' => array('User.status' => 'accepted'))); 
+       $users = $User->find('all', array(
+         'conditions' => array('User.status' => 'accepted'))); 
+       // $to = "s@sunny.in.th";
        $to = "";
        foreach ($users as $user) {
          $to = $to . $user['User']['email'] . ", ";
        }
        $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
-       $AppengineEmail->sendEmail($to, $this->data['Email']['subject'], $this->data['Email']['body']);
+       $AppengineEmail->sendEmail($to, 
+                                  $this->data['Email']['subject'], 
+                                  $this->data['Email']['body']);
        $this->Session->setFlash('Email has been sent', 'flash_notice');
        $this->redirect(array('action' => 'index'));
      }
