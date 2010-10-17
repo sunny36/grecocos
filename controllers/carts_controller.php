@@ -120,7 +120,7 @@ class CartsController extends AppController{
   }
   
   function getInvoice() {
-    $this ->layout = "fpdf";
+    $this->layout = "fpdf";
     $this->set('cart', $this->Session->read('cart'));
     $this->set('deliveryDate', $this->Session->read('deliveryDate'));
     $this->set('orderId', $this->Session->read('orderId'));

@@ -1,7 +1,11 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('jquery-ui-1.8.2.custom.min', false); ?>
-<?php echo $javascript->link('tiny_mce/jquery.tinymce', false); ?><?php echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom', null, array('inline' => false)); ?>
-<?php echo $html->css('jquery.wysiwyg', null, array('inline' => false)); ?>
+<?php echo $javascript->link('tiny_mce/jquery.tinymce', false); ?>
+<?php echo $javascript->link('ext-jquery-adapter', false); ?>
+<?php echo $javascript->link('ext-all', false); ?>
+<?php echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom', null, array('inline' => false)); ?>
+<?php echo $html->css('ext-all', null, array('inline' => false)); ?>
+
 <style>
 form .aligned p, form .aligned ul {
   margin-left: 0;
@@ -40,6 +44,27 @@ float:left;
 				staffid : "991234"
 			}
 		});
+		if ($('#EmailTo :selected').val() != "individual") {
+		  $('#individual').hide();
+	  } else {
+	    $('#individual').show();
+	  }
+		
+		var converted = new Ext.form.ComboBox({
+       typeAhead: true,
+       triggerAction: 'all',
+       transform:'EmailUser',
+       width:300,
+       forceSelection:true
+     });
+     $('#EmailTo').change(function () {
+       if ($('#EmailTo :selected').val() == "individual") {
+         $('#individual').show();
+       } else {
+         $('#individual').hide();
+       }
+     });
+    
 	});
 </script>
 <!-- /TinyMCE -->
@@ -60,8 +85,41 @@ float:left;
       <fieldset class="module aligned ">
         <!-- Begin To  -->
         <div class="form-row short_description">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('Email.to')) {
+                e($form->error ('Email.to', null, array('wrap' => 'li'))); 
+              }              
+            ?>
+          </ul>                          
           <?php e($form->label('to', "To", array('class' => 'required')));?>        
-          <h4>All Registered Customers</h4>
+          <?php 
+            $options = array(
+              'all' => 'All Customers', 
+              'not_ordered' => 'Customers who have not ordered', 
+              'individual' => 'Individual customer'
+              );
+            e($form->select('to', $options, NULL, array('empty' => false)));
+          ?>
+        </div>
+        <div id="individual" class="form-row short_description">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('Email.user')) {
+                e($form->error ('Email.user', null, array('wrap' => 'li'))); 
+              }              
+            ?>
+          </ul>                
+          <?php 
+            e($form->label('user', "Customer Name", 
+                           array('class' => 'required')));
+          ?> 
+          <?php
+            $User = ClassRegistry::init('User');
+            $users = $User->find('list', array('fields' => 'User.name'));
+            e($form->select('user', $users, NULL, array('empty' => true)));
+          ?>
+          
         </div>
         <!-- End To  -->
         
