@@ -10,6 +10,16 @@
       ?>
       <br/>
       <?php 
+        echo $html->link('Shopping Cart', 
+                         array('controller' => 'carts', 'action' => 'index')); 
+      ?>
+      |
+      <?php 
+        echo $html->link('Edit Profile', 
+                          array('controller' => 'users', 'action' => 'edit')); 
+      ?> 
+      |
+      <?php 
         echo $html->link('View Orders History', array('controller' => 'orders', 
                                                       'action' => 'index'));
       ?>

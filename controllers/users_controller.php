@@ -8,10 +8,15 @@ class UsersController extends AppController {
 
   function beforeFilter(){
     parent::beforeFilter();
-    $coordinatorActions = array('coordinator_index', 'coordinator_index_proxy', 'coordinator_view', 
-                                'coordinator_edit', 'coordinator_delete');
+    $coordinatorActions = array('coordinator_index', 
+                                'coordinator_index_proxy', 
+                                'coordinator_view', 
+                                'coordinator_edit', 
+                                'coordinator_delete');
     if (in_array($this->params['action'], $coordinatorActions)) {
-      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+      if ($this->currentUser['User']['role'] == "supplier") {
+       $this->redirect('/supplier'); 
+      }
     }
   }
 
@@ -149,17 +154,25 @@ class UsersController extends AppController {
   }
 
 
-  function edit($id = null) {
+  function edit() {
+    $id = $this->currentUser['User']['id'];
+    $this->layout = "customer/add";
+    $delivery_addresses = $this->Organization->find('list', array(
+      'fields' => 'Organization.delivery_address'));
+    $this->set('delivery_addresses', $delivery_addresses);
     if (!$id && empty($this->data)) {
       $this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
       $this->redirect(array('action' => 'index'));
     }
     if (!empty($this->data)) {			
       if ($this->User->save($this->data)) {
-        $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
-        $this->redirect(array('action' => 'index'));
+        $this->Session->setFlash('Your user profile has been updated',
+                                 'flash_notice');
+        $this->redirect(array('action' => 'edit'));
       } else {
-        $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
+        $this->Session->setFlash('Your user profile could not be updated. ' . 
+                                 'Please try again', 
+                                 'flash_error');
       }
     }
     if (empty($this->data)) {

@@ -1,29 +1,141 @@
-<div class="users form">
-<?php echo $this->Form->create('User');?>
-	<fieldset>
- 		<legend><?php printf(__('Edit %s', true), __('User', true)); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('email');
-		echo $this->Form->input('firstname');
-		echo $this->Form->input('lastname');
-		echo $this->Form->input('middlename');
-		echo $this->Form->input('address1');
-		echo $this->Form->input('address2');
-		echo $this->Form->input('address3');
-		echo $this->Form->input('city');
-		echo $this->Form->input('postalcode');
-		echo $this->Form->input('phone');
-		echo $this->Form->input('status');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
+<!-- Begin Navigation  -->
+<div class="breadcrumbs">
+  <?php 
+    e($html->link('Shopping Cart', 
+                  array('controller' => 'carts', 'action' => 'index'))); 
+  ?> 
+  &rsaquo; 
+  Edit Profile
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
+<!-- End Navigation -->
 
-		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('User.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('User.id'))); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Users', true)), array('action' => 'index'));?></li>
-	</ul>
+<div id="content" class="colM">
+  <h1>Edit User</h1>
+  <div id="content-main">
+    <?php echo $this->Form->create('User');?>
+    <div>
+      <?php e($form->hidden('id'))?>
+      <?php echo $session->flash(); ?>
+      <fieldset class="module aligned ">
+
+        <!-- Begin Email  -->
+        <div class="form-row email">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('User.email')) 
+                e($form->error ('User.email', null, 
+                                array('wrap' => 'li'))); 
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('email', "Email", 
+                             array('class' => 'required'))); 
+                             e($form->text('email', array('class' => 'vTextField')));
+            ?>        
+          </div>        
+        </div>
+        <!-- End Email  -->
+
+        <!-- Begin First Name  -->
+        <div class="form-row firstname">
+          <ul class="errorlist">
+            <?php 
+                               if($form->isFieldError('User.firstname')) 
+                                 e($form->error ('User.firstname', null, 
+                                                 array('wrap' => 'li'))); 
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('firstname', "Firstname", 
+                             array('class' => 'required'))); 
+                             e($form->text('firstname', array('class' => 'vTextField')));
+            ?>        
+          </div>        
+        </div>
+        <!-- End First Name  -->
+
+        <!-- Begin Last Name  -->
+        <div class="form-row lastname">
+          <ul class="errorlist">
+            <?php 
+                               if($form->isFieldError('User.lastname')) 
+                                 e($form->error ('User.lastname', null, 
+                                                 array('wrap' => 'li'))); 
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('lastname', "Last Name", 
+                             array('class' => 'required'))); 
+                             e($form->text('lastname', array('class' => 'vTextField')));
+            ?>        
+          </div>        
+        </div>
+        <!-- End Last Name  -->
+        
+        <!-- Begin Middle Name  -->
+        <div class="form-row middlename">
+          <div>
+            <?php 
+                               e($form->label('middlename', "Middle Name")); 
+                               e($form->text('middlename', 
+                                             array('class' => 'vTextField')));
+            ?>        
+          </div>
+        </div>
+        <!-- End Middle Name  -->
+
+        <!-- Begin Delivery Address  -->    
+        <div class="form-row organization_id">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('User.organization_id')) 
+                e($form->error ('User.organization_id', null, 
+                                array('wrap' => 'li'))); 
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('organization_id', "Delivery Address",
+                             array('class' => 'required')));
+              e($form->select('organization_id', $delivery_addresses, NULL, 
+                              array('empty' => false)));
+            ?>        
+          </div>        
+        </div>        
+        <!-- End Delivery Address -->
+
+
+        <!-- Begin Phone  -->
+        <div class="form-row phone">
+          <ul class="errorlist">
+            <?php 
+                               if($form->isFieldError('User.phone')) 
+                                 e($form->error ('User.phone', null, 
+                                                 array('wrap' => 'li'))); 
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('phone', "Phone", 
+                             array('class' => 'required'))); 
+                             e($form->text('phone', array('class' => 'vTextField')));
+            ?>        
+          </div>        
+        </div>
+        <!-- End Phone  -->
+
+      </fieldset>
+      
+      <div class="submit-row" >
+        <?php echo $form->end(array('label' => 'Save', 'class' => 'default', 'div' => array('class' => false)));?>
+
+      </div>
+
+    </div>
+  </form>
+</div>
+<br class="clear" />
 </div>
