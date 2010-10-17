@@ -6,13 +6,13 @@ Number.prototype.formatMoney = function(c, d, t){
 $(document).ready(function(){
   jQuery('#transactions').jqGrid({
     shrinkToFit: false,
-    width: "661",
+    width: "721",
     height: "auto",
     url: window.location.pathname, 
     colNames: ['From/To', 'Description', 'Date', 'Batch', 'Cash In', 'Cash Out'], 
     colModel:[
-      {name:'user_name',index:'user_name', align:"left", search:false, width: 150},
-      {name:'type', index:'type', align:"left", search:false, width:110},
+      {name:'user_name',index:'user_name', align:"left", search:false, width: 170},
+      {name:'type', index:'type', align:"left", search:false, width:150},
       {name:'ordered_date', index:'type', align:"left", search:false, width:90},
       {name:'delivery_date', index:'delivery_date',  align:"left", stype:'select', 
         searchoptions:{value:"all:All"}, width:100},
