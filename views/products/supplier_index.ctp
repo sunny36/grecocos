@@ -1,5 +1,17 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
+<?php echo $javascript->link('jquery-ui-1.8.2.custom.min', false); ?>
 <?php echo $javascript->link('admin/admin_index.js', false); ?>
+<?php echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom',null, array('inline' => false)); ?>
+
+
+
+<script>
+$(function() {
+	$( "button, input:submit, a", ".demo" ).button();
+	$( "a", ".demo" ).click(function() { return false; });
+});
+</script>
+
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php 
@@ -32,7 +44,11 @@
       '60'))); ?>
     	<?php e($form->submit('Search', array('div' => false))); ?>
     	 &nbsp;&nbsp;
-    	<?php e($html->link('View All', '/supplier/products/index'))?>
+    	 <?php echo $this->Form->end(); ?>
+       <?php e($html->link('View All', '/supplier/products/index', array('class' => 'a-button')))?>
+       &nbsp;&nbsp;
+       <?php e($html->link('Show Available Items', '/supplier/products/index?display=yes', array('class' => 'a-button')))?>
+  
     </div>
     </div>
           

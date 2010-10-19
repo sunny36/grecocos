@@ -25,14 +25,19 @@ class ProductsController extends AppController {
   function supplier_index() {
     $this->layout = 'supplier/index'; 
     $this->Product->recursive = 0;
-    if(!empty($this->params['url']['short_description'])) {
+    if (!empty($this->params['url']['short_description'])) {
       $short_description = $this->params['url']['short_description'];
       #TODO Remove hard coded limit. 
       $this->paginate = (array('conditions' => array(
         'Product.short_description LIKE' => '%' . $short_description . '%'), 
         'limit' => 100000)); 
       $this->set('products', $this->paginate());    
-    } else {
+      } elseif (!empty($this->params['url']['display'])) {
+        $this->paginate = (array('conditions' => array(
+          'Product.display' => true), 
+          'limit' => 100000));         
+        $this->set('products', $this->paginate());    
+      } else {
       $this->paginate = (array('limit' => 100000));
       $this->set('products', $this->paginate());    
     }
