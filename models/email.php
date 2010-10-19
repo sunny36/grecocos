@@ -55,7 +55,7 @@ class Email extends AppModel{
   function sendEmailToIndividualCustomer($userId, $subject, $body) {
     $User = ClassRegistry::init('User');
     $user = $User->findById($userId); 
-    $this->_sendEmail($user['User']['id'], $subject, $body);
+    $this->_sendEmail($user['User']['email'], $subject, $body);
   }
   
   function _sendEmail($to, $subject, $body) {
@@ -72,6 +72,8 @@ class Email extends AppModel{
       } else {
         return false; 
       }
+    } else {
+      return true; 
     }
   }
   
@@ -82,6 +84,8 @@ class Email extends AppModel{
       } else {
         return false; 
       }
+    } else {
+      return true;
     }
   }
   
