@@ -66,10 +66,11 @@ class ConfigurationsController extends AppController {
     $User = ClassRegistry::init('User'); 
     $users = $User->find('all', array('conditions' => array(
       'User.status' => 'accepted'))); 
-    $to = "";
-    foreach ($users as $user) {
-      $to = $to . $user['User']['email'] . ", ";
-    }
+    $to = "s@sunny.in.th";
+    // $to = "";
+    // foreach ($users as $user) {
+    //   $to = $to . $user['User']['email'] . ", ";
+    // }
     $subject = "GRECOCOS website is now open"; 
     $Delivery = ClassRegistry::init('Delivery'); 
     $nextDelivery = $Delivery->findByNextDelivery(true);
@@ -79,7 +80,7 @@ class ConfigurationsController extends AppController {
                                         $nextDelivery['Delivery']['date']);
     $body = "Dear member,\n\nThe GRECOCOS website is opened. " . 
             "You can place your orders now for delivery on " . 
-             "{$deliveryDate}." ."\n\n"; 
+             "{$deliveryDate}." ."\n\nhttp://grecocos.co.cc/index.php"; 
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
     $AppengineEmail->sendEmail($to, $subject, $body);   
     $this->Session->write('sendEmailReOpenSite', true);
