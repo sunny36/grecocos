@@ -66,11 +66,10 @@ class ConfigurationsController extends AppController {
     $User = ClassRegistry::init('User'); 
     $users = $User->find('all', array('conditions' => array(
       'User.status' => 'accepted'))); 
-    $to = "s@sunny.in.th";
-    // $to = "";
-    // foreach ($users as $user) {
-    //   $to = $to . $user['User']['email'] . ", ";
-    // }
+    $to = "";
+    foreach ($users as $user) {
+      $to = $to . $user['User']['email'] . ", ";
+    }
     $subject = "GRECOCOS website is now open"; 
     $Delivery = ClassRegistry::init('Delivery'); 
     $nextDelivery = $Delivery->findByNextDelivery(true);
