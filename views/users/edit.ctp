@@ -17,26 +17,6 @@
       <?php e($form->hidden('id'))?>
       <?php echo $session->flash(); ?>
       <fieldset class="module aligned ">
-
-        <!-- Begin Email  -->
-        <div class="form-row email">
-          <ul class="errorlist">
-            <?php 
-              if($form->isFieldError('User.email')) 
-                e($form->error ('User.email', null, 
-                                array('wrap' => 'li'))); 
-            ?>
-          </ul>      
-          <div>
-            <?php 
-              e($form->label('email', "Email", 
-                             array('class' => 'required'))); 
-                             e($form->text('email', array('class' => 'vTextField')));
-            ?>        
-          </div>        
-        </div>
-        <!-- End Email  -->
-
         <!-- Begin First Name  -->
         <div class="form-row firstname">
           <ul class="errorlist">
