@@ -511,5 +511,13 @@ class OrdersController extends AppController {
       'order' => 'ordered_date DESC');    
     $this->set('orders', $this->paginate()); 
   }
+  
+  function pp() {
+    $this->layout = "fpdf";
+    $products = $this->Product->find('all');
+    $this->log($products);
+    $this->set('products', $products);
+    $this->render('/elements/pdf_report/supplier_products_orders');    
+  }
 }
 ?>

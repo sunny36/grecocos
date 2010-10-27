@@ -105,12 +105,13 @@ class ProductsController extends AppController {
       }
       if (!empty($this->data)) {
         if(($this->Attachment->upload($this->data['Product']['Attachment']))) {
-          $this->data['Product']['image'] = $this->Attachment->upload($this->data['Product']['Attachment']);
+          $this->data['Product']['image'] = 
+            $this->Attachment->upload($this->data['Product']['Attachment']);
         }
-
         if ($this->Product->save($this->data)) {
-          $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
-          $this->redirect(array('action' => 'index'));
+          $this->Session->setFlash(__('The product has been saved', true), 'flash_notice');
+          $this->redirect(array(
+            'action' => 'edit', $this->data['Product']['id'] ));
         } else {
           $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'));
         }
