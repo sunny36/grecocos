@@ -33,6 +33,26 @@
           </div>        
         </div>
         <!-- End Short Description  -->
+
+        <!-- Begin Short Description Thai  -->
+        <div class="form-row short_description">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('Product.short_description_th')) {
+                e($form->error ('Product.short_description', null, 
+                    array('wrap' => 'li'))); 
+              }
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('short_description_th', "ชื่อสินค้า (Short Description)")); 
+              e($form->text('short_description_th', 
+                  array('class' => 'vTextField')));
+            ?>        
+          </div>
+        </div>
+        <!-- End Short Description  Thai -->        
         
         <!-- Begin Long Description  -->
         <div class="form-row long_description">

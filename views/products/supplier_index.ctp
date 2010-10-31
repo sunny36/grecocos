@@ -57,6 +57,7 @@ echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom', null,
           <tr>
             <th><?php echo $this->Paginator->sort('id');?></th>
             <th><?php echo $this->Paginator->sort('short_description');?></th>
+            <th><?php echo $this->Paginator->sort('ชื่อสินค้า (Short Description)', 'short_description_th');?></th>
             <th><?php echo $this->Paginator->sort('selling_price');?></th>
             <th><?php echo $this->Paginator->sort('buying_price');?></th>
             <th><?php echo $this->Paginator->sort('quantity');?></th>
@@ -79,6 +80,7 @@ echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom', null,
           <tr<?php echo $class;?>>
           <td><?php echo $product['Product']['id']; ?>&nbsp;</td>
           <td><?php echo $product['Product']['short_description']; ?>&nbsp;</td>
+          <td><?php echo $product['Product']['short_description_th']; ?>&nbsp;</td>
           <td><?php echo $product['Product']['selling_price']; ?>&nbsp;</td>
           <td><?php echo $product['Product']['buying_price']; ?>&nbsp;</td>
           <td><?php echo $product['Product']['quantity']; ?>&nbsp;</td>

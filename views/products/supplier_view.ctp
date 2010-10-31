@@ -34,6 +34,19 @@
       </div>
     </div>
     <!-- End Short Description  -->
+
+    <!-- Begin Short Description Thai  -->
+    <div class="form-row short_description_th">
+      <div>
+        <div>
+          <?php e($form->label('short_description_th', "ชื่อสินค้า (Short Description)")); ?>        
+          <strong> 
+            <?php e($product['Product']['short_description_th']); ?>
+          </strong>
+        </div>                
+      </div>
+    </div>
+    <!-- End Short Description Thai -->
     
     <!-- Begin Long Description  -->
     <div class="form-row long_description">

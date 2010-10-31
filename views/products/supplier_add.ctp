@@ -2,9 +2,9 @@
 <div class="breadcrumbs">
   <?php e($html->link('Home', '/supplier')); ?> 
   &rsaquo; 
- <?php 
+  <?php 
     e($html->link('Products', array('controller' => 'products', 
-                                    'action' => 'index'))); 
+          'action' => 'index'))); 
   ?> &rsaquo;                            
   Add Product
 </div>
@@ -23,26 +23,46 @@
             <?php 
               if($form->isFieldError('Product.short_description')) 
                 e($form->error ('Product.short_description', null, 
-                                array('wrap' => 'li'))); 
+                    array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('short_description', "Short Description", 
-                             array('class' => 'required'))); 
-                             e($form->text('short_description', array('class' => 'vTextField')));
+                  array('class' => 'required'))); 
+                  e($form->text('short_description', array('class' => 'vTextField')));
             ?>        
           </div>        
         </div>
         <!-- End Short Description  -->
-        
+
+        <!-- Begin Short Description Thai  -->
+        <div class="form-row short_description">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('Product.short_description_th')) {
+                e($form->error ('Product.short_description', null, 
+                    array('wrap' => 'li'))); 
+              }
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('short_description_th', "ชื่อสินค้า (Short Description)")); 
+              e($form->text('short_description_th', 
+                  array('class' => 'vTextField')));
+            ?>        
+          </div>        
+        </div>
+        <!-- End Short Description  Thai -->        
+
         <!-- Begin Long Description  -->
         <div class="form-row long_description">
           <div>
             <?php 
-                               e($form->label('long_description', "Long Description")); 
-                               e($form->textarea('long_description', 
-                                                 array('class' => 'vLargeTextField')));
+                    e($form->label('long_description', "Long Description")); 
+                    e($form->textarea('long_description', 
+                        array('class' => 'vLargeTextField')));
             ?>        
           </div>
         </div>
@@ -52,16 +72,16 @@
         <div class="form-row selling_price">
           <ul class="errorlist">
             <?php 
-                                 if($form->isFieldError('Product.selling_price')) 
-                                   e($form->error ('Product.selling_price', null, 
-                                                   array('wrap' => 'li'))); 
+                      if($form->isFieldError('Product.selling_price')) 
+                        e($form->error ('Product.selling_price', null, 
+                            array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('selling_price', "Selling Price", 
-                             array('class' => 'required'))); 
-                             e($form->text('selling_price'));
+                  array('class' => 'required'))); 
+                  e($form->text('selling_price'));
             ?>        
           </div>            
         </div>
@@ -71,16 +91,16 @@
         <div class="form-row buying_price">
           <ul class="errorlist">
             <?php 
-                               if($form->isFieldError('Product.buying_price')) 
-                                 e($form->error ('Product.buying_price', null, 
-                                                 array('wrap' => 'li'))); 
+                    if($form->isFieldError('Product.buying_price')) 
+                      e($form->error ('Product.buying_price', null, 
+                          array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('buying_price', "Buying Price", 
-                             array('class' => 'required'))); 
-                             e($form->text('buying_price'));
+                  array('class' => 'required'))); 
+                  e($form->text('buying_price'));
             ?>        
           </div>            
         </div>
@@ -90,16 +110,16 @@
         <div class="form-row quantity">
           <ul class="errorlist">
             <?php 
-                               if($form->isFieldError('Product.quantity')) 
-                                 e($form->error ('Product.quantity', null, 
-                                                 array('wrap' => 'li'))); 
+                    if($form->isFieldError('Product.quantity')) 
+                      e($form->error ('Product.quantity', null, 
+                          array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('quantity', "Quantity", 
-                             array('class' => 'required'))); 
-                             e($form->text('quantity'));
+                  array('class' => 'required'))); 
+                  e($form->text('quantity'));
             ?>        
           </div>                  
         </div>    
@@ -109,16 +129,16 @@
         <div class="form-row stock">
           <ul class="errorlist">
             <?php 
-                               if($form->isFieldError('Product.stock')) 
-                                 e($form->error ('Product.stock', null, 
-                                                 array('wrap' => 'li'))); 
+                    if($form->isFieldError('Product.stock')) 
+                      e($form->error ('Product.stock', null, 
+                          array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('stock', "Stock", 
-                             array('class' => 'required'))); 
-                             e($form->text('stock', array('class' => 'vIntegerField')));
+                  array('class' => 'required'))); 
+                  e($form->text('stock', array('class' => 'vIntegerField')));
             ?>        
           </div>        
         </div>    
@@ -128,16 +148,16 @@
         <div class="form-row image">
           <ul class="errorlist">
             <?php 
-                               if($form->isFieldError('Product.image')) 
-                                 e($form->error ('Product.image', null, 
-                                                 array('wrap' => 'li'))); 
+                    if($form->isFieldError('Product.image')) 
+                      e($form->error ('Product.image', null, 
+                          array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('image', "Image", 
-                             array('class' => 'required'))); 
-                             e($form->file('Attachment'));
+                  array('class' => 'required'))); 
+                  e($form->file('Attachment'));
             ?>        
           </div>                   
         </div>
@@ -146,16 +166,16 @@
         <div class="form-row display">
           <ul class="errorlist">
             <?php 
-                               if($form->isFieldError('Product.display')) 
-                                 e($form->error ('Product.display', null, 
-                                                 array('wrap' => 'li'))); 
+                    if($form->isFieldError('Product.display')) 
+                      e($form->error ('Product.display', null, 
+                          array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('display', "Available", 
-                             array('class' => 'required'))); 
-                             e($form->checkbox('display', array('class' => 'vCheckBoxField')));
+                  array('class' => 'required'))); 
+                  e($form->checkbox('display', array('class' => 'vCheckBoxField')));
             ?>        
           </div> 
         </div>       
@@ -165,17 +185,17 @@
         <div class="form-row category_id">
           <ul class="errorlist">
             <?php 
-                               if($form->isFieldError('Product.category_id')) 
-                                 e($form->error ('Product.category_id', null, 
-                                                 array('wrap' => 'li'))); 
+                    if($form->isFieldError('Product.category_id')) 
+                      e($form->error ('Product.category_id', null, 
+                          array('wrap' => 'li'))); 
             ?>
           </ul>      
           <div>
             <?php 
               e($form->label('category_id', "Category",
-                             array('class' => 'required')));
-              e($form->select('category_id', $categories, NULL, 
-                              array('empty' => false)));
+                  array('class' => 'required')));
+                  e($form->select('category_id', $categories, NULL, 
+                      array('empty' => false)));
             ?>        
           </div>        
         </div>        
