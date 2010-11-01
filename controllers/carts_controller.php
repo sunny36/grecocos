@@ -1,7 +1,7 @@
 <?php
 class CartsController extends AppController{
   var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category', 
-    'Cart', 'Transaction');
+              'Cart', 'Transaction');
   var $components = array('Email');
   var $helpers = array('Html', 'Form', 'Javascript');
 
@@ -12,15 +12,26 @@ class CartsController extends AppController{
   function index(){
     $this->layout = 'cart'; 
     $this->Category->Behaviors->attach('Containable'); 
-    $products = $this->Category->find('all', array('contain' => array('Product' => array(
-        'conditions' => array('AND' => array('Product.display = ' => '1', 'Product.stock > ' => '0'))))));
+    $products = $this->Category->find('all', array(
+                  'contain' => array(
+                    'Product' => array(
+                      'conditions' => array(
+                        'AND' => array(
+                          'Product.display = ' => '1', 
+                          'Product.stock > ' => '0')
+                                            )))));
     $this->set('products', $products);
     if (Configure::read('Grecocos.closed') == "yes") {
       $closed = true;
-      $nextDelivery = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
+      $nextDelivery = $this->Delivery->find('first', array(
+                        'conditions' => array(
+                          'Delivery.next_delivery' => true)));
       App::import( 'Helper', 'Time' );
       $time = new TimeHelper;
-      $nextDeliveryDate = $time->format($format = 'd-m-Y', $nextDelivery['Delivery']['date']);
+      $nextDeliveryDate = $time->format($format = 'd-m-Y', 
+                          $nextDelivery['Delivery']['date'],
+                          null, 
+                          "+7.0");
       $this->set('nextDeliveryDate', $nextDeliveryDate);
     } else {
       $closed = false;
@@ -43,13 +54,13 @@ class CartsController extends AppController{
     $notEmpty = false; 
     $isIntegerOnly = true; 
     for ($i = 1; $i <= count($this->data); $i++) {
-     if (ctype_digit($this->data[$i]['quantity']) == false) {
-       $isIntegerOnly = false; 
-     } else {
-       if ($this->data[$i]['quantity'] > 0) {
-         $notEmpty = true; 
-       }
-     }
+      if (ctype_digit($this->data[$i]['quantity']) == false) {
+        $isIntegerOnly = false; 
+      } else {
+        if ($this->data[$i]['quantity'] > 0) {
+          $notEmpty = true; 
+        }
+      }
     }
     if ($isIntegerOnly == false) {
       $this->Session->setFlash('Quantity must be integer only.', 'system_message');
@@ -87,26 +98,26 @@ class CartsController extends AppController{
     $total2 = $this->Session->read('cart_total2');
     $delivery = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
     $order = array('Order' => array('status' => 'entered', 'ordered_date' => date('Y-m-d H:i:s'), 'complete' => false,
-                                    'user_id' => $this->currentUser['User']['id'],
-                                    'delivery_id' => $delivery['Delivery']['id'], 'total' => $total,'total2' => $total2,
-                                    'total_supplied' => $total, 'total2_supplied' => $total2, 'refund' => false));
+                            'user_id' => $this->currentUser['User']['id'],
+                            'delivery_id' => $delivery['Delivery']['id'], 'total' => $total,'total2' => $total2,
+                            'total_supplied' => $total, 'total2_supplied' => $total2, 'refund' => false));
     $this->Order->create();
     $this->Order->save($order);
     $orderId = $this->Order->id;
     $cart = $this->Session->read('cart');			
     foreach($cart as $cartItem){
       $lineItems['Order'][] = array('product_id' => $cartItem['id'], 
-                                    'order_id' => $orderId, 
-                                    'quantity' => $cartItem['quantity'], 
-                                    'total_price' =>  $cartItem['subtotal'],
-                                    'quantity_supplied' => $cartItem['quantity'], 
-                                    'total_price_supplied' => $cartItem['subtotal'], 
-                                    'total2_price' => $cartItem['subtotal2'],
-                                    'total2_price_supplied' => $cartItem['subtotal2']);
+                              'order_id' => $orderId, 
+                              'quantity' => $cartItem['quantity'], 
+                              'total_price' =>  $cartItem['subtotal'],
+                              'quantity_supplied' => $cartItem['quantity'], 
+                              'total_price_supplied' => $cartItem['subtotal'], 
+                              'total2_price' => $cartItem['subtotal2'],
+                              'total2_price_supplied' => $cartItem['subtotal2']);
     }
     $this->LineItem->saveAll($lineItems['Order']);
     $transaction = array('Transaction' => array('type' => 'Order', 'user_id' => $this->currentUser['User']['id'], 
-                         'order_id' => $orderId, 'delivery_id' => $delivery['Delivery']['id'])); 
+                                        'order_id' => $orderId, 'delivery_id' => $delivery['Delivery']['id'])); 
     $this->Transaction->create(); 
     $this->Transaction->save($transaction); 
     $deliveryDate = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => 1)));
