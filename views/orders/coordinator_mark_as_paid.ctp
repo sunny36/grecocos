@@ -5,7 +5,7 @@
 
 <div class="breadcrumbs">
   <?php 
-   e($html->link('Home', '/coordinator')); 
+    e($html->link('Home', '/coordinator')); 
   ?>
   &rsaquo;
   Mark orders as paid
@@ -17,159 +17,176 @@
     <div class="module" id="changelist">
       <div id="toolbar">
         <?php 
-    	    e($form->create(null, array('type' => 'get', 
-    	                                'action' => 'mark_as_paid'))); 
-    	  ?>
-      <div><!-- DIV needed for valid HTML -->
-      <label for="searchbar">
-        <?php echo $html->image('admin/icon_searchbox.png')?>
-      </label>
-      <?php e($form->label('orderId')); ?> 
-      <?php 
-        if (isset($default_order_id)) {
-          e($form->text('id', array('value' => $default_order_id, 
-                                    'size' => '10')));
-        } else {
-          e($form->text('id', array('size' => '10')));
-        }
-      ?>
-       &nbsp;&nbsp;
-    	<?php e($form->label('customer name')); ?>  
-    	<?php
-    	  if (isset($default_customer_name)) {
-    	    e($form->text('user_name', array('value' => $default_customer_name, 
-    	                                      'size' => '40')));
-    	  } else {
-    	    e($form->text('user_name', array('size' => '40')));
-    	  }
+    	  e($form->create(null, array('type' => 'get', 
+                'action' => 'mark_as_paid'))); 
     	?>
-       &nbsp;&nbsp;
-      Delivery Date
-      <?php 
-        if (isset($default_delivery_id)) {
-          e($form->select('delivery_date', $delivery_dates, 
-                          array('selected' => $default_delivery_id), 
-                          array('empty' => false))); 
-        } else {
-          e($form->select('delivery_date', $delivery_dates, NULL, 
-                          array('empty' => false))); 
+        <div><!-- DIV needed for valid HTML -->
+          <label for="searchbar">
+            <?php echo $html->image('admin/icon_searchbox.png')?>
+          </label>
+          <?php e($form->label('orderId')); ?> 
+          <?php 
+            if (isset($default_order_id)) {
+              e($form->text('id', array('value' => $default_order_id, 
+                    'size' => '10')));
+            } else {
+              e($form->text('id', array('size' => '10')));
+            }
+          ?>
+          &nbsp;&nbsp;
+          <?php e($form->label('customer name')); ?>  
+    	  <?php
+    	    if (isset($default_customer_name)) {
+              e($form->text('user_name', array('value' => $default_customer_name, 
+                    'size' => '40')));
+            } else {
+              e($form->text('user_name', array('size' => '40')));
+            }
+    	  ?>
+          &nbsp;&nbsp;
+          Delivery Date
+          <?php 
+            if (isset($default_delivery_id)) {
+              e($form->select('delivery_date', $delivery_dates, 
+                  array('selected' => $default_delivery_id), 
+                  array('empty' => false))); 
+            } else {
+              e($form->select('delivery_date', $delivery_dates, NULL, 
+                  array('empty' => false))); 
 
-        }
-      ?>
-       &nbsp;&nbsp;
-    	<?php e($form->submit('Search', array('div' => false))); ?>
-    	 &nbsp;&nbsp;
-    	<?php e($html->link('View All', '/coordinator/orders/mark_as_paid'))?>
-    	                                      
-    </div>
-    </form>
+            }
+          ?>
+          &nbsp;&nbsp;
+          <?php e($form->submit('Search', array('div' => false))); ?>
+          &nbsp;&nbsp;
+          <?php e($html->link('View All', '/coordinator/orders/mark_as_paid'))?>
+          
+        </div>
+      </form>
     </div>          
-<table cellspacing="0">
-  <thead>
-    <tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('ordered_date');?></th>
-			<th><?php echo $this->Paginator->sort('delivery_date');?></th>
-			<th><?php echo $this->Paginator->sort('Customer');?></th>
-			<th><?php echo $this->Paginator->sort('Total Amount');?></th>
-			<th><?php echo $this->Paginator->sort('paid');?></th>
-			<th><?php __('Actions');?></th>
-   </tr>
-  </thead>
-<tbody>
+    <table cellspacing="0">
+      <thead>
+        <tr>
+          <th><?php echo $this->Paginator->sort('id');?></th>
+          <th><?php echo $this->Paginator->sort('ordered_date');?></th>
+          <th><?php echo $this->Paginator->sort('delivery_date');?></th>
+          <th><?php echo $this->Paginator->sort('Customer');?></th>
+          <th><?php echo $this->Paginator->sort('Total Amount');?></th>
+          <th><?php echo $this->Paginator->sort('paid');?></th>
+          <th><?php __('Actions');?></th>
+        </tr>
+      </thead>
+      <tbody>
   	<?php
-  	$i = 0;
-  	foreach ($orders as $order):
-  		$class = null;
-  		if ($i++ % 2 == 0) {
-  			$class = ' class="row1"';
-  		} else {
-  		  $class = ' class="row2"';
-  		}
+  	  $i = 0;
+  	  foreach ($orders as $order):
+  	  $class = null;
+  	  if ($i++ % 2 == 0) {
+            $class = ' class="row1"';
+          } else {
+            $class = ' class="row2"';
+          }
   	?>
     	<tr<?php echo $class;?>>
-    		<td><?php echo $order['Order']['id']; ?>&nbsp;</td>
-    		<?php 
-    		  App::import( 'Helper', 'Time' );
+        <td><?php echo $order['Order']['id']; ?>&nbsp;</td>
+    	<?php 
+    	  App::import( 'Helper', 'Time' );
           $time = new TimeHelper;
         ?>
-        <td><?php echo $time->format($format = 'd-m-Y H:i:s', $order['Order']['ordered_date']); ?>&nbsp;</td>
-    		<td><?php echo $time->format($format = 'd-m-Y', $order['Delivery']['date']); ?>&nbsp;</td>
-    		<td>
-    			<?php echo $this->Html->link($order['User']['name'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
-    		</td>
-    		<td>
-    		  <?php 
-    		    setlocale(LC_MONETARY, 'th_TH');
-    		    echo money_format("&#3647 %i", $order['Order']['total']);
-    		  ?>
-    		</td>
-    		<td>
-    		  <?php echo $form->create('UpdateStatus'); ?>
-    		  <?php echo $form->hidden('id', array('value' => $order['Order']['id']))?>
-    		  <?php
-    		    if($order['Order']['status'] == "entered"){
-    		      echo $form->checkbox('status', 
-    		                           array('value' => "1", 'class' => 'paid'));
-    		    }
-    		    if($order['Order']['status'] == "paid"){
-    		      echo $form->checkbox('status', 
-    		                           array('value' => "1", 
-    		                                 'checked' => true,
-    		                                 'class' => 'paid'));
-    		    }
-    		    if($order['Order']['status'] == "packed"){
-    		      echo $form->checkbox('status', 
-    		                           array('value' => "1", 
-    		                                 'checked' => true,
-    		                                 'class' => 'paid'));
-    		    }
+        <td>
+          <?php 
+            echo $time->format($format = 'd-m-Y H:i:s',
+              $order['Order']['ordered_date'], null, "+7.0"); 
+          ?>&nbsp;
+        </td>
+        <td>
+          <?php 
+            echo $time->format($format = 'd-m-Y', $order['Delivery']['date'],
+              null, "+7.0"); 
+          ?>&nbsp;
+        </td>
+        <td>
+          <?php 
+            e($this->Html->link(
+                $order['User']['name'], 
+                array(
+                  'controller' => 'users', 
+                  'action' => 'view', 
+                  $order['User']['id']))); 
+          ?>
+        </td>
+        <td>
+    	  <?php 
+    	    setlocale(LC_MONETARY, 'th_TH');
+    	    echo money_format("&#3647 %i", $order['Order']['total']);
+    	  ?>
+        </td>
+        <td>
+          <?php echo $form->create('UpdateStatus'); ?>
+          <?php echo $form->hidden('id', array('value' => $order['Order']['id']))?>
+    	  <?php
+    	    if($order['Order']['status'] == "entered"){
+              echo $form->checkbox('status', 
+                array('value' => "1", 'class' => 'paid'));
+            }
+    	    if($order['Order']['status'] == "paid"){
+              echo $form->checkbox('status', 
+                array('value' => "1", 
+                  'checked' => true,
+                  'class' => 'paid'));
+            }
+    	    if($order['Order']['status'] == "packed"){
+              echo $form->checkbox('status', 
+                array('value' => "1", 
+                  'checked' => true,
+                  'class' => 'paid'));
+            }
 
-    		    if($order['Order']['status'] == "delivered"){
-    		      echo $form->checkbox('status', 
-    		                           array('value' => "1", 
-    		                                 'checked' => true,
-    		                                 'class' => 'paid'));
-    		    }
+    	    if($order['Order']['status'] == "delivered"){
+              echo $form->checkbox('status', 
+                array('value' => "1", 
+                  'checked' => true,
+                  'class' => 'paid'));
+            }
 
-    		  ?>
-    		  <?php echo $form->end(); ?>
+    	  ?>
+          <?php echo $form->end(); ?>
 
-    		  &nbsp;
-    		</td>
+          &nbsp;
+        </td>
 
-    		<td>
-    			<?php echo $this->Html->link(__('View Details', true), array('action' => 'view', $order['Order']['id'])); ?>
-    		</td>
-    	</tr>
-    <?php endforeach; ?>
+        <td>
+          <?php echo $this->Html->link(__('View Details', true), array('action' => 'view', $order['Order']['id'])); ?>
+        </td>
+      </tr>
+      <?php endforeach; ?>
 
-</tbody>
-</table>
+    </tbody>
+  </table>
 
 
-	<?php
-	echo $this->Paginator->counter(array(
+  <?php
+    echo $this->Paginator->counter(array(
 	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
+                                         ));
+  ?>	</p>
 
-	<p class="paginator">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
-	</div>
-          
-      
-      
-
-
-      </form>
-    </div>
-
+  <p class="paginator">
+    <?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
+    | 	<?php echo $this->Paginator->numbers();?>
+    |
+    <?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
   </div>
+  
+  
+  
 
-        
-        <br class="clear" />
-    </div>
+
+</form>
+</div>
+
+</div>
+
+
+<br class="clear" />
+</div>

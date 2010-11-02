@@ -142,6 +142,18 @@
           <th></th>
           <th></th>
         </tr>
+        <tr>
+          <th scope="row">
+            <?php 
+              e($html->link(
+                '6.2 Send Payment Reminder Email', 
+                '/coordinator/orders/send_payment_reminder_emails')); 
+            ?>
+          </th>
+          <th></th>
+          <th></th>
+        </tr>        
+        
       </table>
     </div>
     

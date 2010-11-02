@@ -512,12 +512,82 @@ class OrdersController extends AppController {
     $this->set('orders', $this->paginate()); 
   }
   
-  function pp() {
-    $this->layout = "fpdf";
-    $products = $this->Product->find('all');
-    $this->log($products);
-    $this->set('products', $products);
-    $this->render('/elements/pdf_report/supplier_products_orders');    
+  function supplier_products_orders() {    
+    $this->set('title_for_layout', 'Supplier | Products Orders Reports');
+    $this->layout = "supplier/index"; 
+    $Delivery = ClassRegistry::init('Delivery');
+    $deliveryDates = $Delivery->getDeliveryDatesList(); 
+    $this->set('delivery_dates', $deliveryDates);
+    if (!empty($this->params['url']['delivery_date'])) {
+      $this->layout = "fpdf"; 
+      $products = $this->Product->find('all');
+      $this->set('products', $products);
+      $Order = ClassRegistry::init('Order');
+      $orders = 
+        $Order->findAllByDeliveryIdAndStatus(
+          $this->params['url']['delivery_date'],
+          array('paid', 'packed', 'delivered'));
+      $productsOrders = NULL;
+      $i = 0; 
+      $productsOrders[0][0] = 'Id';
+      $productsOrders[0][1] = 'Products';
+      for ($j = 2; $j  < count($orders) + 2; $j ++) { 
+        $productsOrders[0][$j] = $orders[$i]['Order']['id'];
+        $i++;
+      }
+      $j = 1;
+      for ($i = 0; $i < count($products); $i++) { 
+        $productsOrders[$j][0] = $products[$i]['Product']['id'];
+        $productsOrders[$j][1] = $products[$i]['Product']['short_description'];
+        $j++;
+      }      
+      for ($i = 1; $i < count($productsOrders); $i++) { 
+        foreach ($orders as $order) {
+          foreach ($order['LineItem'] as $lineItem) {
+            if ($productsOrders[$i][0] == $lineItem['product_id']) {
+              $productsOrders[$i][array_search($lineItem['order_id'], 
+                                               $productsOrders[0])] = 
+                $lineItem['quantity'];
+            }
+          }
+        }
+      }      
+      for ($i = 1; $i < count($products) + 1; $i++) { 
+        for ($j = 2; $j  < count($orders) + 2; $j ++) { 
+          if (!array_key_exists($j, $productsOrders[$i])) {
+            $productsOrders[$i][$j] = ''; 
+          }
+        }
+      }
+      // Sort productOrders by key
+      for($i = 1; $i < count($products) + 1; $i++) {
+        ksort($productsOrders[$i]); 
+      }
+      $this->log($productsOrders);
+      $this->set('productsOrders', $productsOrders);
+      $this->render('/elements/pdf_report/supplier_products_orders');         
+    }
+  }
+  
+  function coordinator_send_payment_reminder_emails() {
+    if($this->RequestHandler->isAjax()) { 
+      $Order = ClassRegistry::init('Order');
+      $Order->sendReminderEmailForPayment();
+    } else {
+      $this->layout ="coordinator/index";
+      $Delivery = ClassRegistry::init('Delivery');
+      $deliveryDates = $Delivery->getDeliveryDatesList(); 
+      $this->set('delivery_dates', $deliveryDates);      
+      $delivery = $Delivery->getNextDelivery();
+      $Order = ClassRegistry::init('Order');
+      $orders = $Order->findAllByDeliveryIdAndStatusAndOrderedDate(
+        $delivery['Delivery']['id'],
+        array('entered'),
+        date('Y-m-d H:i:s', strtotime('-1 hour')));
+      $this->log(date('Y-m-d H:i:s', strtotime('-1 hour')));
+      $this->set('orders', $orders);  
+    }
+    
   }
 }
 ?>

@@ -68,5 +68,52 @@ class Order extends AppModel {
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
     $AppengineEmail->sendEmail($to, $subject, $body); 
   }
+  
+  function findAllByDeliveryIdAndStatus(
+    $deliveryId, $status, $limit = 0, $offset = 0) {
+      $orders = $this->find('all', array('conditions' => array(
+        'AND' => array(
+          'Order.status' => $status,
+          'Order.delivery_id' => $deliveryId)),
+      'limit' => $limit, 
+      'offset' => $offset));
+      return $orders; 
+    }
+    
+    function findAllByDeliveryIdAndStatusAndOrderedDate(
+      $deliveryId, $status, $orderedDate) {
+        $orders = $this->find('all', array('conditions' => array(
+          'AND' => array(
+            'Order.status' => $status,
+            'Order.delivery_id' => $deliveryId, 
+            'Order.ordered_date < ' => $orderedDate))));
+        return $orders; 
+    }
+    
+    function sendReminderEmailForPayment() {
+      $Delivery = ClassRegistry::init('Delivery');
+      $delivery = $Delivery->getNextDelivery();
+      $orders = $this->findAllByDeliveryIdAndStatusAndOrderedDate(
+        $delivery['Delivery']['id'],
+        array('entered'),
+        date('Y-m-d H:i:s', strtotime('-1 hour')));
+      $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
+      foreach ($orders as $order) {
+        $to = "s@sunny.in.th"; 
+        $subject = "GRECOCOS: Payment Reminder";
+        $body = "Dear {$order['User']['firstname']}<br/><br/>" . 
+          "Thank you for your order #{$order['Order']['id']} amounting to " .
+          "{$order['Order']['total']} Baht.<br/><br/>" .
+          "At the moment of sending this message the order was not yet paid.<br/><br/>" .
+          "If in the meantime if you have paid this order then we apologize and" .
+          "you may ignore this message. Otherwise kindly bring your invoice " .
+          "and pay to the Coordinator.<br/><br/>" .
+          "Your Grecocos Coordinator";      
+        $AppengineEmail->sendEmail($to, $subject, $body); 
+        $this->log($order['User']['firstname']);
+      }
+      
+    }
+    
 }
 ?>
