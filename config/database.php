@@ -8,6 +8,7 @@ class DATABASE_CONFIG {
 		'login' => 'root',
 		'password' => 'root',
 		'database' => 'grecocos',
+		'encoding' => 'UTF8'
 	);
 	
 	var $test = array(
