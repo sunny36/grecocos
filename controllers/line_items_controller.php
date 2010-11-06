@@ -56,11 +56,12 @@ class LineItemsController extends AppController {
         $orderIds[] = $order['Order']['id'];
         $orderIds2['id'][] = $order['Order']['id'];
       }
-      $virtualFields = array('ordered' => 'SUM(LineItem.quantity)', 
-                            'supplied' => 'SUM(LineItem.quantity_supplied)', 
-                             'amount_retail' => 'SUM(LineItem.total_price_supplied)', 
-                             'amount_wholesale' => 'SUM(LineItem.total2_price_supplied)'
-                             );
+      $virtualFields = array(
+        'ordered' => 'SUM(LineItem.quantity)', 
+        'supplied' => 'SUM(LineItem.quantity_supplied)', 
+        'amount_retail' => 'SUM(LineItem.total_price_supplied)', 
+        'amount_wholesale' => 'SUM(LineItem.total2_price_supplied)'
+        );
       $this->LineItem->createVirtualFields($virtualFields);
       /* TODO Fix limit not to be hardcode.  */       
       $this->paginate = array('conditions' => array(
