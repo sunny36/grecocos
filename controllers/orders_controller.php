@@ -4,7 +4,7 @@ class OrdersController extends AppController {
   var $name = 'Orders';
   var $uses = array('Order', 'Product', 'LineItem', 'Delivery',
               'Transaction');
-  var $helpers = array('Html', 'Form', 'Javascript', 'Number');
+  var $helpers = array('Html', 'Form', 'Javascript', 'Number', 'Csv');
   var $components = array('Jqgrid');
   
   function beforeFilter(){
@@ -519,53 +519,58 @@ class OrdersController extends AppController {
     $deliveryDates = $Delivery->getDeliveryDatesList(); 
     $this->set('delivery_dates', $deliveryDates);
     if (!empty($this->params['url']['delivery_date'])) {
-      $this->layout = "fpdf"; 
-      $products = $this->Product->find('all');
-      $this->set('products', $products);
       $Order = ClassRegistry::init('Order');
-      $orders = 
-        $Order->findAllByDeliveryIdAndStatus(
-          $this->params['url']['delivery_date'],
-          array('paid', 'packed', 'delivered'));
-      $productsOrders = NULL;
-      $i = 0; 
-      $productsOrders[0][0] = 'Id';
-      $productsOrders[0][1] = 'Products';
-      for ($j = 2; $j  < count($orders) + 2; $j ++) { 
-        $productsOrders[0][$j] = $orders[$i]['Order']['id'];
-        $i++;
-      }
-      $j = 1;
-      for ($i = 0; $i < count($products); $i++) { 
-        $productsOrders[$j][0] = $products[$i]['Product']['id'];
-        $productsOrders[$j][1] = $products[$i]['Product']['short_description'];
-        $j++;
-      }      
-      for ($i = 1; $i < count($productsOrders); $i++) { 
-        foreach ($orders as $order) {
-          foreach ($order['LineItem'] as $lineItem) {
-            if ($productsOrders[$i][0] == $lineItem['product_id']) {
-              $productsOrders[$i][array_search($lineItem['order_id'], 
-                                               $productsOrders[0])] = 
-                $lineItem['quantity'];
+      $orders = $Order->findAllByDeliveryIdAndStatus($this->params['url']['delivery_date'], 
+                                                     array('paid', 'packed', 'delivered'));
+      $products = $this->Product->find('all');
+      $this->set('products', $products); 
+      $totalOrders = count($orders);
+      $totalPage = ($totalOrders <= 10 ? 1 : ceil($totalOrders/10));
+      $offset = 0; 
+      $productsOrders = NULL; 
+      for ($page = 1; $page <= $totalPage; $page++) {
+        $productsOrders[$page][0][0] = 'Id';
+        $productsOrders[$page][0][1] = 'Products';
+        $orders = $Order->findAllByDeliveryIdAndStatus($this->params['url']['delivery_date'],
+                                                       array('paid', 'packed', 'delivered'), 10, $offset);
+          $offset += 10; 
+          $col = 2;
+          foreach ($orders as $order) {
+            $productsOrders[$page][0][$col++] = $order['Order']['id'];
+          }
+          $row = 1;
+          foreach ($products as $product) {
+            $productsOrders[$page][$row][0] = $product['Product']['id'];
+            $productsOrders[$page][$row][1] = $product['Product']['short_description_th'];
+            $row++;
+          }
+          for ($row = 1; $row < count($productsOrders[$page]); $row++) {
+            foreach ($orders as $order) {
+              foreach ($order['LineItem'] as $lineItem) {
+                if ($productsOrders[$page][$row][0] == $lineItem['product_id']) {
+                  $productsOrders[$page][$row][array_search($lineItem['order_id'], $productsOrders[$page][0])] = 
+                    $lineItem['quantity'];                                  
+                }
+              }
             }
           }
-        }
-      }      
-      for ($i = 1; $i < count($products) + 1; $i++) { 
-        for ($j = 2; $j  < count($orders) + 2; $j ++) { 
-          if (!array_key_exists($j, $productsOrders[$i])) {
-            $productsOrders[$i][$j] = ''; 
+          for ($row = 1; $row < count($products) + 1; $row++) { 
+            for ($col = 2; $col  < count($orders) + 2; $col ++) { 
+              if (!array_key_exists($col, $productsOrders[$page][$row])) {
+                $productsOrders[$page][$row][$col] = ''; 
+              }
+            }
           }
-        }
-      }
-      // Sort productOrders by key
-      for($i = 1; $i < count($products) + 1; $i++) {
-        ksort($productsOrders[$i]); 
+          // Sort productOrders by key
+          for($row = 1; $row < count($products) + 1; $row++) {
+            ksort($productsOrders[$page][$row]); 
+          }                  
       }
       $this->log($productsOrders);
       $this->set('productsOrders', $productsOrders);
-      $this->render('/elements/pdf_report/supplier_products_orders');         
+      
+      $this->render('/elements/pdf_report/supplier_products_orders', 'fpdf');
+      
     }
   }
   
