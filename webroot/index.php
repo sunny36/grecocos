@@ -50,7 +50,7 @@
  *
  */
 	if (!defined('CAKE_CORE_INCLUDE_PATH')) {
-		define('CAKE_CORE_INCLUDE_PATH',  DS . 'Users' . DS . 'somchok' . DS . 'Sites' . DS . 'cake' . DS . '1.3.0-RC2');
+		define('CAKE_CORE_INCLUDE_PATH',  DS . 'Users' . DS . 'somchok' . DS . 'Sites' . DS . 'cake' . DS . '1.3.3');
 	}
 
 /**
