@@ -4,6 +4,7 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/views/pages/home.ctp)...
  */
+ 
 	Router::connect('/', array('controller' => 'users', 'action' => 'login'));
 
 /**
@@ -22,5 +23,5 @@
                                                    'supplier' => true));
   Router::connect('/coordinator/batch_reports', array('controller' => 'line_items', 'action' => 'index', 
                                                       'coordinator' => true));
-  
+  Router::parseExtensions('csv'); 
 ?>
