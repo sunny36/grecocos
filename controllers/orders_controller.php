@@ -523,6 +523,10 @@ class OrdersController extends AppController {
       $orders = $Order->findAllByDeliveryIdAndStatus(
         $this->params['url']['delivery_date'], 
         array('paid', 'packed', 'delivered'));
+      if (count($orders) < 1) {
+        $this->Session->setFlash('Sorry, there is no orders for this delivery date', 'flash_notice');
+        $this->redirect(array('action' => 'products_orders'));
+      }
       $productIds = NULL; 
       foreach ($orders as $order) {
         foreach ($order['LineItem'] as $lineItem) {
@@ -587,7 +591,14 @@ class OrdersController extends AppController {
         $productsOrders[$i][$j] = $orderTotal;
       }                  
      $this->log($productsOrders);
-      $this->set('productsOrders', $productsOrders);
+     $this->set('productsOrders', $productsOrders);
+     App::import( 'Helper', 'Time' );
+     $time = new TimeHelper;
+     $Delivery = ClassRegistry::init('Delivery');
+     $delivery = $Delivery->findById($this->params['url']['delivery_date']);
+     $fileName = $time->format($format = 'd-m-Y', $delivery['Delivery']['date']) . 
+                 "_report.xls";
+    $this->set('fileName', $fileName);
      $this->render('/elements/pdf_report/supplier_products_orders', 'fpdf');      
     }
   }

@@ -1,6 +1,6 @@
 <?php
   header("Content-Type: application/vnd.ms-excel");
-  header('Content-Disposition: attachment; filename="MyXls.xls"');
+  header("Content-Disposition: attachment; filename=\"" . $fileName . "\"");
   
   echo "<?xml version='1.0' encoding='UTF-8'?>";
   echo "<Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet'" .

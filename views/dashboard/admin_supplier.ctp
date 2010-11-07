@@ -42,16 +42,16 @@
       <caption>3. Products</caption>
       <tr>
         <th scope="row">
-          <?php e($html->link('3.2 View/maintain products',
-                              '/supplier/products/index'))?>
+          <?php e($html->link('3.1 View/maintain categories',
+                              '/supplier/categories/index'))?>
         </th>        
         <td></td>
         <td></td>  
-      </tr>
+      </tr>      
       <tr>
         <th scope="row">
-          <?php e($html->link('3.1 View/maintain categories',
-                              '/supplier/categories/index'))?>
+          <?php e($html->link('3.2 View/maintain products',
+                              '/supplier/products/index'))?>
         </th>        
         <td></td>
         <td></td>  
@@ -78,7 +78,16 @@
         </th>        
         <td></td>
         <td></td>  
+      </tr>
+      <tr>
+        <th scope="row">
+          <?php e($html->link('4.3 Swift Products(row) Orders(column) report',
+                              '/supplier/orders/products_orders'))?>
+        </th>        
+        <td></td>
+        <td></td>  
       </tr>      
+            
       </table>
     </div> 
     

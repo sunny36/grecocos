@@ -1,11 +1,10 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
-<?php echo $javascript->link('orders/coordinator_mark_as_paid.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 
 <div class="breadcrumbs">
   <?php 
-   e($html->link('Home', '/coordinator')); 
+   e($html->link('Home', '/supplier')); 
   ?>
   &rsaquo;
   Swift Products in row | Orders in column Report
