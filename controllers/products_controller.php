@@ -88,12 +88,13 @@ class ProductsController extends AppController {
       $this->autoRender = false;
       $this->Product->recursive = -1;
       $product = $this->Product->read(null, $this->params['form']['id']);
-      $this->log($product, 'activity');
       $this->Product->set(array(
         'short_description' => $this->params['form']['short_description'],
+        'short_description_th' => $this->params['form']['short_description_th'],
         'selling_price' => $this->params['form']['selling_price'],
         'buying_price' => $this->params['form']['buying_price'],
         'stock' => $this->params['form']['stock'],
+        'quantity' => $this->params['form']['quantity'],
         'display' => $this->params['form']['display']
         ));
       $this->Product->save();
