@@ -105,7 +105,7 @@ class Order extends AppModel {
           "Thank you for your order #{$order['Order']['id']} amounting to " .
           "{$order['Order']['total']} Baht.<br/><br/>" .
           "At the moment of sending this message the order was not yet paid.<br/><br/>" .
-          "If in the meantime if you have paid this order then we apologize and" .
+          "If in the meantime you have paid this order then we apologize and " .
           "you may ignore this message. Otherwise kindly bring your invoice " .
           "and pay to the Coordinator.<br/><br/>" .
           "Your Grecocos Coordinator";      
