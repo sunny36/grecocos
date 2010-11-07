@@ -2,23 +2,28 @@ var productsNum = 0;
 $(document).ready(function(){
     var lastsel2;
     jQuery("#delivery_dates").jqGrid({
+  
         url: '/index.php/supplier/orders/close_batch',
   	datatype: "xml",
      	colNames:['Delivery Date', 'Next Delivery', 'Total Orders', 
                   'Total Packed', 'Closed', 'Actions'],
      	colModel:[
-     	    {name:'date',index:'date', editable: false},       		
+     	    {name:'date',index:'date', editable: false, width:90},       		
      	    {name:'next_delivery',index:'next_delivery', 
-             editable: false, formatter:'checkbox'},       		
-     	    {name:'ordered',index:'ordered', editable: false, sortable: false},   
-     	    {name:'packed',index:'packed', editable: false, sortable: false},     
-     	    {name:'closed',index:'closed', editable: true,
-             formatter:'checkbox', editable: true, edittype:"checkbox"}, 
-     	    {name:'act',index:'act', width:140,sortable: false}      		
+             editable: false, formatter:'checkbox', width:105},       		
+     	    {name:'ordered',index:'ordered', editable: false, sortable: false,
+     	     width:75},   
+     	    {name:'packed',index:'packed', editable: false, sortable: false,
+     	     width:75},     
+     	    {name:'closed',index:'closed', editable: true, formatter:'checkbox', 
+     	     editable: true, edittype:"checkbox", width:45}, 
+     	    {name:'act',index:'act', width:85,sortable: false}      		
      	],
-     	rowNum:10,
-     	rowList:[10,20,30],
      	pager: jQuery('#delivery_dates_pager'),
+     	pgbuttons: false,
+      pginput: false,
+      height: "auto",
+          rowNum: 100000,
      	sortname: 'next_delivery',
         rownumbers: true, 
         sortorder: "desc",
@@ -32,7 +37,7 @@ $(document).ready(function(){
                 jQuery("#delivery_dates").jqGrid('setRowData',ids[i],{act:be});
             } 
         }               
-    }).navGrid('#delivery_dates_pager',{edit:false,add:false,del:false});	
+    });	
     
     //confirm if total orders != packed orders
     $('input').live('click', function() {

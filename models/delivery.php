@@ -77,6 +77,8 @@ class Delivery extends AppModel {
   
   function sendConfirmationEmail($deliveryId) {
     $Order = ClassRegistry::init('Order'); 
+    $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
+    App::import('Lib', 'supplier_pdf' );
     $orders = $Order->find('all', array('conditions' => array('Order.delivery_id' => $deliveryId, 
     'Order.status' => 'packed'))); 
     foreach ($orders as $order) {
@@ -84,12 +86,10 @@ class Delivery extends AppModel {
       $subject = "GRECOCOS: Order Confirmation"; 
       $body = "Dear {$order['User']['firstname']},\n\nI am pleased to inform you that your order has been confirmed.\n\n" . 
       "Please see the attachments for details.\n\nKind regards,\nYour supplier"; 
-      $products = $Order->getProducts($order['Order']['id']);
-      App::import('Lib', 'supplier_pdf' );
+      $products = $Order->getProducts($order['Order']['id']);      
       $filename = "Order_" . $order['Order']['id'] . ".pdf";
       $supplierPdf = new SupplierPDF($products, $order, $filename, true); //true -> save to disk 
       $attachment = $filename; 
-      $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
       $AppengineEmail->sendEmail($to, $subject, $body, $attachment);       
     }    
   }

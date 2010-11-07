@@ -352,27 +352,25 @@ class OrdersController extends AppController {
     $nextDelivery = $this->Delivery->getAllDeliveriesAfterNextDelivery(); 
     $this->set('next_delivery', $nextDelivery);
     if($this->RequestHandler->isAjax()) {
-      $page = $this->params['url']['page']; 
-      $limit = $this->params['url']['rows']; 
       $sidx = $this->params['url']['sidx']; 
       $sord = $this->params['url']['sord']; 
-      if(!$sidx) $sidx =1;
+      if(!$sidx) $sidx ="date";
+      if(!$sord) $sord ="desc";
       $count = $this->Delivery->find('count');
-      if( $count >0 ) {
-        $total_pages = ceil($count/$limit);
-      } else {
-        $total_pages = 0;
-      }
-      if ($page > $total_pages) $page=$total_pages;
-      $start = $limit*$page - $limit;
+      $this->log($count);
       $params = array('conditions' => array('Delivery.next_delivery' => true)); 
       $next_delivery = $this->Delivery->find('first', $params);
       $params = array(
         'conditions' => array(
           'Delivery.date <=' => $next_delivery['Delivery']['date']),
-        'order' => array('Delivery.' . $sidx . ' ' . strtoupper($sord))); 
+        'order' => array('Delivery.' . $sidx . ' ' . strtoupper($sord), 'Delivery.date DESC')); 
       $delivery_dates = $this->Delivery->find('all', $params); 
+      $this->log(count($delivery_dates));
+      App::import( 'Helper', 'Time' );
+      $time = new TimeHelper;
       foreach($delivery_dates as &$delivery) {
+        $delivery['Delivery']['date'] = 
+          $time->format($format = 'd-m-Y', $delivery['Delivery']['date']);
         $packed = 0; 
         $paid = 0;
         foreach($delivery['Order'] as $order) {
@@ -386,8 +384,6 @@ class OrdersController extends AppController {
         $delivery['Delivery']['ordered'] = $packed + $paid;
       }
 
-      $this->set('page',$page);
-      $this->set('total_pages',$total_pages);
       $this->set('count',$count); 
       $this->set('delivery_dates', $delivery_dates);
       $this->render('/elements/supplier_close_batch', 'ajax');
