@@ -1,6 +1,7 @@
 <?php
 class DashboardController extends AppController{
-  var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category', 'Cart');
+  var $uses = array(
+    'Product', 'Order', 'LineItem', 'Delivery', 'Category', 'Cart');
   var $helpers = array('Html', 'Form', 'Javascript');
   
   function beforeFilter(){
@@ -9,14 +10,22 @@ class DashboardController extends AppController{
       $this->redirect($this->referer());
     }
     if ($this->params['action'] == "admin_coordinator") {
-      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+      if ($this->currentUser['User']['role'] == "supplier") {
+       $this->redirect('/supplier'); 
+      }
     }
     if ($this->params['action'] == "admin_supplier") {
-      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
+      if ($this->currentUser['User']['role'] == "coordinator") {
+       $this->redirect('/coordinator'); 
+      }
     }
     if ($this->params['action'] == "admin_administrator") {
-      if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
-      if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
+      if ($this->currentUser['User']['role'] == "coordinator") {
+       $this->redirect('/coordinator'); 
+      }
+      if ($this->currentUser['User']['role'] == "supplier") {
+       $this->redirect('/supplier'); 
+      }
     }    
   }
   
@@ -31,7 +40,6 @@ class DashboardController extends AppController{
   }
 
   function admin_supplier() { 
-    $this->log($this->params, 'activity');
     $this->set('title_for_layout', 'Grecocos | Supplier');
     $this->layout = "supplier/dashboard"; 
   }
