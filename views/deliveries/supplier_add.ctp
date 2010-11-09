@@ -1,4 +1,3 @@
-<?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
 <?php echo $javascript->link('deliveries/supplier_deliveries_add.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>

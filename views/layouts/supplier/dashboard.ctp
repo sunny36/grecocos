@@ -8,6 +8,8 @@
 <?php echo $this->Html->css('admin/ie.css'); ?>
 <![endif]-->
 <?php echo $javascript->link('jquery-1.4.2.min.js'); ?>
+<?php echo $javascript->link('json2.js'); ?>
+<?php echo $javascript->link('application.js'); ?>
 <?php echo $scripts_for_layout; ?>
 </head>
 
