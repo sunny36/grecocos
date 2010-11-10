@@ -19,8 +19,13 @@
      "</Style>\n" .
      "<Style ss:ID=\"s21\">\n" .
       "<Font ss:FontName=\"Verdana\" ss:Bold=\"1\"/>\n" .
+      "<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Bottom\"/>\n" .
+     "</Style>\n" .
+     "<Style ss:ID=\"s25\">\n" . 
+     "<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Bottom\"/>\n" .
      "</Style>\n" .
     "</Styles>\n";
+    
   echo "<Worksheet ss:Name=\"Sheet 1\">\n" .
       "<Table>\n" .
       "<Column ss:AutoFitWidth=\"0\" ss:Width=\"153.0\"/>\n" .
@@ -42,7 +47,11 @@
   for ($i = 1; $i < count($productsOrders); $i++) {
     echo "<Row>\n";
     for ($j = 1; $j < count($productsOrders[$i]); $j++) {
-      echo "<Cell>\n";
+      if ($j == 1) {
+        echo "<Cell>\n";
+      } else {
+        echo "<Cell ss:StyleID=\"s25\">\n";
+      }      
       if ($j == 1) {
         echo "<Data ss:Type=\"String\">" . $productsOrders[$i][$j] . "</Data>\n";
       } else {
