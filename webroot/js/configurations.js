@@ -2,8 +2,7 @@ var pathname = '/index.php/configurations';
 $(document).ready(function(){
   $('input:submit').hide();
   $('#ConfigurationClosedNo').click(function () {
-    if ($(this).is(':checked')) {
-      console.log("open");
+    if ($(this).is(':checked')) {      
       $('.closed div').append( '<img src="/img/ajax-loader.gif" alt="Loading" id="ajax_loader"/>');
       isNextDeliveryDateInFuture(function (result) {
         if (result == "yes") {
