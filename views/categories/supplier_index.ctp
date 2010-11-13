@@ -1,4 +1,19 @@
-<?php echo $javascript->link('admin/admin_index.js', false); ?>
+<?php echo $javascript->link('admin/admin_index', false); ?>
+<?php echo $javascript->link('jquery.url', false); ?>
+<?php echo $javascript->link('json2', false); ?>
+<?php echo $javascript->link('jquery-ui-1.8.2.custom.min', false); ?>
+<?php echo $javascript->link('grid.locale-en.js', false); ?>
+<?php echo $javascript->link('jquery.jqGrid.min.js', false); ?>
+<?php echo $javascript->link('categories/index', false); ?>
+<?php echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom',null, array('inline' => false)); ?>
+<?php echo $html->css('ui.jqgrid', null, array('inline' => false)); ?>
+<style text="type/css">
+  input[type="button"] {
+  padding: 0em; 
+
+  }
+</style>
+
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
   <?php e($html->link('Home', '/supplier')); ?> 
@@ -8,7 +23,7 @@
 <!-- End Navigation  -->
 
 <div id="content" class="flex">
-  <h1>Product Categories</h1> 
+  <br/><br/>
   <div id="content-main" style="width: auto !important">
     <ul class="object-tools">
       <li>
@@ -19,80 +34,11 @@
       </li>
     </ul>    
     <?php echo $session->flash(); ?> 
-    <div class="module" id="changelist" >
-      <div id="toolbar">
-        <form id="changelist-search" action="" method="get">
-          <div><!-- DIV needed for valid HTML -->
-            <label for="searchbar">
-              <?php echo $html->image('admin/icon_searchbox.png')?>
-
-            </label>
-            <input type="text" size="40" name="q" value="" id="searchbar" />
-            <input type="submit" value="Search" />
-          </div>
-        </form>
-      </div>
       
-      <table cellspacing="0" >
-        <thead>
-          <tr>
-            <th><?php echo $this->Paginator->sort('id');?></th>
-            <th><?php echo $this->Paginator->sort('name');?></th>
-            <th><?php __('Actions');?></th>
-          </tr>
-        </thead>
-        <tbody>
-  	  <?php
-  	    $i = 0;
-  	    foreach ($categories as $category):
-  	    $class = null;
-  	    if ($i++ % 2 == 0) {
-              $class = ' class="row1"';
-            } else {
-              $class = ' class="row2"';
-            }
-  	  ?>
-          <tr<?php echo $class;?>>
-          <td><?php echo $category['Category']['id']; ?>&nbsp;</td>
-	  <td><?php echo $category['Category']['name']; ?>&nbsp;</td>
-          <td>
-            <?php echo $this->Html->link(__('Edit', true), 
-array('action' => 'edit', $category['Category']['id'])); ?> |
-            <?php echo $this->Html->link(__('Delete', true), 
-array('action' => 'delete', $category['Category']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $category['Category']['id'])); ?>
-          </td>
-  	</tr>
-        <?php endforeach; ?>
-
-      </tbody>
-    </table>
+      <table id="categories"> </table>
 
 
-    <?php
-      echo $this->Paginator->counter(array(
-                                           'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-                                           ));
-    ?>	</p>
 
-    <p class="paginator">
-      <?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-      | 	<?php echo $this->Paginator->numbers();?>
-      |
-      <?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
-    </div>
-    
-    
-    
-
-    <!-- <p class="paginator">
-
-2 users
-
-
-</p> -->
-
-  </form>
-</div>
 
 </div>
 
