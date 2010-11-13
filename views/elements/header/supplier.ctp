@@ -14,7 +14,13 @@
   <div id="user-tools">
     Welcome, 
     <strong><?php e($currentUser['User']['name']) ?></strong>. /
-    <?php e($html->link('Logout', array('controller' => 'users', 
-    'action' => 'logout'))); ?>
+    <?php 
+      e($html->link('Logout', array(
+            'controller' => 'users', 'action' => 'logout'))); 
+    ?> <br/>
+    <?php 
+      echo $html->link('Shopping Cart', array(
+          'controller' => 'carts', 'action' => 'index', 'admin' => false)); 
+    ?>
   </div>
-    </div>
+</div>

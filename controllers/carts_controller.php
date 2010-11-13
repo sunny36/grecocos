@@ -62,6 +62,10 @@ class CartsController extends AppController{
         }
       }
     }
+    if ($this->currentUser['User']['role'] == "supplier") {
+      $this->Session->setFlash('Sorry suppliers cannot make order.', 'system_message');
+      $this->redirect(array('controller' => 'carts', 'action' => 'index'));       
+    }    
     if ($isIntegerOnly == false) {
       $this->Session->setFlash('Quantity must be integer only.', 'system_message');
       $this->redirect(array('controller' => 'carts', 'action' => 'index'));       
