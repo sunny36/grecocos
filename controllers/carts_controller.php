@@ -13,13 +13,16 @@ class CartsController extends AppController{
     $this->layout = 'cart'; 
     $this->Category->Behaviors->attach('Containable'); 
     $products = $this->Category->find('all', array(
-                  'contain' => array(
-                    'Product' => array(
-                      'conditions' => array(
-                        'AND' => array(
-                          'Product.display = ' => '1', 
-                          'Product.stock > ' => '0')
-                                            )))));
+      'contain' => array(
+        'Product' => array(
+          'conditions' => array(
+            'AND' => array(
+              'Product.display = ' => '1', 'Product.stock > ' => '0'
+              )
+            )
+          )
+        ),
+      'order' => 'Category.priority'));
     $this->set('products', $products);
     if (Configure::read('Grecocos.closed') == "yes") {
       $closed = true;
