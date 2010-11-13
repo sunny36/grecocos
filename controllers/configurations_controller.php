@@ -40,6 +40,7 @@ class ConfigurationsController extends AppController {
       $closed['Configuration']['value'] = 
         $this->data['Configuration']['closed']; 
       $this->Configuration->save($closed);
+      $closed = $this->Configuration->findByKey('closed');
       if ($closed['Configuration']['value'] == "no") {
         $flashMessage = "The website has been opened. ";
       } else { 
@@ -73,10 +74,10 @@ class ConfigurationsController extends AppController {
     $User = ClassRegistry::init('User'); 
     $users = $User->find('all', array('conditions' => array(
       'User.status' => 'accepted'))); 
-    $to = "";
-    foreach ($users as $user) {
-      $to = $to . $user['User']['email'] . ", ";
-    }
+    $to = "s@sunny.in.th";
+    // foreach ($users as $user) {
+    //   $to = $to . $user['User']['email'] . ", ";
+    // }
     $subject = "GRECOCOS website is now open"; 
     $Delivery = ClassRegistry::init('Delivery'); 
     $nextDelivery = $Delivery->findByNextDelivery(true);
@@ -84,9 +85,12 @@ class ConfigurationsController extends AppController {
     $timeHelper = new TimeHelper;    
     $deliveryDate = $timeHelper->format($format = 'd-m-Y', 
                                         $nextDelivery['Delivery']['date']);
-    $body = "Dear member,\n\nThe GRECOCOS website is opened. " . 
-            "You can place your orders now for delivery on " . 
-             "{$deliveryDate}." ."\n\nhttp://grecocos.co.cc/index.php"; 
+    $body = "<p>Dear member</p>" . 
+            "<p>The GRECOCOS website is opened. " .
+            "You can place your orders now for delivery on " .
+            "{$deliveryDate}.</p>" .
+            "<p><a href=\"http://grecocos.co.cc/index.php\">" .
+            "http://grecocos.co.cc/index.php</a></p>" ;
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
     $AppengineEmail->sendEmail($to, $subject, $body);   
     $this->Session->write('sendEmailReOpenSite', true);

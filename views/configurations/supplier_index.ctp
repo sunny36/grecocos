@@ -3,6 +3,12 @@
 <?php echo $javascript->link('configurations.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 
+<style>
+.aligned label {
+display: inline;
+float: none;
+}
+</style>
 
 <!-- Begin Navigation  -->
 <div class="breadcrumbs">
@@ -23,17 +29,17 @@
       <?php echo $session->flash(); ?>
       <fieldset class="module aligned ">
         <!-- Begin Closed  -->        
-        <div class="form-row date">
+        <div class="form-row closed">
           <div>
-            <?php 
-              e($form->label('closed', "System Closed", array('class' => 'required')));
-              $options=array('yes'=>'Yes','no'=>'No');
-              echo $form->select('closed', $options, array('selected' => $closed), array('empty' => false));
-              ?>        
+             <?php e($form->label('closed', "Site Status", array('class' => 'required')));?>
+             <?php
+              echo $this->Form->radio('closed', 
+                array('yes'=>'Closed','no'=>'Open'), 
+                array('default' => $closed, 'legend'=>false));
+             ?>
           </div>       
         </div>    
-        <!-- End Closed  -->        
-
+        <!-- End Closed  -->
       </fieldset>
 
       <div class="submit-row" >
