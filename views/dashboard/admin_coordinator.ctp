@@ -1,59 +1,18 @@
 <div id="content" class="colMS">
   <div id="content-main">
-
-    <div class="module">
-      <table>
-      <caption>1. Customers</caption>
-        <tr>
-          <th scope="row">
-            <?php 
-              e($html->link('1.1 View/accept/edit customers', 
-                            '/coordinator/users')); 
-            ?>            
-          </th>
-          <!-- Two empty <td> so that the table doesn't break -->
-          <td></td>
-          <td></td>
-        </tr>
-      </table>
-    </div>
-  
-    <div class="module">
-      <table>
-      <caption>2. Orders</caption>
-      <tr>
-        <th scope="row">
-          <?php 
-            e($html->link('2.1 View Orders and mark as paid',
-                          '/coordinator/orders/mark_as_paid'));
-          ?>
-        </th>        
-        <td></td>
-        <td></td>  
-      </tr>
-      <tr>
-        <th scope="row">
-          <?php 
-            e($html->link('2.2 Send email informing arrival of shipment',
-                          '/coordinator/deliveries/arrival_of_shipment'));
-          ?>
-        </th>        
-        <td></td>
-        <td></td>  
-      </tr>
-      <tr>
-        <th scope="row">
-          <?php 
-            e($html->link('2.3 View Orders and mark as delivered',
-                          '/coordinator/orders/mark_as_delivered'));
-          ?>
-        </th>        
-        <td></td>
-        <td></td>  
-      </tr>      
-      </table>
-    </div>
-
+    <?php
+      $this->Dashboard->generateModule('1. Customers', array(
+        '1.1 View/accept/edit customers' => '/coordinator/users'));
+    ?>  
+    <?php
+      $this->Dashboard->generateModule('2. Orders', array(
+        '1.1 View/accept/edit customers' => '/coordinator/users',
+        '2.1 View Orders and mark as paid' => '/coordinator/orders/mark_as_paid',
+        '2.2 Send email informing arrival of shipment' => '/coordinator/orders/mark_as_paid',
+        '2.3 View Orders and mark as delivered' => '/coordinator/orders/mark_as_delivered'
+        ));
+    ?>  
+    
     <div class="module">
       <table>
       <caption>3. Payments</caption>
@@ -155,8 +114,7 @@
         </tr>        
         
       </table>
-    </div>
-    
-
+    </div>    
+  <div>  
   <br class="clear" />
 </div>

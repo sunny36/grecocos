@@ -2,7 +2,7 @@
 class DashboardController extends AppController{
   var $uses = array(
     'Product', 'Order', 'LineItem', 'Delivery', 'Category', 'Cart');
-  var $helpers = array('Html', 'Form', 'Javascript');
+  var $helpers = array('Html', 'Form', 'Javascript', 'Dashboard');
   
   function beforeFilter(){
     parent::beforeFilter();
