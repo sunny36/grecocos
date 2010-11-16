@@ -98,8 +98,8 @@
       <caption>6. Emails</caption>
         <tr>
           <th scope="row"><?php e($html->link('6.1 Send emails to customers', '/coordinator/emails')); ?></th>
-          <th></th>
-          <th></th>
+          <td></td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">
@@ -109,8 +109,8 @@
                 '/coordinator/orders/send_payment_reminder_emails')); 
             ?>
           </th>
-          <th></th>
-          <th></th>
+          <td></td>
+          <td></td>
         </tr>        
         
       </table>

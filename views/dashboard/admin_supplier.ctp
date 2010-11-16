@@ -112,8 +112,8 @@
       <caption>6. Emails</caption>
         <tr>
           <th scope="row"><?php e($html->link('6.1 Send emails to customers', '/supplier/emails')); ?></th>
-          <th></th>
-          <th></th>
+          <td></td>
+          <td></td>
         </tr>
       </table>
     </div>
