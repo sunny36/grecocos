@@ -240,11 +240,13 @@ class OrdersController extends AppController {
   function coordinator_refunds() {
     $this->layout = "coordinator/index"; 
     $this->Order->recursive = 1; 
-    $this->paginate = array('conditions' => array(
-                        'AND' =>(array(
-                                 'Delivery.closed' => true,
-                                 'Order.status' => 'packed',
-                                 'Order.total_supplied <> Order.total'))));
+    $this->paginate = array(
+      'conditions' => array(
+        'AND' =>(array(
+          'Delivery.closed' => true,
+          'Order.status' => array('packed', 'delivered'),
+          'Order.total_supplied <> Order.total'))),
+      'order' => 'Order.ordered_date DESC');
     $this->set('orders', $this->paginate());	  
   }
 
