@@ -18,6 +18,8 @@
     echo "<cell>". $products[$i]['Product']['quantity']."</cell>";
     echo "<cell>". $products[$i]['Product']['stock']."</cell>";
     echo "<cell>". $products[$i]['Product']['display']."</cell>";
+    echo "<cell>". $products[$i]['Category']['name']."</cell>";
+    echo "<cell>". $products[$i]['MasterCategory']['name']."</cell>";
     echo "<cell>"."</cell>"; // for action
     echo "</row>";
   }

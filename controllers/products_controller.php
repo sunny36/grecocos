@@ -46,7 +46,8 @@ class ProductsController extends AppController {
   function supplier_index2() {
     $this->layout = 'supplier/index'; 
     $this->Product->recursive = 0;
-    if($this->RequestHandler->isAjax()) {      
+    if($this->RequestHandler->isAjax()) { 
+      Configure::write('debug', 0);     
       $products = $this->Product->find('all');
       $count = $this->Product->find('count');
       $this->set('count',$count); 
@@ -95,11 +96,14 @@ class ProductsController extends AppController {
         'buying_price' => $this->params['form']['buying_price'],
         'stock' => $this->params['form']['stock'],
         'quantity' => $this->params['form']['quantity'],
-        'display' => $this->params['form']['display']
+        'display' => $this->params['form']['display'],
+        'category_id' => $this->params['form']['category_id'],
+        'master_category_id' => $this->params['form']['master_category_id']
         ));
       $this->Product->save();
     } else {
       $this->set('categories', $this->Product->Category->find('list'));
+      $this->set('master_categories', $this->Product->MasterCategory->find('list'));
       if (!$id && empty($this->data)) {
         $this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
         $this->redirect(array('action' => 'index'));

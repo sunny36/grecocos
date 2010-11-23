@@ -199,7 +199,26 @@
           </div>        
         </div>        
         <!-- End Category -->
-
+        <!-- Begin Category  -->    
+        <div class="form-row master_category_id">
+          <ul class="errorlist">
+            <?php 
+              if($form->isFieldError('Product.category_id')) {
+                e($form->error ('Product.master_category_id', null, array('wrap' => 'li')));                 
+              }
+            ?>
+          </ul>      
+          <div>
+            <?php 
+              e($form->label('master_category_id', "Master Category",
+                             array('class' => 'required')));
+              e($form->select('master_category_id', $master_categories, NULL, 
+                              array('empty' => false)));
+            ?>        
+          </div>        
+        </div>        
+        <!-- End Category -->
+        
       </fieldset>
       
       <div class="submit-row" >
