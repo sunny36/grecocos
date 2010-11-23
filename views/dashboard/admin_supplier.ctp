@@ -50,7 +50,15 @@
       </tr>      
       <tr>
         <th scope="row">
-          <?php e($html->link('3.2 View/maintain products',
+          <?php e($html->link('3.2 View/maintain master categories',
+                              '/supplier/master_categories/index'))?>
+        </th>        
+        <td></td>
+        <td></td>  
+      </tr>            
+      <tr>
+        <th scope="row">
+          <?php e($html->link('3.3 View/maintain products',
                               '/supplier/products/index'))?>
         </th>        
         <td></td>
@@ -58,7 +66,7 @@
       </tr>
       <tr>
         <th scope="row">
-          <?php e($html->link('3.3 Mark products as (un)available',
+          <?php e($html->link('3.4 Mark products as (un)available',
                               '/supplier/products/index2'))?>
         </th>        
         <td></td>
