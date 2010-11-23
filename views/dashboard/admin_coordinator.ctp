@@ -6,9 +6,8 @@
     ?>  
     <?php
       $this->Dashboard->generateModule('2. Orders', array(
-        '1.1 View/accept/edit customers' => '/coordinator/users',
         '2.1 View Orders and mark as paid' => '/coordinator/orders/mark_as_paid',
-        '2.2 Send email informing arrival of shipment' => '/coordinator/orders/mark_as_paid',
+        '2.2 Send email informing arrival of shipment' => '/coordinator/deliveries/arrival_of_shipment',
         '2.3 View Orders and mark as delivered' => '/coordinator/orders/mark_as_delivered'
         ));
     ?>  
