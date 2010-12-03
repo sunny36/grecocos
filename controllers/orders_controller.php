@@ -2,8 +2,7 @@
 class OrdersController extends AppController {
 
   var $name = 'Orders';
-  var $uses = array('Order', 'Product', 'LineItem', 'Delivery',
-              'Transaction');
+  var $uses = array('Order', 'Product', 'LineItem', 'Delivery','Transaction');
   var $helpers = array('Html', 'Form', 'Javascript', 'Number', 'Csv');
   var $components = array('Jqgrid');
   
@@ -51,26 +50,21 @@ class OrdersController extends AppController {
       $search = $this->params['url']['_search'];     
       $nextDelivery = $this->Delivery->findByNextDelivery(true);
       $params = array('conditions' => array(
-                  'Order.status <>' => 'entered', 
-                  'Order.delivery_id' => $nextDelivery['Delivery']['id']));
+        'Order.status <>' => 'entered', 'Order.delivery_id' => $nextDelivery['Delivery']['id']));
       if ($search == "true") {
         if ($this->params['url']['status'] == "all") {
-          $params = array(
-            'conditions' => array(
-              'Order.status <>' => 'entered', 
-              'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+          $params = array('conditions' => array(
+            'Order.status <>' => 'entered', 'Order.delivery_id' => $this->params['url']['delivery_date'])); 
         } 
         if ($this->params['url']['status'] == "packed") {
-          $params = array(
-            'conditions' => array(
-              'Order.status' => array('packed', 'delivered'),
-              'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+          $params = array('conditions' => array(
+            'Order.status' => array('packed', 'delivered'), 
+            'Order.delivery_id' => $this->params['url']['delivery_date'])); 
         } 
         if ($this->params['url']['status'] == "paid") {
-          $params = array(
-            'conditions' => array(
-              'Order.status' => $this->params['url']['status'],
-              'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+          $params = array('conditions' => array(
+            'Order.status' => $this->params['url']['status'], 
+            'Order.delivery_id' => $this->params['url']['delivery_date'])); 
         }         
       }
       $orders = $this->Order->find('all', $params);
@@ -81,6 +75,7 @@ class OrdersController extends AppController {
       $this->render('/elements/supplier_orders', 'ajax');
     }    
   }
+  
   #TODO Refactor to remove common code from mark_as_paid and mark_as_delivered. 
   function coordinator_mark_as_paid() {
     $this->layout = "coordinator/index";

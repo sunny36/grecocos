@@ -196,27 +196,22 @@ class UsersController extends AppController {
   function signup(){
     $this->set('title_for_layout', 'Customer Signup');
     $this->layout = "users/signup"; 
-    $delivery_addresses = $this->Organization->find('list', array(
-      'fields' => 'Organization.delivery_address'));
+    $delivery_addresses = $this->Organization->find('list', array('fields' => 'Organization.delivery_address'));
     $this->set('delivery_addresses', $delivery_addresses);
     if(!empty($this->data)) {
       $this->data['User']['status'] = 'registered';
       $this->data['User']['role'] = 'customer';
       if(isset($this->data['User']['password2'])){
-        $this->data['User']['password2hashed'] = $this->Auth->password(
-          $this->data['User']['password2']);
+        $this->data['User']['password2hashed'] = $this->Auth->password($this->data['User']['password2']);
       }
       $this->User->create();
       if($this->User->save($this->data)){
-        $this->User->sendEmailWaitForConfirmation(
-          $this->data['User']['firstname'], $this->data['User']['email']); 
+        $this->User->sendEmailWaitForConfirmation($this->data['User']['firstname'], $this->data['User']['email']); 
         $this->User->sendEmailNewUserSignUp(); 
-        $msg = 'Please wait for an confirmation email from the co-ordinator.';
-        $this->Session->setFlash($msg);
+        $this->Session->setFlash('Please wait for an confirmation email from the co-ordinator.');
         $this->redirect(array('controller' => 'users', 'action' => 'login'));
       } else {
-        $msg = 'There was an error signing up. Please try again.';
-        $this->Session->setFlash($msg, 'flash_error');
+        $this->Session->setFlash('There was an error signing up. Please try again.', 'flash_error');
         $this->data['User']['password'] = null; 
         $this->data['User']['password2'] = null; 
       }
@@ -264,7 +259,6 @@ class UsersController extends AppController {
       $user = $this->User->findByEmail($this->params['url']['email']);
       if ($this->params['url']['token'] != $user['User']['token'] || 
           strtotime("now") > strtotime($user['User']['token_expiry'])) { 
-        $this->log("abc", 'activity'); 
         $this->cakeError('error404'); 
       } 
        $this->Session->write('ForgotPassword.email', $user['User']['email']);
