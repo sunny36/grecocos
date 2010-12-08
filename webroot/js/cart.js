@@ -1,6 +1,13 @@
 $(document).ready(function(){
   $('#box').hide();
+  
   $('a[rel*=facybox]').facybox();
+  
+  
+  
+  if ($('#ProductConfirmForm').length > 0) {
+    $('#ProductConfirmForm')[0].reset();
+  }  
   
   $('.short_description').click(function(){
     $product = $(this);
@@ -27,7 +34,7 @@ $(document).ready(function(){
   $('input[type="text"]').blur(function(){
     if (validateInteger($(this).val()) == false) {
       custom_confirm_ok("Quantity must be an integer only.", function() {});
-       $(this).val("0");
+      $(this).val("0");
     }
     var quantity = $(this).val();
     var row = $(this).parent().parent();
@@ -36,7 +43,7 @@ $(document).ready(function(){
     var price = (priceText.split(" "))[1];
     var subTotal = quantity * price; 
     children[3].innerHTML = "\u0E3F" + " " + subTotal;
-    calculateTotal();        
+    setTotal();        
   });
   
   $('input[type="text"]').bind('textchange', function (event, previousText) {
@@ -47,7 +54,7 @@ $(document).ready(function(){
     var price = (priceText.split(" "))[1];
     var subTotal = quantity * price; 
     children[3].innerHTML = "\u0E3F" + " " + subTotal;
-    calculateTotal();        
+    setTotal();        
   });
   
   
@@ -57,9 +64,7 @@ $(document).ready(function(){
     for(var i = 1; i < products.length - 1; i++) {
       (($(products[i]).children())[3]).innerHTML = "\u0E3F" + " " + "0";
     }
-    $(products[products.length - 1]).children()[3].innerHTML = "\u0E3F" + 
-                                                               " " + 
-                                                               "0";
+    $(products[products.length - 1]).children()[3].innerHTML = "\u0E3F" + " " + "0";
     return false;
   });
   
@@ -68,11 +73,10 @@ $(document).ready(function(){
       $(this).text("Show all items");
       var products = $('#products tr');
       for(var i = 1; i < products.length - 1; i++) {
-        if(parseInt($($(products[i]).children()).children()[1].value) == 0) {
+        if(parseInt($($(products[i]).children()).children()[1].value, 10) == 0) {
           $(products[i]).hide();
         }
-      }
-      
+      }      
     },
     function (){
       $(this).text("View your order");
@@ -83,36 +87,94 @@ $(document).ready(function(){
     }
   );
 
-  function calculateTotal(){
-    var products = $('#products tr');
-    // first row is the head of the table
-    // last row is the total
-    var total = 0;
-    for(var i = 1; i < products.length - 1; i++) {
-      var str = $(products[i]).children()[3].innerHTML;
-      if(str.length > 0){
-        str = str.split(" ")[1];
-        total = total + parseInt(str);
-      }
-      
-    }
-    $(products[products.length - 1]).children()[3].innerHTML = "\u0E3F" + 
-                                                               " " + 
-                                                               total;
-    return;
-  }
   
-  $('#ProductConfirmForm').submit(function() {
-    if (!confirm("Are you sure you want to checkout?")) {
-      return false;
+  $('#update').click(function() {
+    var $products =  $('tr.products');
+    var cart = []; 
+    var quantity, shortDescription, price, subTotal;
+    var isCartEmpty = true;
+    $products.each(function (index) {
+      quantity = parseInt($($(this).children()[0]).children('input:text').val(), 10);
+      shortDescription = $($(this).children()[1]).children().text(); 
+      price = "\u0E3F" + " " + parseInt($($(this).children()[2]).text().split(" ")[1], 10); 
+      subTotal = "\u0E3F" + " " + parseInt($($(this).children()[3]).text().split(" ")[1], 10);
+      if (quantity > 0) {
+        isCartEmpty = false; 
+        cart.push({"quantity": quantity, "shortDescription": shortDescription, "price": price, "subTotal": subTotal});
+      }      
+    });
+    if (isCartEmpty) {
+      custom_confirm_ok("Nothing to check out - thank you", function() {});
     } else {
-      return true;
+      createJqgrid(cart);
     }
+    
+    return false; 
   });  
-
-  function validateInteger(strValue) {
-    var objRegExp  = /(^\d\d*$)/;
-    return objRegExp.test(strValue);
-  }
-
+  
+  $('#continueShoppingButton').click(function () {
+    $('#cartDiv').dialog("destroy");
+  });
+  
+  $('#confirmButton').click(function () {
+    $('#ProductConfirmForm').submit();
+  });
+  
 });
+
+function setTotal() {
+  $('tr#totalRow').children().last().text("\u0E3F" + " " + calculateTotal());
+}
+
+function calculateTotal(){
+  var $products = $('tr.products');
+  var total = 0;
+  var str = "";
+  $products.each(function (index) {
+    str = $(this).children().last().text(); 
+    if(str.length > 0){
+      str = str.split(" ")[1];
+      total = total + parseInt(str, 10);
+    }            
+  });
+  return total;
+}
+
+function validateInteger(strValue) {
+  var objRegExp  = /(^\d\d*$)/;
+  return objRegExp.test(strValue);
+}
+
+function createJqgrid(cart) {
+  $('#cartTable').GridUnload();
+  jQuery("#cartTable").jqGrid({ 
+    datatype: "local", 
+    height: "auto", 
+    colNames:['Quantity','Item', 'Price', 'Sub-Total'], 
+    colModel:[ 
+      {name:'quantity',index:'quantity', align:"right", width:70, sortable:false}, 
+      {name:'shortDescription',index:'shortDescription', width: 400, sortable:false}, 
+      {name:'price',index:'price', align:"right", width: 70, sortable:false}, 
+      {name:'subTotal',index:'subTotal', align:"right", width: 80, sortable:false}
+    ],
+      footerrow : true, 
+      userDataOnFooter : true, 
+      gridComplete: function () {
+        $('#cartTable').jqGrid('footerData', 'set', {price: "Total", subTotal: "\u0E3F" + " " + calculateTotal()});
+      },
+      caption: "Your Shopping Cart" 
+    }); 
+    
+  for(var i=0;i <=cart.length;i++) {
+    jQuery("#cartTable").jqGrid('addRowData',i+1,cart[i]);
+  }        
+  
+  $("#confirmButton, #continueShoppingButton").button();
+  $('#cartDiv').dialog({
+    resizable: false,
+    modal: true,
+    width:'auto',
+    height: 'auto'
+  });
+  $(".ui-dialog-titlebar").hide();
+}

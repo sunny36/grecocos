@@ -3,27 +3,36 @@ class CartsController extends AppController{
   var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category', 
               'Cart', 'Transaction');
   var $components = array('Email');
-  var $helpers = array('Html', 'Form', 'Javascript');
+  var $helpers = array('Html', 'Form', 'Javascript', 'Cart');
 
   function beforeFilter(){
     parent::beforeFilter();
   }
 
   function index(){
+    $MasterCategory = ClassRegistry::init('MasterCategory');
+    $masterCategories = $MasterCategory->find('all', array(
+      'order' => array('MasterCategory.priority'),
+      'recursive' => -1));
+   
     $this->layout = 'cart'; 
     $this->Category->Behaviors->attach('Containable'); 
-    $products = $this->Category->find('all', array(
-      'contain' => array(
-        'Product' => array(
-          'conditions' => array(
-            'AND' => array(
-              'Product.display = ' => '1', 'Product.stock > ' => '0'
+    foreach($masterCategories as &$masterCategory) {
+      $products = $this->Category->find('all', array(
+        'contain' => array(
+          'Product' => array(
+            'conditions' => array(
+              'AND' => array(
+                'Product.display = ' => '1', 'Product.stock > ' => '0',
+                'Product.master_category_id' => $masterCategory['MasterCategory']['id'])
               )
             )
-          )
-        ),
-      'order' => 'Category.priority'));
-    $this->set('products', $products);
+          ),
+        'order' => 'Category.priority'));
+      $masterCategory['Products'] = $products;
+    }
+     $this->log($masterCategories );
+    $this->set('products', $masterCategories);
     if (Configure::read('Grecocos.closed') == "yes") {
       $closed = true;
       $nextDelivery = $this->Delivery->find('first', array(

@@ -44,7 +44,7 @@ function isNextDeliveryDateInFuture(callback) {
 
 function sendEmailSiteReOpen() {
   $('#ConfigurationClosed').after('<img src="/img/ajax-loader.gif" alt="Loading" id="ajax_loader"/>');
-  $.post(pathname + "/sendEmailSiteReOpen", 
+  $.get(pathname + "/sendEmailSiteReOpen", 
          null, 
          function (data) {
            $('form').submit();
