@@ -12,8 +12,8 @@ class User extends AppModel {
   var $validate = array(                        
     'password2' => array(
       'notempty' => array(
-        'rule' => array('minLength', 1),
-        'require' => true, 
+        'rule' => array('minLength', 1), 
+        'require' => true,  
         'allowEmpty' => false,
         'message' => 'Please enter a password'
       ),
@@ -22,8 +22,7 @@ class User extends AppModel {
       'Please enter the same password both times'
     )
   ),
-
-
+  
   'email' => array(
     'validemail' =>array(
       'rule' => 'email',
@@ -53,13 +52,11 @@ class User extends AppModel {
 
 
   'phone' => array(
-    'rule' => array('minLength', 1),
-    'require' => true,
-    'allowEmpty' => false,
-    'message' => 'Phone cannot be empty'
-  ),
+    'rule' => array('minLength', 1), 'require' => true, 'allowEmpty' => false, 'message' => 'Phone cannot be empty'
+   ),  
+  'organization_id' => array('required' => array('rule' => 'notEmpty', 'message' => 'Please select a delivery address'))
 
-
+  
 );
 
   function checkUnique($data, $fieldName){

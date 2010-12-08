@@ -34,8 +34,7 @@
           </ul>      
           <div>
             <?php 
-              e($form->label('password', "Password", 
-                             array('class' => 'required'))); 
+              e($form->label('password', "Password", array('class' => 'required'))); 
               e($form->password('password', array('class' => 'vTextField')));
             ?>        
           </div>        
@@ -52,8 +51,7 @@
           </ul>      
           <div>
             <?php 
-              e($form->label('password2', "Password Confirmation", 
-                             array('class' => 'required'))); 
+              e($form->label('password2', "Password Confirmation", array('class' => 'required'))); 
               e($form->password('password2', array('class' => 'vTextField')));
             ?>        
           </div>        
@@ -70,8 +68,7 @@
           </ul>      
           <div>
             <?php 
-              e($form->label('firstname', "First Name", 
-                array('class' => 'required'))); 
+              e($form->label('firstname', "First Name", array('class' => 'required'))); 
               e($form->text('firstname', array('class' => 'vTextField')));
             ?>        
           </div>        
@@ -110,17 +107,15 @@
         <div class="form-row organization_id">
           <ul class="errorlist">
             <?php 
-              if($form->isFieldError('User.organization_id')) 
-                e($form->error ('User.organization_id', null, 
-                                array('wrap' => 'li'))); 
+              if($form->isFieldError('User.organization_id')) {
+                e($form->error ('User.organization_id', null,  array('wrap' => 'li')));                 
+              }
             ?>
           </ul>      
           <div>
             <?php 
-              e($form->label('organization_id', "Delivery Address",
-                             array('class' => 'required')));
-              e($form->select('organization_id', $delivery_addresses, NULL, 
-                              array('empty' => false)));
+              e($form->label('organization_id', "Delivery Address", array('class' => 'required')));
+              e($form->select('organization_id', $delivery_addresses, NULL));
             ?>        
           </div>        
         </div>        
@@ -147,13 +142,10 @@
 
       <div class="submit-row" >
         <?php 
-          echo $form->end(array('label' => 'Signup', 'class' => 'default', 
-                                'div' => array('class' => false)));
+          echo $form->end(array('label' => 'Signup', 'class' => 'default', 'div' => array('class' => false)));
         ?>
-
       </div>
-
     </div>
-  </form></div>
+  </div>
   <br class="clear" />
 </div>
