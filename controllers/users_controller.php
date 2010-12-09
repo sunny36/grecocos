@@ -30,15 +30,25 @@ class UsersController extends AppController {
     $this->SearchPagination->setup();
     $this->layout = "coordinator/index"; 
     $this->User->recursive = 0;
-    if (!empty($this->params['url']['user_name'])) {
-      $customerName = $this->params['url']['user_name']; 
-      $this->set('default_customer_name', $customerName); 
+    if(!empty($this->params['url']['user_name'])){
+      $this->paginate = array(
+        'conditions' => array(
+          'AND' => array(
+            'OR' => array(
+              'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%', 
+              'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%'
+            ),
+            'User.organization_id' => $this->currentUser['User']['organization_id']
+          )
+        )
+      );
+    } else {
+      $this->paginate = array(
+        'conditions' => array(
+          'User.organization_id' => $this->currentUser['User']['organization_id']
+        )
+      );      
     }
-    if(!empty($customerName)){
-      $this->paginate = array('conditions' => array('OR' => array(
-        'User.firstname LIKE' => '%' . $customerName. '%',
-        'User.lastname LIKE' => '%' . $customerName. '%')));
-    }	  
     $this->set('users', $this->paginate());
   }
 
@@ -157,8 +167,7 @@ class UsersController extends AppController {
   function edit() {
     $id = $this->currentUser['User']['id'];
     $this->layout = "customer/add";
-    $delivery_addresses = $this->Organization->find('list', array(
-      'fields' => 'Organization.delivery_address'));
+    $delivery_addresses = $this->Organization->find('list', array('fields' => 'Organization.delivery_address'));
     $this->set('delivery_addresses', $delivery_addresses);
     if (!$id && empty($this->data)) {
       $this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
@@ -166,13 +175,10 @@ class UsersController extends AppController {
     }
     if (!empty($this->data)) {			
       if ($this->User->save($this->data)) {
-        $this->Session->setFlash('Your user profile has been updated',
-                                 'flash_notice');
+        $this->Session->setFlash('Your user profile has been updated', 'flash_notice');
         $this->redirect(array('action' => 'edit'));
       } else {
-        $this->Session->setFlash('Your user profile could not be updated. ' . 
-                                 'Please try again', 
-                                 'flash_error');
+        $this->Session->setFlash('Your user profile could not be updated. ' . 'Please try again', 'flash_error');
       }
     }
     if (empty($this->data)) {

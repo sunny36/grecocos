@@ -21,9 +21,8 @@
         </label>
       	<?php e($form->label('customer name')); ?>  
       	<?php
-      	  if (isset($default_customer_name)) {
-      	    e($form->text('user_name', array('value' => $default_customer_name, 
-      	                                      'size' => '40')));
+      	  if (isset($this->params['url']['user_name'])) {
+      	    e($form->text('user_name', array('value' => $this->params['url']['user_name'], 'size' => '40')));
       	  } else {
       	    e($form->text('user_name', array('size' => '40')));
       	  }
