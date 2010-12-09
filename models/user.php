@@ -17,37 +17,25 @@ class User extends AppModel {
         'allowEmpty' => false,
         'message' => 'Please enter a password'
       ),
-      'passwordSimilar' => array('rule' => 'checkPasswords',
-      'message' => 
-      'Please enter the same password both times'
-    )
+      'passwordSimilar' => array('rule' => 'checkPasswords', 'message' => 'Please enter the same password both times')
   ),
   
   'email' => array(
     'validemail' =>array(
-      'rule' => 'email',
-      'require' => true,
-      'allowEmpty' => false,
-      'message' => 'Please enter a valid email'
+      'rule' => 'email', 'require' => true, 'allowEmpty' => false, 'message' => 'Please enter a valid email'
     ),
     'unique' => array(
-      'rule' => array('checkUnique', 'email'),
+      'rule' => array('checkUnique', 'email'), 
       'message' => 'This email has already been taken, please choose a different email'
     )
   ),
 
   'firstname' => array(
-    'rule' => array('minLength', 1),
-    'require' => true,
-    'allowEmpty' => false,
-    'message' => 'Please enter first name'
+    'rule' => array('minLength', 1), 'require' => true, 'allowEmpty' => false, 'message' => 'Please enter first name'
   ),
 
   'lastname' => array(
-    'rule' => array('minLength', 1),
-    'require' => true,
-    'allowEmpty' => false,
-    'message' => 'Please enter lastname name'
+    'rule' => array('minLength', 1), 'require' => true, 'allowEmpty' => false, 'message' => 'Please enter lastname name'
   ),
 
 
@@ -55,9 +43,23 @@ class User extends AppModel {
     'rule' => array('minLength', 1), 'require' => true, 'allowEmpty' => false, 'message' => 'Phone cannot be empty'
    ),  
   'organization_id' => array('required' => array('rule' => 'notEmpty', 'message' => 'Please select a delivery address'))
-
-  
 );
+  
+  function findByOrgainizationIdCondition($organizationId) {
+    return array('conditions' => array('User.organization_id' => $organizationId));
+  }
+  
+  function findByNameAndOrganizationIdCondition($name, $organizationId) {
+    return array(
+      'conditions' => array(
+        'AND' => array(
+          'OR' => array('User.firstname LIKE' => '%' . $name. '%', 'User.lastname LIKE' => '%' . $name. '%'),
+          'User.organization_id' => $organizationId
+        )
+      )
+    );
+  }
+  
 
   function checkUnique($data, $fieldName){
     $valid = false;

@@ -31,23 +31,10 @@ class UsersController extends AppController {
     $this->layout = "coordinator/index"; 
     $this->User->recursive = 0;
     if(!empty($this->params['url']['user_name'])){
-      $this->paginate = array(
-        'conditions' => array(
-          'AND' => array(
-            'OR' => array(
-              'User.firstname LIKE' => '%' . $this->params['url']['user_name']. '%', 
-              'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%'
-            ),
-            'User.organization_id' => $this->currentUser['User']['organization_id']
-          )
-        )
-      );
+      $this->paginate = $this->User->findByNameAndOrganizationIdCondition(
+        $this->params['url']['user_name'], $this->currentUser['User']['organization_id']);
     } else {
-      $this->paginate = array(
-        'conditions' => array(
-          'User.organization_id' => $this->currentUser['User']['organization_id']
-        )
-      );      
+      $this->paginate = $this->User->findByOrgainizationIdCondition($this->currentUser['User']['organization_id']);
     }
     $this->set('users', $this->paginate());
   }
