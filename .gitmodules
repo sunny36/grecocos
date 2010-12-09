@@ -1,0 +1,3 @@
+[submodule "plugins/named_scope"]
+	path = plugins/named_scope
+	url = git://github.com/joelmoss/cakephp-namedscope.git
