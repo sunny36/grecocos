@@ -62,17 +62,10 @@ class DeliveriesController extends AppController {
 
   function coordinator_notify_arrival_of_shipment() {
     $this->layout = "coordinator/index"; 
-
-    $delivery = $this->Delivery->findByOrderStatus("packed");
-    
+    $delivery = $this->Delivery->findByOrderStatus("packed");    
     if(!empty($this->params['form'])) {
       $delivery_id = $this->params['form']['id']; 
-      $delivery = $this->Order->find('all', 
-                                     array('conditions' => 
-                                           array('Delivery.id' => $delivery_id,
-                                                 'Order.status' => "packed")                                                    
-                                           )
-                                     ); 
+      $delivery = $this->Order->find('all', array('conditions' => array('Delivery.id' => $delivery_id, 'Order.status' => "packed"))); 
     } else {
       $this->set('deliveries', $this->paginate()); 
     }
@@ -326,21 +319,24 @@ class DeliveriesController extends AppController {
     $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
     $this->set('delivery_dates', $deliveryDates); 
     if (!empty($this->data)) {
-      $this->Delivery->sendEmailArrivalOfShipment($this->data['Delivery']['delivery_date']); 
-      $orders = $this->Order->find('all', array('conditions' => array(
-        'Order.delivery_id' => $this->data['Delivery']['delivery_date'], 
-        'Order.status' => 'packed')));
-      $this->set('default_delivery_date', $this->data['Delivery']['delivery_date']);
+      $this->Delivery->sendEmailArrivalOfShipment(
+        $this->data['Delivery']['delivery_date'], $this->currentUser['User']['organization_id']); 
+      $orders = $this->findAllPackedOrders($this->data['Delivery']['delivery_date']); 
       $this->set('orders', $orders);
-      $this->Session->setFlash('Emails have been sent', 'system_message');  
+      $this->Session->setFlash('Emails have been sent', 'system_message');
+      $this->redirect(
+        "/coordinator/deliveries/arrival_of_shipment?delivery_date={$this->data['Delivery']['delivery_date']}");
     }
     if (isset($this->params['url']['delivery_date'])) {
-      $orders = $this->Order->find('all', array('conditions' => array(
-        'Order.delivery_id' => $this->params['url']['delivery_date'], 
-        'Order.status' => 'packed')));
+      $orders = $this->findAllPackedOrders($this->params['url']['delivery_date']); 
       $this->set('default_delivery_date', $this->params['url']['delivery_date']);
       $this->set('orders', $orders);
     }
+  }
+
+  private function findAllPackedOrders($deliveryId) {
+    return $this->Order->findAllByStatusAndDeliveryIdAndUserOrganizationId(
+      'packed', $deliveryId, $this->currentUser['User']['organization_id']);
   }
     
 }

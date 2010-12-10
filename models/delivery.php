@@ -53,26 +53,27 @@ class Delivery extends AppModel {
     return $nextDelivery; 
   }
 
-  function getDeliveryDatesList() {
+  function getDeliveryDatesList($includeAll=false) {
     $nextDelivery = $this->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
-    $delivery_dates = $this->find('list', array('conditions' => array(
+    $deliveryDates = $this->find('list', array('conditions' => array(
       'Delivery.date <= ' => $nextDelivery['Delivery']['date']), 'order' => array('Delivery.date DESC'))); 
-    return $delivery_dates; 
+    if ($includeAll) {
+       $deliveryDates = array(-1 => 'All') + $deliveryDates;
+    }
+    return $deliveryDates; 
   }
   
-  function sendEmailArrivalOfShipment($deliveryId) {
+  function sendEmailArrivalOfShipment($deliveryId, $organizationId) {
     $Order = ClassRegistry::init('Order'); 
-    $orders = $Order->find('all', array('conditions' => array('Order.delivery_id' => $deliveryId, 
-    'Order.status' => 'packed'))); 
-    $to = "";
-    foreach ($orders as $order) {
-      $to = $to . $order['User']['email'] . ", ";
-    }
-    $subject = "GRECOCOS: Order has arrived"; 
-    $body = "Dear member,\n\nI am pleased to inform you that your order has arrived.\n\n" . 
-    "You can come to collect it now from the coordinator.\n\nKind regards,\nYour coordinator"; 
+    $orders = $Order->findAllByStatusAndDeliveryIdAndUserOrganizationId('packed', $deliveryId, $organizationId); 
+    $to = "s@sunny.in.th";
+    //foreach ($orders as $order) {
+      //$to = $to . $order['User']['email'] . ", ";
+    //}
+    $Email = ClassRegistry::init('Email'); 
+    $email = $Email->findByName('arrival_of_shipment'); 
     $AppengineEmail = ClassRegistry::init('AppengineEmail'); 
-    $AppengineEmail->sendEmail($to, $subject, $body); 
+    $AppengineEmail->sendEmail($to, $email['Email']['subject'], $email['Email']['body']); 
   }
   
   function sendConfirmationEmail($deliveryId) {

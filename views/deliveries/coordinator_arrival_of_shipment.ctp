@@ -1,6 +1,5 @@
 <?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
-<?php echo $javascript->link('orders/coordinator_mark_as_paid.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 
 <div class="breadcrumbs">
@@ -19,28 +18,23 @@
     <div class="module" id="changelist">
       <div id="toolbar">
         <?php 
-    	    e($form->create(null, array('type' => 'get', 
-    	                                'action' => 'arrival_of_shipment'))); 
+    	    e($form->create(null, array('type' => 'get', 'action' => 'arrival_of_shipment'))); 
     	  ?>
       <div><!-- DIV needed for valid HTML -->
-      <label for="searchbar">
-        <?php echo $html->image('admin/icon_searchbox.png')?>
-      </label>
+      <label for="searchbar"><?php echo $html->image('admin/icon_searchbox.png')?></label>
       Delivery Date
       <?php 
-        if (isset($default_delivery_date)) {
-          e($form->select('delivery_date', $delivery_dates, array('selected' => $default_delivery_date), 
-                          array('empty' => false))); 
-
+        if (isset($this->params['url']['delivery_date'])) {
+          echo $form->select(
+            'delivery_date', $delivery_dates, array('selected' => $this->params['url']['delivery_date']), 
+            array('empty' => false)); 
         } else {
           e($form->select('delivery_date', $delivery_dates, NULL, array('empty' => false))); 
-
         }
       ?>
        &nbsp;&nbsp;
     	<?php e($form->submit('View Customers', array('div' => false))); ?>
     	 &nbsp;&nbsp;
-    	                                      
     </div>
     </form>
     </div>          
@@ -75,13 +69,11 @@
 </tbody>
 </table>
 
-
-
 	</div>
   <div class="submit-row" >
     <?php 
 	    e($form->create(null, array('type' => 'post', 'action' => 'arrival_of_shipment'))); 
-	    e($form->hidden('delivery_date', array('value' => $default_delivery_date ))); 
+	    e($form->hidden('delivery_date', array('value' => $this->params['url']['delivery_date'] ))); 
       e($form->end(array('label' => 'Email to All', 'div' => array('class' => false))));
     ?>
 
