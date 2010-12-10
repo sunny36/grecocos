@@ -15,60 +15,19 @@
   <div id="content-main">
     <div class="module" id="changelist">
       <div id="toolbar">
-        <?php 
-    	    e($form->create(null, array('type' => 'get', 
-    	                                'action' => 'mark_as_delivered'))); 
-    	  ?>
-      <div><!-- DIV needed for valid HTML -->
-      <label for="searchbar">
-        <?php echo $html->image('admin/icon_searchbox.png')?>
-      </label>
-      <?php e($form->label('orderId')); ?> 
-      <?php 
-        if (isset($default_order_id)) {
-          e($form->text('id', array('value' => $default_order_id, 
-                                    'size' => '10')));
-        } else {
-          e($form->text('id', array('size' => '10')));
-        }
-      ?>
-       &nbsp;&nbsp;
-    	<?php e($form->label('customer name')); ?>  
-    	<?php
-    	  if (isset($default_customer_name)) {
-    	    e($form->text('user_name', array('value' => $default_customer_name, 
-    	                                      'size' => '40')));
-    	  } else {
-    	    e($form->text('user_name', array('size' => '40')));
-    	  }
-    	?>
-       &nbsp;&nbsp;
-      Delivery Date
-      <?php 
-        if (isset($default_delivery_id)) {
-          e($form->select('delivery_date', $delivery_dates, 
-                          array('selected' => $default_delivery_id), 
-                          array('empty' => false))); 
-        } else {
-          e($form->select('delivery_date', $delivery_dates, NULL, 
-                          array('empty' => false))); 
+                <?php 
+          $this->Order->searchWidget(
+            'mark_as_delivered', $delivery_dates, $nextDelivery, $this->params['url'], '/coordinator/orders/mark_as_delivered'); 
+        ?>
 
-        }
-      ?>
-       &nbsp;&nbsp;
-    	<?php e($form->submit('Search', array('div' => false))); ?>
-    	 &nbsp;&nbsp;
-    	<?php e($html->link('View All',
-    	                    '/coordinator/orders/mark_as_delivered'))?>    	                                      
-    </div>
-    </form>
-    </div>          
+
+      </div>          
 <table cellspacing="0">
   <thead>
     <tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('ordered_date');?></th>
-			<th><?php echo $this->Paginator->sort('delivery_date');?></th>
+			<th><?php echo $this->Paginator->sort('Delivery Date', 'Delivery.date');?></th>
 			<th><?php echo $this->Paginator->sort('Customer');?></th>
 			<th><?php echo $this->Paginator->sort('Total Amount');?></th>
 			<th><?php echo $this->Paginator->sort('delivered');?></th>

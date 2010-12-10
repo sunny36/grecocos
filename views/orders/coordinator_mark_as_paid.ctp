@@ -2,7 +2,6 @@
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
 <?php echo $javascript->link('orders/coordinator_mark_as_paid.js', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
-
 <div class="breadcrumbs">
   <?php 
     e($html->link('Home', '/coordinator')); 
@@ -17,52 +16,10 @@
     <div class="module" id="changelist">
       <div id="toolbar">
         <?php 
-    	  e($form->create(null, array('type' => 'get', 
-                'action' => 'mark_as_paid'))); 
-    	?>
-        <div><!-- DIV needed for valid HTML -->
-          <label for="searchbar">
-            <?php echo $html->image('admin/icon_searchbox.png')?>
-          </label>
-          <?php e($form->label('orderId')); ?> 
-          <?php 
-            if (isset($this->params['url']['id'])) {
-              e($form->text('id', array('value' => $this->params['url']['id'], 'size' => '10')));
-            } else {
-              e($form->text('id', array('size' => '10')));
-            }
-          ?>
-          &nbsp;&nbsp;
-          <?php e($form->label('customer name')); ?>  
-    	  <?php
-    	    if (isset($this->params['url']['user_name'])) {
-              e($form->text('user_name', array('value' => $this->params['url']['user_name'], 'size' => '40')));
-            } else {
-              e($form->text('user_name', array('size' => '40')));
-            }
-    	  ?>
-          &nbsp;&nbsp;
-          Delivery Date
-          <?php 
-            if (isset($this->params['url']['delivery_date'])) {
-              echo $form->select(
-                'delivery_date', $delivery_dates, array('selected' => $this->params['url']['delivery_date']), 
-                array('empty' => false)); 
-            } else {
-              echo $form->select(
-                'delivery_date', $delivery_dates, array('selected' => $nextDelivery['Delivery']['id']), 
-                array('empty' => false)); 
-              
-            }
-          ?>
-          &nbsp;&nbsp;
-          <?php e($form->submit('Search', array('div' => false))); ?>
-          &nbsp;&nbsp;
-          <?php e($html->link('View All', '/coordinator/orders/mark_as_paid'))?>
-          
-        </div>
-      </form>
-    </div>          
+          $this->Order->searchWidget(
+            'mark_as_paid', $delivery_dates, $nextDelivery, $this->params['url'], '/coordinator/orders/mark_as_paid'); 
+        ?>
+      </div>          
     <table cellspacing="0">
       <thead>
         <tr>
@@ -93,7 +50,7 @@
           $time = new TimeHelper;
         ?>
         <td>
-          <?php echo $time->format($format = 'd-m-Y H:i:s', $order['Order']['ordered_date'], null, "+7.0"); ?>&nbsp;
+          <?php echo $this->Time->format($format = 'd-m-Y H:i:s', $order['Order']['ordered_date'], null, "+7.0"); ?>&nbsp;
         </td>
         <td>
           <?php echo $time->format($format = 'd-m-Y', $order['Delivery']['date'], null, "+7.0"); ?>&nbsp;
