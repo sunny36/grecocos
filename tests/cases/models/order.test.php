@@ -9,10 +9,16 @@ class OrderTestCase extends CakeTestCase {
 		$this->Order =& ClassRegistry::init('Order');
 	}
 
+  function testFindAllByStatusAndDeliveryIdAndUserOrganizationId() {
+    $orders = $this->Order->findAllByStatusAndDeliveryIdAndUserOrganizationId('delivered', 7, 1);
+    $this->assertEqual(count($orders), 9); 
+  }
+
 	function endTest() {
 		unset($this->Order);
 		ClassRegistry::flush();
-	}
+  }
+
 
 }
 ?>
