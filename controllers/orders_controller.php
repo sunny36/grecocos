@@ -114,7 +114,10 @@ class OrdersController extends AppController {
     $nextDelivery = $this->Delivery->findByNextDelivery(true);
     $this->set('nextDelivery', $nextDelivery);
     $condition = array(); 
-    $condition += array('Order.status' => array('packed', 'delivered'));
+    $condition += array(
+      'Order.status' => array('packed', 'delivered'), 
+      'User.organization_id' => $this->currentUser['User']['organization_id']
+    );
     if (!empty($this->params['url']['id'])) {
       $condition += array('Order.id' => $this->params['url']['id']); 
     } 
@@ -142,9 +145,9 @@ class OrdersController extends AppController {
     $this->paginate = array(
       'conditions' => array(
         'AND' =>(array(
-          'Delivery.closed' => true,
-          'Order.status' => array('packed', 'delivered'),
-          'Order.total_supplied <> Order.total'))),
+          'Delivery.closed' => true, 'Order.status' => array('packed', 'delivered'), 
+          'Order.total_supplied <> Order.total'
+        ))), 
       'order' => 'Order.ordered_date DESC');
     $this->set('orders', $this->paginate());	  
   }
