@@ -4,7 +4,7 @@ class OrdersController extends AppController {
   var $name = 'Orders';
   var $uses = array('Order', 'Product', 'LineItem', 'Delivery','Transaction');
   var $helpers = array('Html', 'Form', 'Javascript', 'Number', 'Csv');
-  var $components = array('Jqgrid');
+  var $components = array('SearchPagination.SearchPagination');
   
   function beforeFilter(){
     parent::beforeFilter();
@@ -78,71 +78,30 @@ class OrdersController extends AppController {
   
   #TODO Refactor to remove common code from mark_as_paid and mark_as_delivered. 
   function coordinator_mark_as_paid() {
+    $this->SearchPagination->setup();
     $this->layout = "coordinator/index";
-    $deliveryDates = $this->Delivery->getDeliveryDatesList(); 
-    $deliveryDates = array(-1 => 'All') + $deliveryDates;
+    $deliveryDates = $this->Delivery->getDeliveryDatesList(true); 
+    $nextDelivery = $this->Delivery->findByNextDelivery(true); 
+    $this->set('nextDelivery', $nextDelivery);
+    $condition = array();
+    $condition += array('User.organization_id' => $this->currentUser['User']['organization_id']);
     if (!empty($this->params['url']['id'])) {
-      $orderId = $this->params['url']['id']; 
-      $this->set('default_order_id', $orderId); 
-    } elseif (!empty($this->params['url']['user_name'])) {
-      $customerName = $this->params['url']['user_name']; 
-      $this->set('default_customer_name', $customerName); 
-    } elseif (!empty($this->params['url']['delivery_date'])) {
-      if ($this->params['url']['delivery_date'] != -1) {
-        $deliveryId = $this->params['url']['delivery_date'];
-        $this->set('default_delivery_id', $deliveryId);          
-      }
+      $condition += array('Order.id' => $this->params['url']['id']);
+    }
+    if (!empty($this->params['url']['user_name'])) {
+      $condition += array('OR' => array(
+        'User.firstname LIKE' => '%' . $this->params['url']['user_name'] . '%', 
+        'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%'));      
+    }
+    if (!empty($this->params['url']['delivery_date'])) {
+      if ($this->params['url']['delivery_date'] > 0) {
+        $condition += array('Order.delivery_id' => $this->params['url']['delivery_date']);
+      }      
     } else {
-      $nextDelivery = $this->Delivery->getNextDelivery(); 
-      $deliveryId = $nextDelivery['Delivery']['id'];
-      $this->set('default_delivery_id', $nextDelivery['Delivery']['id']);
+      $condition += array('Order.delivery_id' => $nextDelivery['Delivery']['id']);
     }
-    if(!empty($orderId)){
-      $this->paginate = array('conditions' => array('Order.id' => $orderId));
-    }
-    if(!empty($customerName)){
-      $this->paginate = array(
-        'conditions' => array(
-          'OR' => array(
-            'User.firstname LIKE' => '%' . $customerName. '%',
-            'User.lastname LIKE' => '%' . $customerName. '%')));
-    }	  
-    if (!empty($deliveryId)) {
-      $this->paginate = array(
-        'conditions' => array(
-          'Order.delivery_id' => $deliveryId));
-    }
-    if (!empty($deliveryId) && !empty($customerName)) {
-      $this->paginate = array(
-        'conditions' => array(
-          'AND' => array(
-            'Order.delivery_id' => $deliveryId, 'OR' => array(
-              'User.firstname LIKE' => '%' . $customerName. '%',
-              'User.lastname LIKE' => '%' . $customerName. '%'))));
-    }
-    if (!empty($deliveryId) && !empty($orderId)) {
-      $this->paginate = array(
-        'conditions' => array(
-          'AND' => array(
-            'Order.delivery_id' => $deliveryId, 'Order.id' => $orderId)));
-    }
-    if (!empty($orderId) && !empty($customerName)) {
-      $this->paginate = array(
-        'conditions' => array(
-          'AND' => array(
-            'Order.id' => $orderId, 'OR' => array(
-              'User.firstname LIKE' => '%' . $customerName. '%',
-              'User.lastname LIKE' => '%' . $customerName. '%'))));
-    }
-    if (!empty($orderId) && !empty($deliveryId) && !empty($customerName)) {
-      $this->paginate = array(
-        'conditions' => array(
-          'AND' => array(
-            'Order.id' => $orderId, 'Order.delivery_id' => $deliveryId, 
-            'OR' => array(
-              'User.firstname LIKE' => '%' . $customerName. '%',
-              'User.lastname LIKE' => '%' . $customerName. '%'))));
-    }
+    $count = $this->Order->find('count', array('conditions' => $condition));
+    $this->paginate = array('conditions' => $condition, 'limit' => $count);
     $this->set('delivery_dates', $deliveryDates);
     $this->set('orders', $this->paginate());	  
   }

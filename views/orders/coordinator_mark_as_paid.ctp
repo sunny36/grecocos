@@ -10,7 +10,7 @@
   &rsaquo;
   Mark orders as paid
 </div>
-<div id="confirmation_dialog"></div>
+<div id="confirmation_dialog"> </div>
 <div id="content" class="flex">
   <h1>Orders</h1> 
   <div id="content-main">
@@ -26,9 +26,8 @@
           </label>
           <?php e($form->label('orderId')); ?> 
           <?php 
-            if (isset($default_order_id)) {
-              e($form->text('id', array('value' => $default_order_id, 
-                    'size' => '10')));
+            if (isset($this->params['url']['id'])) {
+              e($form->text('id', array('value' => $this->params['url']['id'], 'size' => '10')));
             } else {
               e($form->text('id', array('size' => '10')));
             }
@@ -36,9 +35,8 @@
           &nbsp;&nbsp;
           <?php e($form->label('customer name')); ?>  
     	  <?php
-    	    if (isset($default_customer_name)) {
-              e($form->text('user_name', array('value' => $default_customer_name, 
-                    'size' => '40')));
+    	    if (isset($this->params['url']['user_name'])) {
+              e($form->text('user_name', array('value' => $this->params['url']['user_name'], 'size' => '40')));
             } else {
               e($form->text('user_name', array('size' => '40')));
             }
@@ -46,14 +44,15 @@
           &nbsp;&nbsp;
           Delivery Date
           <?php 
-            if (isset($default_delivery_id)) {
-              e($form->select('delivery_date', $delivery_dates, 
-                  array('selected' => $default_delivery_id), 
-                  array('empty' => false))); 
+            if (isset($this->params['url']['delivery_date'])) {
+              echo $form->select(
+                'delivery_date', $delivery_dates, array('selected' => $this->params['url']['delivery_date']), 
+                array('empty' => false)); 
             } else {
-              e($form->select('delivery_date', $delivery_dates, NULL, 
-                  array('empty' => false))); 
-
+              echo $form->select(
+                'delivery_date', $delivery_dates, array('selected' => $nextDelivery['Delivery']['id']), 
+                array('empty' => false)); 
+              
             }
           ?>
           &nbsp;&nbsp;
@@ -69,7 +68,7 @@
         <tr>
           <th><?php echo $this->Paginator->sort('id');?></th>
           <th><?php echo $this->Paginator->sort('ordered_date');?></th>
-          <th><?php echo $this->Paginator->sort('delivery_date');?></th>
+          <th><?php echo $this->Paginator->sort('delivery_date', 'Delivery.date');?></th>
           <th><?php echo $this->Paginator->sort('Customer');?></th>
           <th><?php echo $this->Paginator->sort('Total Amount');?></th>
           <th><?php echo $this->Paginator->sort('paid');?></th>
@@ -94,25 +93,15 @@
           $time = new TimeHelper;
         ?>
         <td>
-          <?php 
-            echo $time->format($format = 'd-m-Y H:i:s',
-              $order['Order']['ordered_date'], null, "+7.0"); 
-          ?>&nbsp;
+          <?php echo $time->format($format = 'd-m-Y H:i:s', $order['Order']['ordered_date'], null, "+7.0"); ?>&nbsp;
+        </td>
+        <td>
+          <?php echo $time->format($format = 'd-m-Y', $order['Delivery']['date'], null, "+7.0"); ?>&nbsp;
         </td>
         <td>
           <?php 
-            echo $time->format($format = 'd-m-Y', $order['Delivery']['date'],
-              null, "+7.0"); 
-          ?>&nbsp;
-        </td>
-        <td>
-          <?php 
-            e($this->Html->link(
-                $order['User']['name'], 
-                array(
-                  'controller' => 'users', 
-                  'action' => 'view', 
-                  $order['User']['id']))); 
+            echo $this->Html->link($order['User']['name'], 
+                                  array('controller' => 'users', 'action' => 'view', $order['User']['id'])); 
           ?>
         </td>
         <td>
@@ -126,29 +115,12 @@
           <?php echo $form->hidden('id', array('value' => $order['Order']['id']))?>
     	  <?php
     	    if($order['Order']['status'] == "entered"){
-              echo $form->checkbox('status', 
-                array('value' => "1", 'class' => 'paid'));
+              echo $form->checkbox('status', array('value' => "1", 'class' => 'paid'));
+          }
+    	    if($order['Order']['status'] == "paid" || $order['Order']['status'] == "packed" || 
+    	       $order['Order']['status'] == "delivered"){
+              echo $form->checkbox('status', array('value' => "1", 'checked' => true, 'class' => 'paid'));
             }
-    	    if($order['Order']['status'] == "paid"){
-              echo $form->checkbox('status', 
-                array('value' => "1", 
-                  'checked' => true,
-                  'class' => 'paid'));
-            }
-    	    if($order['Order']['status'] == "packed"){
-              echo $form->checkbox('status', 
-                array('value' => "1", 
-                  'checked' => true,
-                  'class' => 'paid'));
-            }
-
-    	    if($order['Order']['status'] == "delivered"){
-              echo $form->checkbox('status', 
-                array('value' => "1", 
-                  'checked' => true,
-                  'class' => 'paid'));
-            }
-
     	  ?>
           <?php echo $form->end(); ?>
 
