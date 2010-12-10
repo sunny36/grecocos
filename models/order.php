@@ -123,5 +123,16 @@ class Order extends AppModel {
         )
       );
     }
+
+    public function refundConditions($organizationId) {
+      return array(
+        'AND' => array(
+          'Delivery.closed' => true, 
+          'Order.status' => array('packed', 'delivered'), 
+          'Order.total_supplied <> Order.total',
+          'User.organization_id' => $organizationId
+        )
+      );
+    }
 }
 ?>

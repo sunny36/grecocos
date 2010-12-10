@@ -14,6 +14,11 @@ class OrderTestCase extends CakeTestCase {
     $this->assertEqual(count($orders), 9); 
   }
 
+  function testRefundCondition() {
+    $orders = $this->Order->find('all', array('conditions' => $this->Order->refundConditions(1)));
+    $this->assertEqual(count($orders), 45); 
+  }
+
 	function endTest() {
 		unset($this->Order);
 		ClassRegistry::flush();
