@@ -3,7 +3,7 @@ class Order extends AppModel {
 	var $name = 'Order';
 	var $hasMany = 'LineItem';
 	var $belongsTo = array('User', 'Delivery');
-	
+
 	function getProducts($id){
 	  $query = "SELECT * FROM line_items LineItem, products Product " .
 	           "WHERE LineItem.order_id = ". $id . " " .
@@ -115,5 +115,13 @@ class Order extends AppModel {
       
     }
     
+    function findAllByStatusAndDeliveryIdAndUserOrganizationId($status, $deliveryId, $organizationId) {
+      return $this->find('all', array(
+        'conditions' => array(
+          'Order.delivery_id' => $deliveryId, 'Order.status' => $status, 'User.organization_id' => $organizationId
+          )
+        )
+      );
+    }
 }
 ?>
