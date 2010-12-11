@@ -111,5 +111,19 @@ class Delivery extends AppModel {
       return true;
     }    
   }
+
+  function afterFind($results) {
+    foreach ($results as $key => $val) {
+      if (isset($val['Delivery']['date'])) {
+        $results[$key]['Delivery']['date'] = $this->dateFormatAfterFind($val['Delivery']['date']);
+      }
+    }
+    return $results;
+  }
+
+  private function dateFormatAfterFind($dateString) {
+    $configuration = ClassRegistry::init('Configuration')->findByKey('date_format');
+    return date($configuration['Configuration']['value'], strtotime($dateString));
+  }
 }
 ?>
