@@ -17,7 +17,8 @@ class DATABASE_CONFIG {
 		'host' => '127.0.0.1',
 		'login' => 'root',
 		'password' => 'root',
-		'database' => 'grecocos_test',
+    'database' => 'grecocos_test',
+    'encoding' => 'UTF8'
 	);
 	
 }

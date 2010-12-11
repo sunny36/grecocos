@@ -8,30 +8,23 @@ $(document).ready(function(){
       loadtext: "Loading...",
       pgtext : "Page {0} of {1}"
     },
-    url: '/index.php/supplier/orders/index',
+    url: '/index.php/supplier/orders/index?organization_id=1',
     datatype: "xml",
-    colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 
-     	      'Actions', 'Print', 'Order Details'],
+    colNames:['Order Id','Delivery Date', 'Customer', 'Packed', 'Amount', 'Actions', 'Print', 'Order Details'],
     colModel:[
-      {name:'id',index:'id', width:55, sorttype:"int", editable: false, 
-       search: false},
-      {name:'delivery_date',index:'delivery_date', width:110,
-       editable: false, stype:'select', 
+      {name:'id',index:'id', width:55, sorttype:"int", editable: false, search: false},
+      {name:'delivery_date',index:'delivery_date', width:110, editable: false, stype:'select', 
        searchoptions:{value:"loading:loading"}},
-      {name:'customer',index:'customer', width:240, editable: false, 
-       search:false},
-      {name:'status',index:'status', width:100, align:'center', 
-       formatter:'checkbox', editable: true, edittype:"checkbox",
-       editoptions: {value:"Yes:No"}, stype:'select',
+      {name:'customer',index:'customer', width:240, editable: false, search:false},
+      {name:'status',index:'status', width:100, align:'center', formatter:'checkbox', editable: true, 
+       edittype:"checkbox", editoptions: {value:"Yes:No"}, stype:'select',
        searchoptions:{value:"all:All;packed:Packed;paid:Not Packed"}},
-      {name:'amount',index:'amount', width:80, editable: false, align:"right", 
-       search:false},
+      {name:'amount',index:'amount', width:80, editable: false, align:"right", search:false},
       {name:'act',index:'act', width:140,sortable:false, search: false},
-      {name:'print',index:'print', width:50,sortable:false, align:'center',
-       search: false, formatter:link_formatter},
-      {name:'order_details',index:'order_details', width:110,sortable:false,
-       search: false}
+      {name:'print',index:'print', width:50,sortable:false, align:'center', search: false, formatter:link_formatter},
+      {name:'order_details',index:'order_details', width:110,sortable:false, search: false}
     ],
+    datatype: 'local',
     gridview : true,
     height: 200,
     viewrecords: true,
@@ -40,25 +33,24 @@ $(document).ready(function(){
     pginput: false,
     sortname: 'id',
     sortorder: "desc",
+    toolbar: [true, "top"],
     gridComplete: function(){
       var ids = jQuery("#orders").jqGrid('getDataIDs');
       for(var i=0;i < ids.length;i++){
         var cl = ids[i];
-        be = "<input class='orders edit ui-button " + 
-          "ui-button-text-only ui-widget ui-state-default " +
-          "ui-corner-all' type='button' value='Edit'  />"; 
-        bvd = "<input class='orders view_details ui-button " + 
-          "ui-button-text-only ui-widget ui-state-default " +
+        be = "<input class='orders edit ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all'" +  
+          "type='button' value='Edit'  />"; 
+        bvd = "<input class='orders view_details ui-button ui-button-text-only ui-widget ui-state-default " +
           "ui-corner-all' type='button' value='View/Edit Details'/>";                      
         jQuery("#orders").jqGrid('setRowData',ids[i],{act:be});
-        jQuery("#orders").jqGrid('setRowData',ids[i],
-                                 {order_details:bvd});
+        jQuery("#orders").jqGrid('setRowData',ids[i], {order_details:bvd});
       } 
       
     },       
     editurl: '/index.php/supplier/orders/edit',
     caption:"Orders"
   });	
+
   
   $('.orders.view_details.ui-button').live('click', function() {
     var $button = $(this);
@@ -74,22 +66,39 @@ $(document).ready(function(){
 
   });
   
-  jQuery("#orders").jqGrid('navGrid','#orders_pager',
-                           {edit:false,add:false,del:false,search:false,
-                            refresh:false});
+  jQuery("#orders").jqGrid('navGrid','#orders_pager', {edit:false,add:false,del:false,search:false, refresh:false});
 
   jQuery("#orders").jqGrid('filterToolbar');
   $.get('/index.php/supplier/deliveries/getalljson', function(data) {
     var delivery_dates = eval('(' + data + ')');
     $("#gs_delivery_date option[value='loading']").remove();
     for(i = 0; i < delivery_dates.length; i++) {
-      $('#gs_delivery_date').append($("<option></option>")
-                              .attr("value",delivery_dates[i]["Delivery"]["id"])
-                                .text(delivery_dates[i]["Delivery"]["date"]));
+      $('#gs_delivery_date')
+        .append($("<option></option>")
+        .attr("value",delivery_dates[i]["Delivery"]["id"])
+        .text(delivery_dates[i]["Delivery"]["date"]));
     }
   });
-  
-  
+
+  $.getJSON('/index.php/organizations/index.json', function (data) {
+      var organizations = data;
+      $('#t_orders').append('<select id="organizationsSelect"></select>');
+      $('#organizationsSelect').append('<option value="">Please Select</option>');
+      $.each(organizations, function (index, value) {
+        $('#t_orders select')
+          .append('<option value="' + value["Organization"]["id"] + '>' + value['Organization']['delivery_address'] + 
+                  '</option>');
+      });
+  });
+ 
+  $('#organizationsSelect').live('change', function () {
+    var organizationId = $(this).attr('value');
+    if (organizationId > 0) {
+     jQuery("#orders")
+      .jqGrid('setGridParam', {url: "/index.php/supplier/orders/index?organization_id=" + organizationId});
+     $("#orders").jqGrid('setGridParam',{datatype:'xml'}).trigger('reloadGrid');
+    }
+  }); 
   
   function link_formatter(cellvalue, options, rowObject) {
     link = "\"/index.php/supplier/orders/view/" + options["rowId"] + "\"";

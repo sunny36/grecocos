@@ -2,6 +2,7 @@
 <?php echo $javascript->link('grid.locale-en.js', false); ?>
 <?php echo $javascript->link('jquery.jqGrid.min.js', false); ?>
 <?php echo $javascript->link('orders/supplier_orders.js', false); ?>
+<?php echo $javascript->link('jquery.dateFormat-1.0.js', false); ?>
 <?php echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom',null, array('inline' => false)); ?>
 
 <?php echo $html->css('ui.jqgrid', null, array('inline' => false)); ?>

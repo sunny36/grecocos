@@ -5,7 +5,7 @@ class OrdersController extends AppController {
   var $uses = array('Order', 'Product', 'LineItem', 'Delivery','Transaction');
   var $helpers = array('Html', 'Form', 'Javascript', 'Number', 'Csv', 'Time', 'Order');
   var $components = array('SearchPagination.SearchPagination');
-  
+
   function beforeFilter(){
     parent::beforeFilter();
     if ($this->currentUser['User']['role'] == "customer") {
@@ -37,45 +37,47 @@ class OrdersController extends AppController {
       }
     }    
   }
-  
+
 
   function supplier_index() {
     $this->layout = 'supplier/index';
     if($this->RequestHandler->isAjax()) {
-      $page = $this->params['url']['page']; 
-      $limit = $this->params['url']['rows']; 
-      $sidx = $this->params['url']['sidx']; 
-      $sord = $this->params['url']['sord']; 
-      if(!$sidx) $sidx =1;
-      $search = $this->params['url']['_search'];     
-      $nextDelivery = $this->Delivery->findByNextDelivery(true);
-      $params = array('conditions' => array(
-        'Order.status <>' => 'entered', 'Order.delivery_id' => $nextDelivery['Delivery']['id']));
-      if ($search == "true") {
-        if ($this->params['url']['status'] == "all") {
-          $params = array('conditions' => array(
-            'Order.status <>' => 'entered', 'Order.delivery_id' => $this->params['url']['delivery_date'])); 
-        } 
-        if ($this->params['url']['status'] == "packed") {
-          $params = array('conditions' => array(
-            'Order.status' => array('packed', 'delivered'), 
-            'Order.delivery_id' => $this->params['url']['delivery_date'])); 
-        } 
-        if ($this->params['url']['status'] == "paid") {
-          $params = array('conditions' => array(
-            'Order.status' => $this->params['url']['status'], 
-            'Order.delivery_id' => $this->params['url']['delivery_date'])); 
-        }         
+      if (isset($this->params['url']['organization_id'])) {
+        $page = $this->params['url']['page']; 
+        $limit = $this->params['url']['rows']; 
+        $sidx = $this->params['url']['sidx']; 
+        $sord = $this->params['url']['sord']; 
+        if(!$sidx) $sidx =1;
+        $search = $this->params['url']['_search'];     
+        $nextDelivery = $this->Delivery->findByNextDelivery(true);
+        $params = array('conditions' => array(
+          'Order.status <>' => 'entered', 'Order.delivery_id' => $nextDelivery['Delivery']['id']));
+        if ($search == "true") {
+          if ($this->params['url']['status'] == "all") {
+            $params = array('conditions' => array(
+              'Order.status <>' => 'entered', 'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+          } 
+          if ($this->params['url']['status'] == "packed") {
+            $params = array('conditions' => array(
+              'Order.status' => array('packed', 'delivered'), 
+              'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+          } 
+          if ($this->params['url']['status'] == "paid") {
+            $params = array('conditions' => array(
+              'Order.status' => $this->params['url']['status'], 
+              'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+          }         
+        }
+        $orders = $this->Order->find('all', $params);
+        $count = $this->Order->find('count', $params);
+        $this->set('page',$page);
+        $this->set('count',$count); 
+        $this->set('orders', $orders);      
+        $this->render('/elements/supplier_orders', 'ajax');
       }
-      $orders = $this->Order->find('all', $params);
-      $count = $this->Order->find('count', $params);
-      $this->set('page',$page);
-      $this->set('count',$count); 
-      $this->set('orders', $orders);      
-      $this->render('/elements/supplier_orders', 'ajax');
     }    
   }
-  
+
   #TODO Refactor to remove common code from mark_as_paid and mark_as_delivered. 
   function coordinator_mark_as_paid() {
     $this->SearchPagination->setup();
@@ -207,14 +209,14 @@ class OrdersController extends AppController {
         //Create transaction only if the order is packed. 
         if ($this->params['form']['status'] == "Yes") {
           $order =  $this->Order->find('first', array(
-                      'conditions' => array(
-                        'Order.id' => $this->params['form']['id']), 
-                      'recursive' => 2));
+            'conditions' => array(
+              'Order.id' => $this->params['form']['id']), 
+            'recursive' => 2));
           $transaction = array('Transaction' => array(
-                           'type' => "Sales", 
-                           'user_id' => $this->currentUser['User']['id'], 
-                           'order_id' => $this->params['form']['id'], 
-                           'delivery_id' => $order['Delivery']['id'])); 
+            'type' => "Sales", 
+            'user_id' => $this->currentUser['User']['id'], 
+            'order_id' => $this->params['form']['id'], 
+            'delivery_id' => $order['Delivery']['id'])); 
           $this->Transaction->create(); 
           $this->Transaction->save($transaction); 
         }
@@ -238,9 +240,9 @@ class OrdersController extends AppController {
           "LineItem.order_id" => $orderId, 
           "LineItem.product_id >" => $productId));
       $lineItem = $this->LineItem->find('first', array(
-                    'conditions' => array(
-                      'LineItem.order_id' => $orderId, 
-                      'LineItem.product_id' => $productId)));
+        'conditions' => array(
+          'LineItem.order_id' => $orderId, 
+          'LineItem.product_id' => $productId)));
       $this->LineItem->id = $lineItem['LineItem']['id'];
       $lineItem = json_encode($lineItem);      
       $this->set('lineItem', $lineItem);
@@ -392,14 +394,14 @@ class OrdersController extends AppController {
       $this->set('status', $order['Delivery']['closed']);
     } 
   }
-  
+
   function coordinator_print_refund_receipt($id) {
     $this->layout = "fpdf";
     $order = $this->Order->findById($id); 
     $this->set('order', $order);
     $this->render('/elements/refund_receipt_pdf');    
   }
-  
+
   function index() {    
     $this->layout = 'customer_index';
     $this->paginate = array(
@@ -408,7 +410,7 @@ class OrdersController extends AppController {
       'order' => 'ordered_date DESC');    
     $this->set('orders', $this->paginate()); 
   }
-  
+
   function supplier_products_orders() {    
     $this->set('title_for_layout', 'Supplier | Products Orders Reports');
     $this->layout = "supplier/index"; 
@@ -487,19 +489,19 @@ class OrdersController extends AppController {
         $productsOrders[$i][1] = 'รวม';
         $productsOrders[$i][$j] = $orderTotal;
       }                  
-     $this->log($productsOrders);
-     $this->set('productsOrders', $productsOrders);
-     App::import( 'Helper', 'Time' );
-     $time = new TimeHelper;
-     $Delivery = ClassRegistry::init('Delivery');
-     $delivery = $Delivery->findById($this->params['url']['delivery_date']);
-     $fileName = $time->format($format = 'd-m-Y', $delivery['Delivery']['date']) . 
-                 "_report.xls";
-    $this->set('fileName', $fileName);
-     $this->render('/elements/pdf_report/supplier_products_orders', 'fpdf');      
+      $this->log($productsOrders);
+      $this->set('productsOrders', $productsOrders);
+      App::import( 'Helper', 'Time' );
+      $time = new TimeHelper;
+      $Delivery = ClassRegistry::init('Delivery');
+      $delivery = $Delivery->findById($this->params['url']['delivery_date']);
+      $fileName = $time->format($format = 'd-m-Y', $delivery['Delivery']['date']) . 
+        "_report.xls";
+      $this->set('fileName', $fileName);
+      $this->render('/elements/pdf_report/supplier_products_orders', 'fpdf');      
     }
   }
-  
+
   function coordinator_send_payment_reminder_emails() {
     if($this->RequestHandler->isAjax()) { 
       $Order = ClassRegistry::init('Order');
@@ -518,7 +520,7 @@ class OrdersController extends AppController {
       $this->log(date('Y-m-d H:i:s', strtotime('-1 hour')));
       $this->set('orders', $orders);  
     }
-    
+
   }
 }
 ?>

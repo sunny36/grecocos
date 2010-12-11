@@ -23,7 +23,6 @@ class AppController extends Controller {
         $this->redirect(array('action' => 'login'));
       }
     }
-    
     $this->Auth->logoutRedirect = array('controller' => 'users','action' => 'login');
     $this->Auth->authError = "Please login.";
     $this->Auth->allow('signup', 'forgot_password', 'reset_password');

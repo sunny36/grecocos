@@ -4,15 +4,15 @@ class DeliveriesController extends AppController {
   var $name = 'Deliveries';
   var $helpers = array('Html', 'Form', 'Javascript');
   var $uses = array('Delivery', 'Order');
-  
+
   function beforeFilter(){
     parent::beforeFilter();
     if ($this->currentUser['User']['role'] == "customer") {
       $this->redirect($this->referer());
     }
     $coordinatorActions = array('coordinator_index', 'coordinator_notify_arrival_of_shipment', 'coordinator_payments', 
-                                'coordinator_add', 'coordinator_delete', 'coordinator_edit', 
-                                'coordinator_arrival_of_shipment');
+      'coordinator_add', 'coordinator_delete', 'coordinator_edit', 
+      'coordinator_arrival_of_shipment');
     $supplierActions = array('supplier_index', 'supplier_add', 'supplier_delete', 'supplier_edit');
     if (in_array($this->params['action'], $coordinatorActions)) {
       if ($this->currentUser['User']['role'] == "supplier") $this->redirect('/supplier');
@@ -21,7 +21,7 @@ class DeliveriesController extends AppController {
       if ($this->currentUser['User']['role'] == "coordinator") $this->redirect('/coordinator');
     }        
   }
-  
+
   function supplier_index() {
     $this->layout = "supplier/index";  
     $this->Delivery->recursive = 3;
@@ -35,28 +35,21 @@ class DeliveriesController extends AppController {
     $this->paginate = array('order' => array('Delivery.date DESC'));
     $this->set('deliveries', $this->paginate());
   }
-  
+
   function supplier_getalljson() {
-    Configure::write('debug', 0);
     if($this->RequestHandler->isAjax()) {
-      $params = array('conditions' => array('Delivery.next_delivery' => true)); 
-      $next_delivery = $this->Delivery->find('first', $params);
-      $params = array('conditions' => array(
-        'Delivery.date <=' => $next_delivery['Delivery']['date']),
-        'order' => 'Delivery.date DESC'); 
-      $temp = $this->Delivery->recursive;
+      $nextDelivery = $this->Delivery->findByNextDelivery(true);
       $this->Delivery->recursive = 0; 
-      $delivery_dates = $this->Delivery->find('all', $params);
-      App::import( 'Helper', 'Time' );
-      $time = new TimeHelper;      
-      foreach ($delivery_dates as &$delivery_date) {
-        $delivery_date['Delivery']['date'] = 
-          $time->format($format = 'd-m-Y', $delivery_date['Delivery']['date']);        
-      } 
-      $this->Delivery->recursive = $temp ;
-      $delivery_dates = json_encode($delivery_dates);      
-      $this->set('delivery_dates', $delivery_dates);
-      $this->render('/elements/supplier_getalljson', 'ajax');      
+      $deliveryDates = $this->Delivery->find('all', array(
+        'conditions' => array(
+          'Delivery.date <=' => $nextDelivery['Delivery']['date']), 'order' => 'Delivery.date DESC'
+        )
+      );
+      Configure::write('debug', 0);
+      $this->autoRender = false; 
+      $this->autoLayout = false;
+      echo(json_encode($deliveryDates));
+      exit(1);      
     }
   }
 
@@ -132,7 +125,7 @@ class DeliveriesController extends AppController {
         $this->redirect(array('action' => 'index'));
       } else {
         $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 
-                                 'flash_error');
+        'flash_error');
       }
     }
   }
@@ -146,11 +139,11 @@ class DeliveriesController extends AppController {
         $this->redirect(array('action' => 'index'));
       } else {
         $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 
-                                 'flash_error');
+        'flash_error');
       }
     }
   }
-  
+
   function admin_edit($id = null) {
     $this->layout = "admin_add";  
     if (!$id && empty($this->data)) {
@@ -212,7 +205,7 @@ class DeliveriesController extends AppController {
       $this->render('/elements/is_dates_consecutive');
     }
   }
-  
+
   function coordinator_edit($id = null) {
     if($this->RequestHandler->isAjax()) {
       $this->autoRender = false; 
@@ -258,7 +251,7 @@ class DeliveriesController extends AppController {
       }
     }     
   }
-  
+
   function supplier_edit($id = null) {
     $this->layout = "supplier/add";
     if($this->RequestHandler->isAjax()) {
@@ -275,7 +268,7 @@ class DeliveriesController extends AppController {
           $delivery['Delivery']['closed'] = false;    
         }
         $this->Delivery->save($delivery);
-        
+
       }
     } else {
       //Non-Ajax request 
@@ -289,7 +282,7 @@ class DeliveriesController extends AppController {
           $this->redirect(array('action' => 'index'));
         } else {
           $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 
-                                   'flash_error');
+          'flash_error');
         }
       }
       if (empty($this->data)) {
@@ -301,7 +294,7 @@ class DeliveriesController extends AppController {
 
     }
   }
-  
+
   function edit($id = null) {
     if($this->RequestHandler->isAjax()) {
       Configure::write('debug', 0);
@@ -338,6 +331,6 @@ class DeliveriesController extends AppController {
     return $this->Order->findAllByStatusAndDeliveryIdAndUserOrganizationId(
       'packed', $deliveryId, $this->currentUser['User']['organization_id']);
   }
-    
+
 }
 ?>
