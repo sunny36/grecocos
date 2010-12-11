@@ -9,7 +9,7 @@ if ( stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml") ) {
 }
 echo "<?xml version='1.0' encoding='utf-8'?>";
 echo "<rows>";
-echo "<page>".$page."</page>";
+echo "<page>1</page>";
 echo "<records>".$count."</records>";
 for($i=0;$i<sizeof($orders);$i++){
 echo "<row id='".$orders[$i]['Order']['id']."'>";            
