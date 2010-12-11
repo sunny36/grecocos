@@ -43,35 +43,28 @@ class OrdersController extends AppController {
     $this->layout = 'supplier/index';
     if($this->RequestHandler->isAjax()) {
       if (isset($this->params['url']['organization_id'])) {
-        $page = $this->params['url']['page']; 
-        $limit = $this->params['url']['rows']; 
         $sidx = $this->params['url']['sidx']; 
         $sord = $this->params['url']['sord']; 
         if(!$sidx) $sidx =1;
-        $search = $this->params['url']['_search'];     
         $nextDelivery = $this->Delivery->findByNextDelivery(true);
-        $params = array('conditions' => array(
-          'Order.status <>' => 'entered', 'Order.delivery_id' => $nextDelivery['Delivery']['id']));
-        if ($search == "true") {
+        $conditions = array(); 
+        $conditions += array('User.organization_id' => $this->params['url']['organization_id']);
+        if ($this->params['url']['_search'] == "true") {
+          $conditions += array('Order.delivery_id' => $this->params['url']['delivery_date']);
           if ($this->params['url']['status'] == "all") {
-            $params = array('conditions' => array(
-              'Order.status <>' => 'entered', 'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+            $conditions += array('Order.status <>' => 'entered'); 
           } 
           if ($this->params['url']['status'] == "packed") {
-            $params = array('conditions' => array(
-              'Order.status' => array('packed', 'delivered'), 
-              'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+            $conditions += array('Order.status' => array('packed', 'delivered')); 
           } 
           if ($this->params['url']['status'] == "paid") {
-            $params = array('conditions' => array(
-              'Order.status' => $this->params['url']['status'], 
-              'Order.delivery_id' => $this->params['url']['delivery_date'])); 
+            $conditions += array('Order.status' => $this->params['url']['status']); 
           }         
+        } else {
+          $conditions += array('Order.status <>' => 'entered', 'Order.delivery_id' => $nextDelivery['Delivery']['id']);
         }
-        $orders = $this->Order->find('all', $params);
-        $count = $this->Order->find('count', $params);
-        $this->set('page',$page);
-        $this->set('count',$count); 
+        $orders = $this->Order->find('all', array('conditions' => $conditions));
+        $this->set('count', count($orders)); 
         $this->set('orders', $orders);      
         $this->render('/elements/supplier_orders', 'ajax');
       }
