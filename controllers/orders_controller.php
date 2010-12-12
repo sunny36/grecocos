@@ -247,42 +247,36 @@ class OrdersController extends AppController {
     $this->layout = 'supplier/index';
     $nextDelivery = $this->Delivery->getAllDeliveriesAfterNextDelivery(); 
     $this->set('next_delivery', $nextDelivery);
-    if($this->RequestHandler->isAjax()) {
-      $sidx = $this->params['url']['sidx']; 
-      $sord = $this->params['url']['sord']; 
-      if(!$sidx) $sidx ="date";
-      if(!$sord) $sord ="desc";
-      $count = $this->Delivery->find('count');
-      $this->log($count);
-      $params = array('conditions' => array('Delivery.next_delivery' => true)); 
-      $next_delivery = $this->Delivery->find('first', $params);
-      $params = array(
-        'conditions' => array(
-          'Delivery.date <=' => $next_delivery['Delivery']['date']),
-        'order' => array('Delivery.' . $sidx . ' ' . strtoupper($sord), 'Delivery.date DESC')); 
-      $delivery_dates = $this->Delivery->find('all', $params); 
-      $this->log(count($delivery_dates));
-      App::import( 'Helper', 'Time' );
-      $time = new TimeHelper;
-      foreach($delivery_dates as &$delivery) {
-        $delivery['Delivery']['date'] = 
-          $time->format($format = 'd-m-Y', $delivery['Delivery']['date']);
-        $packed = 0; 
-        $paid = 0;
-        foreach($delivery['Order'] as $order) {
-          if($order['status'] == "delivered") {
-            $packed = $packed + 1;
-          }
-          if($order['status'] == "packed") $packed = $packed + 1;
-          if($order['status'] == "paid") $paid = $paid + 1;
-        }         
-        $delivery['Delivery']['packed'] = $packed;
-        $delivery['Delivery']['ordered'] = $packed + $paid;
+      if($this->RequestHandler->isAjax()) {
+    if (isset($this->params['url']['organization_id'])) {
+        $sidx = $this->params['url']['sidx']; 
+        $sord = $this->params['url']['sord']; 
+        if(!$sidx) $sidx ="date";
+        if(!$sord) $sord ="desc";
+        $count = $this->Delivery->find('count');
+        $next_delivery = $this->Delivery->findByNextDelivery(true);
+        $params = array(
+          'conditions' => array(
+            'Delivery.date <=' => $next_delivery['Delivery']['date']),
+          'order' => array('Delivery.' . $sidx . ' ' . strtoupper($sord), 'Delivery.date DESC')); 
+        $delivery_dates = $this->Delivery->find('all', $params); 
+        foreach($delivery_dates as &$delivery) {
+          $packed = 0; 
+          $paid = 0;
+          foreach($delivery['Order'] as $order) {
+            if($order['status'] == "delivered") {
+              $packed = $packed + 1;
+            }
+            if($order['status'] == "packed") $packed = $packed + 1;
+            if($order['status'] == "paid") $paid = $paid + 1;
+          }         
+          $delivery['Delivery']['packed'] = $packed;
+          $delivery['Delivery']['ordered'] = $packed + $paid;
+        }
+        $this->set('count',$count); 
+        $this->set('delivery_dates', $delivery_dates);
+        $this->render('/elements/supplier_close_batch', 'ajax');
       }
-
-      $this->set('count',$count); 
-      $this->set('delivery_dates', $delivery_dates);
-      $this->render('/elements/supplier_close_batch', 'ajax');
     }
   }
 

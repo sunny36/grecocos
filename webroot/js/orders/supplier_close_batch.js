@@ -2,9 +2,7 @@ var productsNum = 0;
 $(document).ready(function(){
     var lastsel2;
     jQuery("#delivery_dates").jqGrid({
-  
-        url: '/index.php/supplier/orders/close_batch',
-  	datatype: "xml",
+  	datatype: "local",
      	colNames:['Delivery Date', 'Next Delivery', 'Total Orders', 
                   'Total Packed', 'Closed', 'Actions'],
      	colModel:[
@@ -29,6 +27,7 @@ $(document).ready(function(){
         sortorder: "desc",
         editurl: '/index.php/supplier/deliveries/edit',
         caption: "Delivery Dates",
+        toolbar: [true, "top"],
         gridComplete: function(){
             var ids = jQuery("#delivery_dates").jqGrid('getDataIDs');
             for(var i=0;i < ids.length;i++){
@@ -38,7 +37,27 @@ $(document).ready(function(){
             } 
         }               
     });	
-    
+
+      $.getJSON('/index.php/organizations/index.json', function (data) {
+      var organizations = data;
+      $('#t_delivery_dates').append('<select id="organizationsSelect"></select>');
+      $('#organizationsSelect').append('<option value="">Please Select</option>');
+      $.each(organizations, function (index, value) {
+        $('#t_delivery_dates select')
+          .append('<option value="' + value["Organization"]["id"] + '>' + value['Organization']['delivery_address'] + 
+                  '</option>');
+      });
+
+  });
+  $('#organizationsSelect').live('change', function () {
+    var organizationId = $(this).attr('value');
+    if (organizationId > 0) {
+     jQuery("#delivery_dates")
+      .jqGrid('setGridParam', {url: "/index.php/supplier/orders/close_batch?organization_id=" + organizationId});
+     $("#delivery_dates").jqGrid('setGridParam',{datatype:'xml'}).trigger('reloadGrid');
+    }
+  }); 
+
     //confirm if total orders != packed orders
     $('input').live('click', function() {
       if(this.id.match(/\d_closed/)){
