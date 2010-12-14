@@ -24,9 +24,27 @@ class DeliveriesController extends AppController {
 
   function supplier_index() {
     $this->layout = "supplier/index";  
-    $this->Delivery->recursive = 3;
-    $this->paginate = array('order' => array('Delivery.date DESC'));
-    $this->set('deliveries', $this->paginate());
+    if ($this->RequestHandler->isAjax()) {
+      if (isset($this->params['url']['organization_id'])) {
+        $deliveries = $this->Delivery->find('all', array(
+          'conditions' => array('Delivery.organization_id' => $this->params['url']['organization_id']), 
+          'order' => array('Delivery.date DESC')
+        ));
+        list($response->page, $response->total, $response->records) = array(1, 1, count($deliveries));
+        $i = 0; 
+        foreach ($deliveries as $delivery) {
+          $response->rows[$i]['id'] = $delivery['Delivery']['id'];
+          $response->rows[$i]['cell'] = array(
+            $delivery['Delivery']['id'], $delivery['Delivery']['date'], $delivery['Delivery']['next_delivery']);
+          $i++;
+        }
+        Configure::write('debug', 0);
+        $this->autoRender = false;
+        $this->autoLayout = false;
+        echo(json_encode($response));
+        exit(1);            
+      }
+    }
   }
 
   function coordinator_index() {
@@ -115,17 +133,37 @@ class DeliveriesController extends AppController {
     }
     $this->set('delivery', $this->Delivery->read(null, $id));
   }
-
+  
+  function validate_add_delivery_date() {
+    if ($this->RequestHandler->isAjax()) {
+      $this->Delivery->set(array(
+        'Delivery' => array('date' => $this->params['form']['Date'], 'next_delivery' => false))
+      );
+      $errors = $this->Delivery->invalidFields();
+      Configure::write('debug', 0);
+      $this->autoRender = false; 
+      $this->autoLayout = false;
+      echo(json_encode($errors));
+      exit(1);      
+    }
+  }
   function supplier_add() {
-    $this->layout = "supplier/add";  
-    if (!empty($this->data)) {
-      $this->Delivery->create();
-      if ($this->Delivery->save($this->data)) {
-        $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'delivery'), 'flash_notice');
-        $this->redirect(array('action' => 'index'));
-      } else {
-        $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 
-        'flash_error');
+    $this->layout = "supplier/add";
+    if ($this->RequestHandler->isAjax()) {
+      $delivery = $this->Delivery->create(array(
+        'Delivery' => array('date' => $this->params['form']['date'], 'next_delivery' => false))
+      );
+      $this->Delivery->save($delivery);
+    } else {
+      if (!empty($this->data)) {
+        $this->Delivery->create();
+        if ($this->Delivery->save($this->data)) {
+          $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'delivery'), 'flash_notice');
+          $this->redirect(array('action' => 'index'));
+        } else {
+          $this->Session->setFlash(
+            sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 'flash_error');
+        }
       }
     }
   }
@@ -165,6 +203,12 @@ class DeliveriesController extends AppController {
   }
 
   function supplier_delete($id = null) {
+    if($this->RequestHandler->isAjax()) {  
+      Configure::write('debug', 0);
+      $this->autoRender = false;
+      $this->Delivery->delete($this->params['form']['id']);
+      exit(1);
+    }
     if (!$id) {
       $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'delivery'));
       $this->redirect(array('action'=>'index'));
@@ -324,6 +368,17 @@ class DeliveriesController extends AppController {
       $orders = $this->findAllPackedOrders($this->params['url']['delivery_date']); 
       $this->set('default_delivery_date', $this->params['url']['delivery_date']);
       $this->set('orders', $orders);
+    }
+  }
+
+  function getOrders($id = null) {
+    if ($this->RequestHandler->isAjax()) {
+      $totalOrders = $this->Order->find('count', array('conditions' => array('Order.delivery_id' => $id)));
+      Configure::write('debug', 0);
+      $this->autoRender = false; 
+      $this->autoLayout = false;
+      echo(json_encode(array('total_orders' => $totalOrders)));
+      exit(1);      
     }
   }
 
