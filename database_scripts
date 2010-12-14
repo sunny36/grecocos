@@ -1,0 +1,3 @@
+-- Add organization_id to deliveries and set all of them to be FAO
+ALTER TABLE `somchok_grecocos`.`deliveries` ADD COLUMN `organization_id` INT NULL  AFTER `paid` ;
+UPDATE deliveries SET organization_id =1;
