@@ -79,12 +79,11 @@ class Delivery extends AppModel {
   }
 
   function getDeliveryDatesList($includeAll=false) {
-    $nextDelivery = $this->find(
-      'first', array('conditions' => array('Delivery.next_delivery' => true)));
+    $nextDelivery = $this->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
     $deliveryDates = $this->find(
       'list', array(
         'conditions' => array(
-          'Delivery.date <= ' => $nextDelivery['Delivery']['date']), 
+          'Delivery.date <= ' => date('Y-m-d', strtotime($nextDelivery['Delivery']['date']))), 
         'order' => array('Delivery.date DESC'))
       ); 
     if ($includeAll) {
