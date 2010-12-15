@@ -35,11 +35,20 @@ class LineItemsController extends AppController {
     }
   }
 	
-	function coordinator_index() {
+  function coordinator_index() {
     $this->set('title_for_layout', 'Coordinator | Batch Reports');
     $this->layout = "coordinator/index";
-	  $this->__index();
-	}
+    $Delivery = ClassRegistry::init('Delivery');
+    $deliveryDates = $Delivery->getDeliveryDatesList(); 
+    $this->set('delivery_dates', $deliveryDates);
+    if (isset($this->params['url']['delivery_date'])) {
+      if ($this->params['url']['delivery_date'] < 1) {
+        $this->Session->setFlash('Please select a delivery date.', 'flash_notice');
+      } else {
+        $this->__index($this->currentUser['User']['organization_id']);
+      }
+    }
+  }
 
   #TODO Refactor this method; too long  
 	private function __index($organizationId) {

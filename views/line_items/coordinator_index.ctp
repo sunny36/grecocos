@@ -31,9 +31,9 @@
         </label>
         Delivery Date
         <?php 
-          if (isset($default_delivery_id)) {
+          if (isset($this->params['url']['delivery_date'])) {
             e($form->select('delivery_date', $delivery_dates, 
-                            array('selected' => $default_delivery_id))); 
+                            array('selected' => $this->params['url']['delivery_date']))); 
           } else {
             e($form->select('delivery_date', $delivery_dates, NULL)); 
 
