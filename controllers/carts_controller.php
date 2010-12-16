@@ -1,7 +1,6 @@
 <?php
 class CartsController extends AppController{
-  var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category', 
-              'Cart', 'Transaction');
+  var $uses = array('Product', 'Order', 'LineItem', 'Delivery', 'Category', 'Cart', 'Transaction');
   var $components = array('Email');
   var $helpers = array('Html', 'Form', 'Javascript', 'Cart');
 
@@ -10,40 +9,31 @@ class CartsController extends AppController{
   }
 
   function index(){
-    $MasterCategory = ClassRegistry::init('MasterCategory');
-    $masterCategories = $MasterCategory->find('all', array(
-      'order' => array('MasterCategory.priority'),
-      'recursive' => -1));
-   
     $this->layout = 'cart'; 
+    $this->loadModel('MasterCategory');
+    $masterCategories = $this->MasterCategory->find(
+      'all', array('order' => array('MasterCategory.priority'),'recursive' => -1));
     $this->Category->Behaviors->attach('Containable'); 
     foreach($masterCategories as &$masterCategory) {
-      $products = $this->Category->find('all', array(
-        'contain' => array(
-          'Product' => array(
-            'conditions' => array(
-              'AND' => array(
-                'Product.display = ' => '1', 'Product.stock > ' => '0',
-                'Product.master_category_id' => $masterCategory['MasterCategory']['id'])
-              )
-            )
-          ),
+      $products = $this->Category->find('all', array('contain' => array('Product' => array('conditions' => array(
+        'AND' => array(
+          'Product.display = ' => '1', 
+          'Product.stock > ' => '0', 
+          'Product.master_category_id' => $masterCategory['MasterCategory']['id'])
+        ))),
         'order' => 'Category.priority'));
       $masterCategory['Products'] = $products;
     }
-     $this->log($masterCategories );
     $this->set('products', $masterCategories);
-    if (Configure::read('Grecocos.closed') == "yes") {
+    $this->loadModel('Configuration');
+    $isSiteClosed = $this->Configuration->findByKeyAndOrganizationId(
+      'closed', $this->currentUser['User']['organization_id']);
+    if ($isSiteClosed == "yes") {
       $closed = true;
-      $nextDelivery = $this->Delivery->find('first', array(
-                        'conditions' => array(
-                          'Delivery.next_delivery' => true)));
+      $nextDelivery = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
       App::import( 'Helper', 'Time' );
       $time = new TimeHelper;
-      $nextDeliveryDate = $time->format($format = 'd-m-Y', 
-                          $nextDelivery['Delivery']['date'],
-                          null, 
-                          "+7.0");
+      $nextDeliveryDate = $time->format($format = 'd-m-Y', $nextDelivery['Delivery']['date'], null, "+7.0");
       $this->set('nextDeliveryDate', $nextDeliveryDate);
     } else {
       $closed = false;
