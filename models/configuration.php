@@ -1,15 +1,15 @@
 <?php
 class Configuration extends AppModel {
 	var $name = 'Configuration';
-	var $displayField = 'key';
-	
-	 function load()  {  
-	   $settings = $this->find('all');  
-     foreach ($settings as $variable)  {  
-       Configure::write('Grecocos.' . $variable['Configuration']['key'],  
-                        $variable['Configuration']['value']);  
-      }  
-    }  
+  var $displayField = 'key';
+  var $belongsTo = 'Organization';
+
+  function findByKeyAndOrganizationId($key, $organizationId) {
+    $this->recursive = -1;
+    $configuration = $this->find('first', array(
+      'conditions' => array('Configuration.key' => $key, 'Configuration.organization_id' => $organizationId)));
+    return $configuration['Configuration']['value'];
+  }
   
 }
 ?>
