@@ -399,12 +399,19 @@ class OrdersController extends AppController {
   }
 
   function supplier_products_orders() {    
-    $this->set('title_for_layout', 'Supplier | Products Orders Reports');
     $this->layout = "supplier/index"; 
+    $this->set('title_for_layout', 'Supplier | Products Orders Reports');    
     $Delivery = ClassRegistry::init('Delivery');
     $deliveryDates = $Delivery->getDeliveryDatesList(); 
     $this->set('delivery_dates', $deliveryDates);
+    $this->loadModel('Organization');
+    $this->set('organizations', $this->Organization->getOrganizationsList());
     if (!empty($this->params['url']['delivery_date'])) {
+      if (empty($this->params['url']['organizations'])) {
+        $this->Session->setFlash('Please select both outlet and delivery date.', 'flash_notice');
+        $this->redirect(array('action' => 'products_orders'));
+      }
+      
       $Order = ClassRegistry::init('Order');
       $orders = $Order->findAllByDeliveryIdAndStatus(
         $this->params['url']['delivery_date'], array('paid', 'packed', 'delivered'));

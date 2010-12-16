@@ -1,4 +1,6 @@
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
+<?php echo $javascript->link('jquery.blockUI', false); ?>
+<?php echo $javascript->link('orders/supplier_products_orders', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 
 <div class="breadcrumbs">
@@ -16,10 +18,7 @@
   <div id="content-main" style="width: auto !important">
     <div class="module" id="changelist">
       <div id="toolbar">
-        <?php 
-    	    e($form->create(null, array(
-    	      'type' => 'get', 'action' => 'products_orders'))); 
-    	  ?>
+        <?php e($form->create(null, array('type' => 'get', 'action' => 'products_orders'))); ?>
       <div><!-- DIV needed for valid HTML -->
       <label for="searchbar">
         <?php echo $html->image('admin/icon_searchbox.png')?>
@@ -35,17 +34,18 @@
           }
         ?>
         &nbsp;&nbsp;
-      Delivery Date
-      <?php 
-        if (isset($default_delivery_date)) {
-          e($form->select('delivery_date', $delivery_dates, array('selected' => $default_delivery_date), 
-                          array('empty' => false))); 
+        <span id="delivery_date_span">
+          <label id="delivery_date_label">Delivery Date</label>
+          <?php 
+            if (isset($default_delivery_id)) {
+              e($form->select('delivery_date', $delivery_dates, 
+                              array('selected' => $default_delivery_id))); 
+            } else {
+              e($form->select('delivery_date', $delivery_dates, NULL)); 
 
-        } else {
-          e($form->select('delivery_date', $delivery_dates, NULL, array('empty' => false))); 
-
-        }
-      ?>
+            }
+          ?>
+         </span>
        &nbsp;&nbsp;
     	<?php e($form->submit('Download Report', array('div' => false))); ?>
     	 &nbsp;&nbsp;
