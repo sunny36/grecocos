@@ -24,7 +24,7 @@ class ConfigurationsController extends AppController {
   
   function coordinator_index() {
     $this->layout = "coordinator/add";
-    $this->__index();
+    $this->__index($this->currentUser['User']['organization_id']);
   }
   
   function supplier_index() {
@@ -32,16 +32,12 @@ class ConfigurationsController extends AppController {
     $this->__index();
   }
   
-  function __index() {
-    $this->Configuration->recursive = 0;
-    $this->set('closed', Configure::read('Grecocos.closed'));
+  function __index($organizationId) {
+    $this->loadModel('Configuration');
+    $this->set('closed', $this->Configuration->findByKeyAndOrganizationId('closed', $organizationId));
     if (!empty($this->data)) {
-      $closed = $this->Configuration->findByKey('closed');
-      $closed['Configuration']['value'] = 
-        $this->data['Configuration']['closed']; 
-      $this->Configuration->save($closed);
-      $closed = $this->Configuration->findByKey('closed');
-      if ($closed['Configuration']['value'] == "no") {
+      $this->Configuration->setKey('closed', $this->data['Configuration']['closed'], $organizationId);
+      if ($this->Configuration->findByKeyAndOrganizationId('closed', $organizationId) == "no") {
         $flashMessage = "The website has been opened. ";
       } else { 
         // $closed['Configuration']['value'] == "yes"
@@ -49,8 +45,7 @@ class ConfigurationsController extends AppController {
       }
       if ($this->Session->check('sendEmailReOpenSite')) {
         if ($this->Session->read('sendEmailReOpenSite')) {
-          $flashMessage = $flashMessage . 
-                          "Emails have been sent to all customers.";
+          $flashMessage = $flashMessage . "Emails have been sent to all customers.";
           $this->Session->delete('sendEmailReOpenSite');
         }
       }
@@ -58,6 +53,7 @@ class ConfigurationsController extends AppController {
       $this->redirect(array('action' => 'index'));
     }   
   }
+  
   function isNextDeliveryDateInFuture() {    
     if($this->RequestHandler->isAjax()) {
       Configure::write('debug', 0);
