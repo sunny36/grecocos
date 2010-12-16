@@ -1,3 +1,17 @@
 -- Add organization_id to deliveries and set all of them to be FAO
 ALTER TABLE `somchok_grecocos`.`deliveries` ADD COLUMN `organization_id` INT NULL  AFTER `paid` ;
 UPDATE deliveries SET organization_id =1;
+
+-- Add organization_id to configurations and set all of them to be FAO
+alter table configurations add organization_id INT(11);
+UPDATE configurations SET organization_id =1;
+
+-- Create emails table
+CREATE TABLE `emails` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `to` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `body` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
