@@ -18,6 +18,16 @@ class ConfigurationTestCase extends CakeTestCase {
     $this->assertTrue(in_array($isClosed, array('yes', 'no')));
   }
   
+  function testSetKey() {
+    $this->Organization =& ClassRegistry::init('Organization');
+    $this->Organization->recursive = -1;    
+    $organization = $this->Organization->findByDeliveryAddress('FAO RAP Bangkok');
+    $this->assertTrue(method_exists($this->Configuration, 'setKey'));
+    $this->assertTrue($this->Configuration->setKey('closed', 'no', $organization['Organization']['id']));
+    $isClosed = $this->Configuration->findByKeyAndOrganizationId('closed', $organization['Organization']['id']);
+    $this->assertEqual($isClosed, 'no');
+  }  
+  
 	function endTest() {
 		unset($this->Configuration);
 		ClassRegistry::flush();

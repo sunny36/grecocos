@@ -11,5 +11,16 @@ class Configuration extends AppModel {
     return $configuration['Configuration']['value'];
   }
   
+  function setKey($key, $value, $organizationId) {
+    $configuration = $this->find('first', array(
+      'conditions' => array('Configuration.key' => $key, 'Configuration.organization_id' => $organizationId)));    
+    $configuration['Configuration']['value'] = $value;
+    if ($this->save($configuration)) {
+      return true;
+    } else {
+      return false;
+    }    
+  }
+  
 }
 ?>
