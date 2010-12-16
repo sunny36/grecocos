@@ -65,6 +65,7 @@ $(document).ready(function(){
 
   $.getJSON('/index.php/organizations/index.json', function (data) {
     var organizations = data;
+    $('#t_delivery_dates').append('<label>Outlet </label>');
     $('#t_delivery_dates').append('<select id="organizationsSelect"></select>');
     $('#organizationsSelect').append('<option value="">Please Select</option>');
     $.each(organizations, function (index, value) {

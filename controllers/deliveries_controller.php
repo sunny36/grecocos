@@ -23,7 +23,7 @@ class DeliveriesController extends AppController {
   }
 
   function supplier_index() {
-    $this->layout = "supplier/index";  
+    $this->layout = "supplier/orders/index";  
     if ($this->RequestHandler->isAjax()) {
       if (isset($this->params['url']['organization_id'])) {
         $deliveries = $this->Delivery->find('all', array(
@@ -49,18 +49,23 @@ class DeliveriesController extends AppController {
 
   function coordinator_index() {
     $this->layout = "coordinator/index";  
-    $this->Delivery->recursive = 3;
-    $this->paginate = array('order' => array('Delivery.date DESC'));
+    $this->paginate = array(
+      'conditions' => array('Delivery.organization_id' => $this->currentUser['User']['organization_id']), 
+      'order' => array('Delivery.date DESC')
+    );
     $this->set('deliveries', $this->paginate());
   }
 
-  function supplier_getalljson() {
+  function supplier_getalljson($id = null) {
+    //$id = organization id
     if($this->RequestHandler->isAjax()) {
       $nextDelivery = $this->Delivery->findByNextDelivery(true);
       $this->Delivery->recursive = 0; 
       $deliveryDates = $this->Delivery->find('all', array(
         'conditions' => array(
-          'Delivery.date <=' => $nextDelivery['Delivery']['date']), 'order' => 'Delivery.date DESC'
+          'Delivery.date <=' => date('Y-m-d', strtotime($nextDelivery['Delivery']['date'])), 
+          'Delivery.organization_id' => intval($id)), 
+        'order' => 'Delivery.date DESC'
         )
       );
       Configure::write('debug', 0);
@@ -171,34 +176,14 @@ class DeliveriesController extends AppController {
   function coordinator_add() {
     $this->layout = "coordinator/add";  
     if (!empty($this->data)) {
+      $this->data['Delivery']['organization_id'] = $this->currentUser['User']['organization_id'];
       $this->Delivery->create();
       if ($this->Delivery->save($this->data)) {
-        $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'delivery'), 'flash_notice');
+        $this->Session->setFlash('The delivery has been saved', 'flash_notice');
         $this->redirect(array('action' => 'index'));
       } else {
-        $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'), 
-        'flash_error');
+        $this->Session->setFlash('The delivery could not be saved. Please, try again.', 'flash_error');
       }
-    }
-  }
-
-  function admin_edit($id = null) {
-    $this->layout = "admin_add";  
-    if (!$id && empty($this->data)) {
-      $this->Session->setFlash(sprintf(__('Invalid %s', true), 'delivery'));
-      $this->redirect(array('action' => 'index'));
-    }
-    if (!empty($this->data)) {
-      if ($this->Delivery->save($this->data)) {
-        $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'delivery'));
-        $this->redirect(array('action' => 'index'));
-      } else {
-        $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'delivery'));
-      }
-    }
-    if (empty($this->data)) {
-      $this->data = $this->Delivery->read(null, $id);
-      $this->set('delivery', $this->Delivery->read(null, $id));
     }
   }
 
