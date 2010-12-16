@@ -70,9 +70,9 @@ class Delivery extends AppModel {
   }
 
   function getAllDeliveriesAfterNextDelivery() {
-    $currentDelivery = $this->find(
-      'first', array('conditions' => array('Delivery.next_delivery' => true)));
-    $nextDelivery = $this->find('all', array('conditions' => array(
+    $currentDelivery = $this->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
+    $nextDelivery = $this->find('all', array(
+      'conditions' => array(
       'Delivery.date >' => $currentDelivery['Delivery']['date']), 
     'order' => array('Delivery.date')));
     return $nextDelivery; 
