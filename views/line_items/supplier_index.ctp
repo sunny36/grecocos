@@ -1,7 +1,8 @@
-<?php echo $javascript->link('jquery-1.4.2.min.js', false); ?>
 <?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
+<?php echo $javascript->link('line_items/supplier_index', false); ?>
 <?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
 <?php echo $javascript->link('admin/admin_index.js', false); ?>
+<?php echo $javascript->link('jquery.blockUI.js', false); ?>
 <style>
 .numbers {
   text-align: right;
@@ -22,15 +23,12 @@
   <div id="content-main">
     <div class="module" id="changelist">
       <div id="toolbar">
-        <?php 
-    	    e($form->create(null, array('type' => 'get', 
-    	                                'action' => 'index'))); 
-    	  ?>
+        <?php e($form->create(null, array('type' => 'get', 'action' => 'index')));?>
       <div><!-- DIV needed for valid HTML -->
       <label for="searchbar">
           <?php echo $html->image('admin/icon_searchbox.png')?>
         </label>
-        Outlet
+        <label>Outlet</label>
         <?php 
           if (isset($this->params['url']['organizations'])) {
             echo $form->select(
@@ -41,17 +39,19 @@
           }
         ?>
         &nbsp;&nbsp;
-        Delivery Date
-        <?php 
-          if (isset($default_delivery_id)) {
-            e($form->select('delivery_date', $delivery_dates, 
-                            array('selected' => $default_delivery_id))); 
-          } else {
-            e($form->select('delivery_date', $delivery_dates, NULL)); 
+        <span id="delivery_date_span">
+          <label id="delivery_date_label">Delivery Date</label>
+          <?php 
+            if (isset($default_delivery_id)) {
+              e($form->select('delivery_date', $delivery_dates, 
+                              array('selected' => $default_delivery_id))); 
+            } else {
+              e($form->select('delivery_date', $delivery_dates, NULL)); 
 
-          }
-        ?>
-         &nbsp;&nbsp;
+            }
+          ?>
+           &nbsp;&nbsp;
+         </span>
       	<?php e($form->submit('Search', array('div' => false))); ?>
       	&nbsp;&nbsp;
       	<?php
