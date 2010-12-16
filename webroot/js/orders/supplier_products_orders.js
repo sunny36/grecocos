@@ -11,6 +11,21 @@ $(document).ready(function() {
       $.unblockUI();
     }
   });
+  
+  $('#download_report').click(function() {
+    var result;
+    if ($('#delivery_date_span').is(':visible') == false) {
+      custom_confirm_ok('Please select an outlet', function() {return false;});      
+      result = false;      
+    } else if ($('#OrderOrganizations').attr('value').length == 0 || 
+               $('#OrderDeliveryDate').attr('value').length == 0) {
+      custom_confirm_ok('Please select both an outlet and a delivery date', function() {return false;});      
+      result = false;
+    } else {
+      result = true;
+    }
+    return result;
+  });
 });
 
 function hideDeliveryDate () {

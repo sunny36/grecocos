@@ -1,8 +1,8 @@
-<?php echo $javascript->link('jquery-ui-1.8.custom.min.js', false); ?>
+<?php echo $javascript->link('jquery-ui-1.8.2.custom.min', false); ?>
 <?php echo $javascript->link('jquery.blockUI', false); ?>
+<?php echo $javascript->link('util', false); ?>
 <?php echo $javascript->link('orders/supplier_products_orders', false); ?>
-<?php echo $html->css('jquery-ui/smoothness/jquery-ui-1.8.custom',null, array('inline' => false)); ?>
-
+<?php echo $html->css('jquery-ui/redmond/jquery-ui-1.8.2.custom',null, array('inline' => false)); ?>
 <div class="breadcrumbs">
   <?php 
    e($html->link('Home', '/supplier')); 
@@ -47,7 +47,7 @@
           ?>
          </span>
        &nbsp;&nbsp;
-    	<?php e($form->submit('Download Report', array('div' => false))); ?>
+    	<?php e($form->submit('Download Report', array('div' => false, 'id' => 'download_report'))); ?>
     	 &nbsp;&nbsp;
     	                                      
     </div>
