@@ -24,6 +24,17 @@
       <label for="searchbar">
         <?php echo $html->image('admin/icon_searchbox.png')?>
       </label>
+        Outlet
+        <?php 
+          if (isset($this->params['url']['organizations'])) {
+            echo $form->select(
+              'organizations', $organizations, array('selected' => $this->params['url']['organizations'])
+            ); 
+          } else {
+            echo $form->select('organizations', $organizations, NULL); 
+          }
+        ?>
+        &nbsp;&nbsp;
       Delivery Date
       <?php 
         if (isset($default_delivery_date)) {
