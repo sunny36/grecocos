@@ -74,6 +74,7 @@ $(document).ready(function(){
 
   $.getJSON('/index.php/organizations/index.json', function (data) {
       var organizations = data;
+      $('#t_orders').append('<label>Outlet </label>');
       $('#t_orders').append('<select id="organizationsSelect"></select>');
       $('#organizationsSelect').append('<option value="">Please Select</option>');
       $.each(organizations, function (index, value) {
@@ -83,8 +84,8 @@ $(document).ready(function(){
       });
   });
 
-  function loadDeliveryDates() {
-    $.get('/index.php/supplier/deliveries/getalljson', function(data) {
+  function loadDeliveryDates(organizationId) {
+    $.get('/index.php/supplier/deliveries/getalljson/' + organizationId, function(data) {
     var delivery_dates = eval('(' + data + ')');
     $("#gs_delivery_date option[value='loading']").remove();
       for(i = 0; i < delivery_dates.length; i++) {
@@ -105,8 +106,7 @@ $(document).ready(function(){
      jQuery("#orders")
       .jqGrid('setGridParam', {url: "/index.php/supplier/orders/index?organization_id=" + organizationId});
      $("#orders").jqGrid('setGridParam',{datatype:'xml'}).trigger('reloadGrid');
-
-      loadDeliveryDates();
+      loadDeliveryDates(organizationId);
       $('#gs_status').show();
     }
   }); 

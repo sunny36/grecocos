@@ -40,7 +40,7 @@ class OrdersController extends AppController {
 
 
   function supplier_index() {
-    $this->layout = 'supplier/index';
+    $this->layout = 'supplier/orders/index';
     if($this->RequestHandler->isAjax()) {
       if (isset($this->params['url']['organization_id'])) {
         $sidx = $this->params['url']['sidx']; 
@@ -407,8 +407,7 @@ class OrdersController extends AppController {
     if (!empty($this->params['url']['delivery_date'])) {
       $Order = ClassRegistry::init('Order');
       $orders = $Order->findAllByDeliveryIdAndStatus(
-        $this->params['url']['delivery_date'], 
-        array('paid', 'packed', 'delivered'));
+        $this->params['url']['delivery_date'], array('paid', 'packed', 'delivered'));
       if (count($orders) < 1) {
         $this->Session->setFlash('Sorry, there is no orders for this delivery date', 'flash_notice');
         $this->redirect(array('action' => 'products_orders'));
@@ -420,8 +419,7 @@ class OrdersController extends AppController {
         }
       }
       $productIds = array_values(array_unique($productIds)); 
-      $products = $this->Product->find('all', array(
-        'conditions' => array('Product.id' => $productIds)));
+      $products = $this->Product->find('all', array('conditions' => array('Product.id' => $productIds)));
       $this->set('products', $products); 
       $productsOrders = NULL; 
       $productsOrders[0][0] = 'Id';
@@ -466,7 +464,6 @@ class OrdersController extends AppController {
         }
         $productsOrders[$i][$j] = $productTotal; 
       }
-      $this->log(count($products));
       for ($j = 2; $j < count($orders) + 3; $j++) { 
         $orderTotal = 0; 
         for ($i = 1; $i < count($products) + 1 ; $i++) { 
@@ -476,14 +473,12 @@ class OrdersController extends AppController {
         $productsOrders[$i][1] = 'รวม';
         $productsOrders[$i][$j] = $orderTotal;
       }                  
-      $this->log($productsOrders);
       $this->set('productsOrders', $productsOrders);
       App::import( 'Helper', 'Time' );
       $time = new TimeHelper;
       $Delivery = ClassRegistry::init('Delivery');
       $delivery = $Delivery->findById($this->params['url']['delivery_date']);
-      $fileName = $time->format($format = 'd-m-Y', $delivery['Delivery']['date']) . 
-        "_report.xls";
+      $fileName = $time->format($format = 'd-m-Y', $delivery['Delivery']['date']) . "_report.xls";
       $this->set('fileName', $fileName);
       $this->render('/elements/pdf_report/supplier_products_orders', 'fpdf');      
     }
