@@ -95,7 +95,6 @@ class DeliveriesController extends AppController {
       $limit = $this->params['url']['rows']; 
       $sidx = $this->params['url']['sidx']; 
       $sord = $this->params['url']['sord']; 
-
       if(!$sidx) $sidx =1;
       $params = array('conditions' => array('Delivery.closed' => true));
       $count = $this->Delivery->find('count', $params);
@@ -106,8 +105,11 @@ class DeliveriesController extends AppController {
       }
       if ($page > $total_pages) $page=$total_pages;
       $start = $limit*$page - $limit;    
-      $params = array('recursive' => 1, 'offset' => $start, 'limit' => $limit, 'conditions' => array(
-        'Delivery.closed' => true), 'order' => array('Delivery.date DESC'));
+      $params = array(
+        'recursive' => 1, 'offset' => $start, 'limit' => $limit, 
+        'conditions' => array(
+          'Delivery.closed' => true, 'Delivery.organization_id' => $this->currentUser['User']['organization_id']), 
+        'order' => array('Delivery.date DESC'));
       $deliveries = $this->Delivery->find('all', $params);
       foreach ($deliveries as &$delivery) {
         $total_received = 0; 
