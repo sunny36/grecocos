@@ -24,17 +24,20 @@ class ConfigurationsController extends AppController {
   
   function coordinator_index() {
     $this->layout = "coordinator/add";
+    $this->loadModel('Configuration');
+    $this->set('closed', $this->Configuration->findByKeyAndOrganizationId('closed', $organizationId));    
     $this->__index($this->currentUser['User']['organization_id']);
   }
   
   function supplier_index() {
     $this->layout = "supplier/add";
-    $this->__index();
+    $this->set('configurations', $this->Configuration->findAllByKey('closed'));
+    if (!empty($this->data)) {
+      $this->__index();
+    }
   }
   
   function __index($organizationId) {
-    $this->loadModel('Configuration');
-    $this->set('closed', $this->Configuration->findByKeyAndOrganizationId('closed', $organizationId));
     if (!empty($this->data)) {
       $this->Configuration->setKey('closed', $this->data['Configuration']['closed'], $organizationId);
       if ($this->Configuration->findByKeyAndOrganizationId('closed', $organizationId) == "no") {
@@ -68,8 +71,7 @@ class ConfigurationsController extends AppController {
     
   function sendEmailSiteReopen() {
     $User = ClassRegistry::init('User'); 
-    $users = $User->find('all', array('conditions' => array(
-      'User.status' => 'accepted'))); 
+    $users = $User->find('all', array('conditions' => array('User.status' => 'accepted'))); 
     foreach ($users as $user) {
       $to = $to . $user['User']['email'] . ", ";
     }
@@ -78,8 +80,7 @@ class ConfigurationsController extends AppController {
     $nextDelivery = $Delivery->findByNextDelivery(true);
     App::import( 'Helper', 'Time' );
     $timeHelper = new TimeHelper;    
-    $deliveryDate = $timeHelper->format($format = 'd-m-Y', 
-                                        $nextDelivery['Delivery']['date']);
+    $deliveryDate = $timeHelper->format($format = 'd-m-Y', $nextDelivery['Delivery']['date']);
     $body = "<p>Dear member</p>" . 
             "<p>The GRECOCOS website is opened. " .
             "You can place your orders now for delivery on " .
