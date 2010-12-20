@@ -92,6 +92,7 @@ class Delivery extends AppModel {
     return $deliveryDates; 
   }
 
+  #TODO Fix this bug due to missing Email table
   function sendEmailArrivalOfShipment($deliveryId, $organizationId) {
     $Order = ClassRegistry::init('Order'); 
     $orders = $Order->findAllByStatusAndDeliveryIdAndUserOrganizationId(
@@ -138,6 +139,12 @@ class Delivery extends AppModel {
     if (strtotime($nextDelivery['Delivery']['date']) > time()) {
       return true;
     }    
+  }
+  
+  function findNextDeliveryByOrganizationId($organizationId) {
+    return $this->find('first', array(
+      'conditions' => array('Delivery.next_delivery' => true, 'Delivery.organization_id' => $organizationId)
+      ));
   }
 
   function beforeValidate() {
