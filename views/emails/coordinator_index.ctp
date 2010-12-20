@@ -111,12 +111,13 @@ float:left;
             ?>
           </ul>                
           <?php 
-            e($form->label('user', "Customer Name", 
-                           array('class' => 'required')));
+            e($form->label('user', "Customer Name", array('class' => 'required')));
           ?> 
           <?php
             $User = ClassRegistry::init('User');
-            $users = $User->find('list', array('fields' => 'User.name'));
+            $users = $User->find('list', array(
+              'conditions' => array('User.organization_id' => $current_user['User']['organization_id']), 
+              'fields' => 'User.name'));
             e($form->select('user', $users, NULL, array('empty' => true)));
           ?>
           
