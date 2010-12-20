@@ -102,32 +102,42 @@ class CartsController extends AppController{
     }
     $total = $this->Session->read('cart_total');
     $total2 = $this->Session->read('cart_total2');
-    $delivery = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => true)));
-    $order = array('Order' => array('status' => 'entered', 'ordered_date' => date('Y-m-d H:i:s'), 'complete' => false,
-                            'user_id' => $this->currentUser['User']['id'],
-                            'delivery_id' => $delivery['Delivery']['id'], 'total' => $total,'total2' => $total2,
-                            'total_supplied' => $total, 'total2_supplied' => $total2, 'refund' => false));
+    $delivery = $this->Delivery->findNextDeliveryByOrganizationId($this->currentUser['User']['organization_id']);
+    $order = array('Order' => array(
+      'status' => 'entered', 
+      'ordered_date' => date('Y-m-d H:i:s'), 'complete' => false,
+      'user_id' => $this->currentUser['User']['id'],
+      'delivery_id' => $delivery['Delivery']['id'], 
+      'total' => $total,'total2' => $total2,
+      'total_supplied' => $total, 
+      'total2_supplied' => $total2, 
+      'refund' => false)
+    );
     $this->Order->create();
     $this->Order->save($order);
     $orderId = $this->Order->id;
     $cart = $this->Session->read('cart');			
     foreach($cart as $cartItem){
-      $lineItems['Order'][] = array('product_id' => $cartItem['id'], 
-                              'order_id' => $orderId, 
-                              'quantity' => $cartItem['quantity'], 
-                              'total_price' =>  $cartItem['subtotal'],
-                              'quantity_supplied' => $cartItem['quantity'], 
-                              'total_price_supplied' => $cartItem['subtotal'], 
-                              'total2_price' => $cartItem['subtotal2'],
-                              'total2_price_supplied' => $cartItem['subtotal2']);
+      $lineItems['Order'][] = array(
+        'product_id' => $cartItem['id'], 
+        'order_id' => $orderId, 
+        'quantity' => $cartItem['quantity'], 
+        'total_price' =>  $cartItem['subtotal'],
+        'quantity_supplied' => $cartItem['quantity'], 
+        'total_price_supplied' => $cartItem['subtotal'], 
+        'total2_price' => $cartItem['subtotal2'],
+        'total2_price_supplied' => $cartItem['subtotal2']
+      );
     }
     $this->LineItem->saveAll($lineItems['Order']);
-    $transaction = array('Transaction' => array('type' => 'Order', 'user_id' => $this->currentUser['User']['id'], 
-                                        'order_id' => $orderId, 'delivery_id' => $delivery['Delivery']['id'])); 
+    $transaction = array('Transaction' => array(
+      'type' => 'Order', '
+      user_id' => $this->currentUser['User']['id'], 
+      'order_id' => $orderId, 'delivery_id' => $delivery['Delivery']['id']
+    )); 
     $this->Transaction->create(); 
     $this->Transaction->save($transaction); 
-    $deliveryDate = $this->Delivery->find('first', array('conditions' => array('Delivery.next_delivery' => 1)));
-    $this->Session->write('deliveryDate', $deliveryDate);
+    $this->Session->write('deliveryDate', $delivery);
     $this->Session->write('orderId', $orderId);
     $this->redirect(array('controller' => 'carts', 'action' => 'checkout'));
   }
@@ -144,14 +154,12 @@ class CartsController extends AppController{
     $User = ClassRegistry::init('User');
     $user = $User->getUser($this->currentUser['User']['id']);
     $this->set('currentUser', $user);
-    $this->set('total', $this->Session->read('cart_total'));    
-    
+    $this->set('total', $this->Session->read('cart_total'));        
     $this->Session->delete('cart');
     $this->Session->delete('deliveryDate');
     $this->Session->delete('currentUser');
     $this->Session->delete('orderId');
     $this->Session->delete('cart_total');
     $this->render('/elements/invoice_pdf');
-  }
-  
+  }  
 }
