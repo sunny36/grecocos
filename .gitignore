@@ -1,6 +1,6 @@
-log/*.log
-tmp/*
-tmp/**/*
+app/log/*.log
+app/tmp/*
+app/tmp/**/*
 doc/api
 doc/app
 db/*.sqlite3
