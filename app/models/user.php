@@ -49,6 +49,10 @@ class User extends AppModel {
     return array('conditions' => array('User.organization_id' => $organizationId));
   }
   
+  function findByNameCondition($name) {
+    return array('OR' => array('User.firstname LIKE' => '%' . $name . '%', 'User.lastname LIKE' => '%' . $name . '%'));
+  }
+
   function findByNameAndOrganizationIdCondition($name, $organizationId) {
     return array(
       'conditions' => array(

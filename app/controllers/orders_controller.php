@@ -84,9 +84,8 @@ class OrdersController extends AppController {
       $condition += array('Order.id' => $this->params['url']['id']);
     }
     if (!empty($this->params['url']['user_name'])) {
-      $condition += array('OR' => array(
-        'User.firstname LIKE' => '%' . $this->params['url']['user_name'] . '%', 
-        'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%'));      
+      $condition += $this->User->findByNameCondition($this->params['url']['user_name']);
+      
     }
     if (!empty($this->params['url']['delivery_date'])) {
       if ($this->params['url']['delivery_date'] > 0) {
@@ -95,8 +94,9 @@ class OrdersController extends AppController {
     } else {
       $condition += array('Order.delivery_id' => $nextDelivery['Delivery']['id']);
     }
-    $count = $this->Order->find('count', array('conditions' => $condition));
-    $this->paginate = array('conditions' => $condition, 'limit' => $count);
+    $this->paginate = array(
+      'conditions' => $condition, 'limit' => $this->Order->find('count', array('conditions' => $condition))
+    );
     $this->set('delivery_dates', $deliveryDates);
     $this->set('orders', $this->paginate());	  
   }
@@ -117,9 +117,7 @@ class OrdersController extends AppController {
       $condition += array('Order.id' => $this->params['url']['id']); 
     } 
     if (!empty($this->params['url']['user_name'])) {
-      $condition += array('OR' => array(
-        'User.firstname LIKE' => '%' . $this->params['url']['user_name'] . '%', 
-        'User.lastname LIKE' => '%' . $this->params['url']['user_name']. '%'));      
+      $condition += $this->User->findByNameCondition($this->params['url']['user_name']);
     }
     if (!empty($this->params['url']['delivery_date'])) {
       if ($this->params['url']['delivery_date'] > 0) {
@@ -153,7 +151,6 @@ class OrdersController extends AppController {
       $sidx = $this->params['url']['sidx']; 
       $sord = $this->params['url']['sord']; 
       $order_id = $this->params['pass'][0];
-
       if(!$sidx) $sidx =1;
       $products = $this->Order->getProductsByOrderId($order_id);
       $count = count($products);
@@ -202,14 +199,14 @@ class OrdersController extends AppController {
         //Create transaction only if the order is packed. 
         if ($this->params['form']['status'] == "Yes") {
           $order =  $this->Order->find('first', array(
-            'conditions' => array(
-              'Order.id' => $this->params['form']['id']), 
-            'recursive' => 2));
+                      'conditions' => array(
+                        'Order.id' => $this->params['form']['id']), 
+                      'recursive' => 2));
           $transaction = array('Transaction' => array(
-            'type' => "Sales", 
-            'user_id' => $this->currentUser['User']['id'], 
-            'order_id' => $this->params['form']['id'], 
-            'delivery_id' => $order['Delivery']['id'])); 
+                           'type' => "Sales", 
+                           'user_id' => $this->currentUser['User']['id'], 
+                           'order_id' => $this->params['form']['id'], 
+                           'delivery_id' => $order['Delivery']['id'])); 
           $this->Transaction->create(); 
           $this->Transaction->save($transaction); 
         }
@@ -233,9 +230,9 @@ class OrdersController extends AppController {
           "LineItem.order_id" => $orderId, 
           "LineItem.product_id >" => $productId));
       $lineItem = $this->LineItem->find('first', array(
-        'conditions' => array(
-          'LineItem.order_id' => $orderId, 
-          'LineItem.product_id' => $productId)));
+                    'conditions' => array(
+                      'LineItem.order_id' => $orderId, 
+                      'LineItem.product_id' => $productId)));
       $this->LineItem->id = $lineItem['LineItem']['id'];
       $lineItem = json_encode($lineItem);      
       $this->set('lineItem', $lineItem);
@@ -262,12 +259,12 @@ class OrdersController extends AppController {
           $packed = $paid = 0;
           foreach($delivery['Order'] as $order) {
             switch ($order['status']) {
-            case "delivered":
-              $packed = $packed + 1;
-            case "packed":
-              $packed = $packed + 1;
-            case "paid":
-              $paid = $paid + 1;
+              case "delivered":
+                $packed = $packed + 1;
+              case "packed":
+                $packed = $packed + 1;
+              case "paid":
+                $paid = $paid + 1;
             }
           }         
           $delivery['Delivery']['packed'] = $packed;
